@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
+import User from "../../models/user.model";
 
 export const updateProfile = async (req: Request, res: Response) => {
     try {
@@ -11,12 +11,13 @@ export const updateProfile = async (req: Request, res: Response) => {
         if (user) {
             res.status(200).json({
                 _id: user._id,
-                fullName: user.fullName,
-                username: user.username,
+                role: user.role,
+                name: user.name,
                 email: user.email,
                 mobileNo: user.mobileNo,
                 gender: user.gender,
                 profilePic: user.profilePic,
+                location: user.location,
                 token: req.headers.authorization?.split(" ")[1]
             });
         } else {

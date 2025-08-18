@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-    fullName: {
+    role: {
         type: String,
-        required: true
+        required: true,
+        default: "user"
     },
-    username: {
+    name: {
         type: String,
         min: 2,
         required: true
@@ -32,6 +33,32 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ["M", "F", "O"],
         required: true
+    },
+    problemRepoIds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Problem_Repository"
+        }
+    ],
+    projectRepoIds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Project_Repository"
+        }
+    ],
+    location: {
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        pincode: {
+            type: String,
+            required: true
+        }
     }
 }, { timestamps: true });
 
