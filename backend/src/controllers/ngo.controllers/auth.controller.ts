@@ -121,7 +121,7 @@ export const signup = async (req: Request, res: Response) => {
 				});
 		}
 	} catch (error) {
-		console.log("Error in Signup controller", error);
+		console.log("Error in NGO Signup controller", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
@@ -131,7 +131,7 @@ export const login = async (req: Request, res: Response) => {
 		const { email, password }: NGOLoginBody = req.body;
 		const user = await NGO.findOne({ email });
 		if (!user) {
-			res.status(400).json({ error: "Cannot find User" });
+			res.status(400).json({ error: "Cannot find NGO" });
 			return;
 		}
 
@@ -173,7 +173,7 @@ export const login = async (req: Request, res: Response) => {
 				token
 			});
 	} catch (error) {
-		console.log("Error in Login controller", error);
+		console.log("Error in NGO Login controller", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
@@ -187,7 +187,7 @@ export const logout = async (req: Request, res: Response) => {
 
 		res.status(200).json({ message: "Logged out successfully" });
 	} catch (error) {
-		console.log("Error in Logout controller", error);
+		console.log("Error in NGO Logout controller", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }

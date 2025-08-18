@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import client from "../redis/client";
-import User from "../models/user.model";
+import Govt from "../models/govt.model";
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -17,10 +17,10 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 			return;
 		}
 
-		const redisKey = `UN-user:${decodedUser.userId}`;
+		const redisKey = `UN-govt:${decodedUser.userId}`;
 		const payload = await client.get(redisKey);
 		if (!payload) {
-			res.status(401).json({ error: "Unauthorized - No User Data in Cache, Login first" });
+			res.status(401).json({ error: "Unauthorized - No Govt. Data in Cache, Login first" });
 			return;
 		}
 
@@ -30,16 +30,16 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 			return;
 		}
 
-		const user = await User.findById(decodedUser.userId).select("-password");
+		const user = await Govt.findById(decodedUser.userId).select("-password");
 		if (!user) {
-			res.status(404).json({ error: "User Not Found!" });
+			res.status(404).json({ error: "Govt. Body Not Found!" });
 			return;
 		}
 
-		req.user = user;
+		req.govt = user;
 		next();
 	} catch (error) {
-		console.log("Error in User verifyToken middleware", error);
+		console.log("Error in Govt. verifyToken middleware", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }

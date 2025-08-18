@@ -40,6 +40,22 @@ export interface NGOLoginBody {
     password: string;
 }
 
+export interface GovtSignupBody {
+    govtId: string;
+    name: string;
+    email: string;
+    password: string;
+    mobileNo: string;
+    city: string;
+    state: string;
+    pincode: string;
+}
+
+export interface GovtLoginBody {
+    email: string;
+    password: string;
+}
+
 export interface User {
     _id: Types.ObjectId;
     role: string;
@@ -78,9 +94,27 @@ export interface NGO {
     objectives: string[];
 }
 
+export interface Govt {
+    _id: Types.ObjectId;
+    role: string;
+    govtId: string;
+    name: string;
+    email: string;
+    password: string;
+    mobileNo: string;
+    profilePic?: string | null;
+    projectRepoIds: Types.ObjectId[];
+    jurisdiction?: {
+        city: string;
+        state: string;
+        pincode: string
+    } | null;
+}
+
 declare module "express" {
     export interface Request {
         user?: User;
         ngo?: NGO;
+        govt?: Govt;
     }
 }

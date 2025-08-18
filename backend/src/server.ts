@@ -16,6 +16,8 @@ import userProfileRoutes from "./routes/user.routes/profile.routes";
 
 import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
 
+import govtAuthRoutes from "./routes/govt.routes/auth.routes";
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -60,6 +62,9 @@ app.use('/api/v1/user/profile', userProfileRoutes);
 
 // NGO routes
 app.use('/api/v1/ngo/auth', ngoAuthRoutes);
+
+// Govt. routes
+app.use('/api/v1/gov/auth', govtAuthRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);
