@@ -10,8 +10,11 @@ import morgan from "morgan";
 import connecToMongoDB from './db/connectToMongoDB';
 import client from './redis/client';
 import adminRoutes from './routes/admin.routes';
-import authRoutes from './routes/user.routes/auth.routes';
-import profileRoutes from "./routes/user.routes/profile.routes";
+
+import userAuthRoutes from './routes/user.routes/auth.routes';
+import userProfileRoutes from "./routes/user.routes/profile.routes";
+
+import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
 
 const PORT = process.env.PORT || 3000;
 
@@ -52,8 +55,11 @@ app.get('/api/v1', (req: Request, res: Response) => {
 app.use('/api/v1/admin', adminRoutes);
 
 // User routes
-app.use('/api/v1/user/auth', authRoutes);
-app.use('/api/v1/user/profile', profileRoutes);
+app.use('/api/v1/user/auth', userAuthRoutes);
+app.use('/api/v1/user/profile', userProfileRoutes);
+
+// NGO routes
+app.use('/api/v1/ngo/auth', ngoAuthRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);
