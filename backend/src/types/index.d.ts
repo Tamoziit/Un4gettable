@@ -21,6 +21,25 @@ export interface UserLoginBody {
     password: string;
 }
 
+export interface NGOSignupBody {
+    regId: string;
+    name: string;
+    email: string;
+    password: string;
+    mobileNo: string;
+    city: string;
+    state: string;
+    pincode: string;
+    SDG: string[];
+    aim: string;
+    objectives: string[];
+}
+
+export interface NGOLoginBody {
+    email: string;
+    password: string;
+}
+
 export interface User {
     _id: Types.ObjectId;
     role: string;
@@ -39,8 +58,29 @@ export interface User {
     } | null;
 }
 
+export interface NGO {
+    _id: Types.ObjectId;
+    role: string;
+    regId: string;
+    name: string;
+    email: string;
+    password: string;
+    mobileNo: string;
+    profilePic?: string | null;
+    projectRepoIds: Types.ObjectId[];
+    location?: {
+        city: string;
+        state: string;
+        pincode: string
+    } | null;
+    SDG: string[];
+    aim: string;
+    objectives: string[];
+}
+
 declare module "express" {
     export interface Request {
         user?: User;
+        ngo?: NGO;
     }
 }
