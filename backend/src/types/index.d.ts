@@ -6,12 +6,14 @@ export interface AdminToken {
 }
 
 export interface UserSignupBody {
-    fullName: string;
-    username: string;
+    name: string;
     email: string;
     password: string;
     mobileNo: string;
     gender: "M" | "F" | "O";
+    city: string;
+    state: string;
+    pincode: string;
 }
 
 export interface UserLoginBody {
@@ -21,13 +23,20 @@ export interface UserLoginBody {
 
 export interface User {
     _id: Types.ObjectId;
-    fullName: string;
-    username: string;
+    role: string;
+    name: string;
     email: string;
     password: string;
     mobileNo: string;
     profilePic?: string | null;
     gender: "M" | "F" | "O";
+    problemRepoIds: Types.ObjectId[];
+    projectRepoIds: Types.ObjectId[];
+    location?: {
+        city: string;
+        state: string;
+        pincode: string
+    } | null;
 }
 
 declare module "express" {
