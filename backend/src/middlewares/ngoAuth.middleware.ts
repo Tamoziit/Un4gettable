@@ -20,7 +20,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         const redisKey = `UN-ngo:${decodedUser.userId}`;
         const payload = await client.get(redisKey);
         if (!payload) {
-            res.status(401).json({ error: "Unauthorized - No User Data in Cache, Login first" });
+            res.status(401).json({ error: "Unauthorized - No NGO Data in Cache, Login first" });
             return;
         }
 
@@ -32,14 +32,14 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 
         const user = await NGO.findById(decodedUser.userId).select("-password");
         if (!user) {
-            res.status(404).json({ error: "User Not Found!" });
+            res.status(404).json({ error: "NGO Not Found!" });
             return;
         }
 
         req.ngo = user;
         next();
     } catch (error) {
-        console.log("Error in verifyToken middleware", error);
+        console.log("Error in NGO verifyToken middleware", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
