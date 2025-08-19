@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import client from "../redis/client";
 import NGO from "../models/ngo.model";
 
-const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+const verifyNGO = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token) {
@@ -44,4 +44,4 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export default verifyToken;
+export default verifyNGO;
