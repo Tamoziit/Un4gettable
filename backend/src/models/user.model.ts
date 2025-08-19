@@ -37,13 +37,13 @@ const UserSchema = new mongoose.Schema({
     problemRepoIds: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Problem_Repository"
+            ref: "Problem"
         }
     ],
     projectRepoIds: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Project_Repository"
+            ref: "Project"
         }
     ],
     location: {

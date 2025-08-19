@@ -121,6 +121,17 @@ declare module "express" {
 }
 
 export interface DecodedToken extends JwtPayload {
-	userId: string;
-	role: "user" | "ngo" | "govt";
+    userId: string;
+    role: "user" | "ngo" | "govt";
+}
+
+export interface ProjectCreationProps {
+    name: string;
+    city: string;
+    state: string;
+    SDG: string[];
+    aim: string;
+    description: string;
+    objectives: string[];
+    tariff: number[];
 }

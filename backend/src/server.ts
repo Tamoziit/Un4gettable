@@ -15,8 +15,10 @@ import userAuthRoutes from './routes/user.routes/auth.routes';
 import userProfileRoutes from "./routes/user.routes/profile.routes";
 
 import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
+import ngoProjectRoutes from "./routes/ngo.routes/project.routes";
 
 import govtAuthRoutes from "./routes/govt.routes/auth.routes";
+import govtProjectRoutes from "./routes/govt.routes/project.routes";
 
 const PORT = process.env.PORT || 3000;
 
@@ -62,9 +64,11 @@ app.use('/api/v1/user/profile', userProfileRoutes);
 
 // NGO routes
 app.use('/api/v1/ngo/auth', ngoAuthRoutes);
+app.use('/api/v1/ngo/project', ngoProjectRoutes);
 
 // Govt. routes
 app.use('/api/v1/gov/auth', govtAuthRoutes);
+app.use('/api/v1/gov/project', govtProjectRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);
