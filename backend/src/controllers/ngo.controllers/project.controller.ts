@@ -10,6 +10,8 @@ export const createProject = async (req: Request, res: Response) => {
             name,
             city,
             state,
+            startDate,
+            endDate,
             SDG,
             aim,
             description,
@@ -45,6 +47,10 @@ export const createProject = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Atleast 1 Tariff Plan is required" });
             return;
         }
+        if (!startDate || !endDate) {
+            res.status(400).json({ error: "Timeline is required" });
+            return;
+        }
 
         const newProject = new Project({
             owner: id,
@@ -53,6 +59,10 @@ export const createProject = async (req: Request, res: Response) => {
             location: {
                 city,
                 state
+            },
+            timeline: {
+                startDate,
+                endDate
             },
             SDG,
             aim,
