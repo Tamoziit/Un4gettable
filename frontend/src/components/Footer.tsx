@@ -1,5 +1,7 @@
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-import { SiLeetcode } from "react-icons/si";
+import {FaEnvelope } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { GrInstagram } from "react-icons/gr";
+import { FaSquareFacebook } from "react-icons/fa6";
 
 const Footer = () => {
 	return (
@@ -16,35 +18,35 @@ const Footer = () => {
 						<FaEnvelope size={24} />
 					</a>
 					<a
-						href="https://www.linkedin.com/in/"
+						href="https://www.facebook.com/in/"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-gray-300 hover:text-blue-600 transition-colors"
-						aria-label="LinkedIn"
+						aria-label="Facebook"
 					>
-						<FaLinkedin size={24} />
+						< FaSquareFacebook size={24} />
 					</a>
 					<a
-						href="https://github.com/your_username"
+						href="https://www.instagram.com/in/"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-gray-300 hover:text-blue-600 transition-colors"
-						aria-label="GitHub"
+						aria-label="Instagram"
 					>
-						<FaGithub size={24} />
+						<GrInstagram size={24} />
 					</a>
 					<a
-						href="https://leetcode.com/u/yourusername/"
+						href="https://whatsapp.com/"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-gray-300 hover:text-blue-500 transition-colors"
-						aria-label="LeetCode"
+						aria-label="WhatsApp"
 					>
-						<SiLeetcode size={24} />
+						< IoLogoWhatsapp size={24} />
 					</a>
 				</div>
 				<p className="text-sm text-gray-400">
-					&copy; 2024, Tamojit Das. All rights reserved.
+					&copy; 2025, aabOhawa@gmail.com
 				</p>
 			</div>
 		</footer>

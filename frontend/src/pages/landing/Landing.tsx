@@ -35,10 +35,10 @@ const Landing = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
           >
-            Pheonix
+          Aab-O-Hawa
           </motion.h1>
           <p className="text-subhead text-center max-w-lg">
-            ... ✨ Tagline here ✨ ...
+             ✨Preserving Nature,Protecting Tomorrow✨ 
           </p>
         </div>
 			</div>
