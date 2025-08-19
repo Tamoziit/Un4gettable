@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ProjectCreationProps } from "../../types";
 import Project from "../../models/project.model";
 import Govt from "../../models/govt.model";
+import Problem from "../../models/problem.model";
 
 export const createProject = async (req: Request, res: Response) => {
     try {
@@ -149,6 +150,27 @@ export const getProjectById = async (req: Request, res: Response) => {
         }
     } catch (error) {
         console.log("Error in Govt. getProjectById controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+export const getSuggestions = async (req: Request, res: Response) => {
+    try {
+        const projectId = req.params.id;
+        const project = await Project.findById(projectId);
+        if (!project) {
+            res.status(400).json({ error: "Project not found" });
+            return;
+        }
+        const projectSDGs = project.SDG;
+
+        const relatedProblems = await Problem.find({
+            SDG: { $in: projectSDGs.map((sdg: string) => sdg.split(".")[0]) }
+        });
+
+        res.json(relatedProblems);
+    } catch (error) {
+        console.log("Error in NGO getSuggestions controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
