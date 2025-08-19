@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import { Request } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 export interface AdminToken {
     password: string
@@ -117,4 +118,9 @@ declare module "express" {
         ngo?: NGO;
         govt?: Govt;
     }
+}
+
+export interface DecodedToken extends JwtPayload {
+	userId: string;
+	role: "user" | "ngo" | "govt";
 }
