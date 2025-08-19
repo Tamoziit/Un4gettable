@@ -28,6 +28,10 @@ const ProblemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    SDG: {
+        type: String,
+        required: true
+    },
     decription: {
         type: String,
     },
