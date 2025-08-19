@@ -129,9 +129,18 @@ export interface ProjectCreationProps {
     name: string;
     city: string;
     state: string;
+    startDate: string;
+    endDate: string;
     SDG: string[];
     aim: string;
     description: string;
     objectives: string[];
     tariff: number[];
+}
+
+export interface PostProblemProps {
+    url: string;
+    description?: string | null;
+    lat: number;
+    lon: number;
 }

@@ -25,6 +25,16 @@ const ProjectSchema = new mongoose.Schema({
             required: true
         }
     },
+    timeline: {
+        startDate: {
+            type: String,
+            required: true
+        },
+        endDate: {
+            type: String,
+            required: true
+        }
+    },
     SDG: {
         type: Array,
         default: [],

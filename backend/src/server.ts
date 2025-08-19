@@ -13,6 +13,7 @@ import adminRoutes from './routes/admin.routes';
 
 import userAuthRoutes from './routes/user.routes/auth.routes';
 import userProfileRoutes from "./routes/user.routes/profile.routes";
+import userProblemRoutes from "./routes/user.routes/problem.routes";
 
 import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
 import ngoProjectRoutes from "./routes/ngo.routes/project.routes";
@@ -61,6 +62,7 @@ app.use('/api/v1/admin', adminRoutes);
 // User routes
 app.use('/api/v1/user/auth', userAuthRoutes);
 app.use('/api/v1/user/profile', userProfileRoutes);
+app.use('/api/v1/user/problem', userProblemRoutes);
 
 // NGO routes
 app.use('/api/v1/ngo/auth', ngoAuthRoutes);
