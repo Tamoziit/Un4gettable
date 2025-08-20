@@ -33,7 +33,7 @@ const useSignupUser = () => {
 
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/auth/signup`, {
+            const res = await fetch(`${apiUrl}/user/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
