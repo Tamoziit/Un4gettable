@@ -9,6 +9,7 @@ import morgan from "morgan";
 
 import connecToMongoDB from './db/connectToMongoDB';
 import client from './redis/client';
+import twilioClient from './services/twilio';
 import adminRoutes from './routes/admin.routes';
 
 import userAuthRoutes from './routes/user.routes/auth.routes';
@@ -84,5 +85,11 @@ app.listen(PORT, () => {
         console.log("📦 Connected to Redis");
     } else {
         console.log("❌ Error in connecting to Redis");
+    }
+
+    if (twilioClient) {
+        console.log("💬 Connected to Twilio");
+    } else {
+        console.log("❌ Error in connecting to Twilio");
     }
 });
