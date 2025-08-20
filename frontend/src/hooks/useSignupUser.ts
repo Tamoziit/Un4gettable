@@ -9,38 +9,38 @@ const useSignupUser = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const signup = async ({
-        fullName,
-		email,
-		city,
-		state,
-		pincode,
-		mobileNo,
-		password,
-		gender
+        name,
+        email,
+        city,
+        state,
+        pincode,
+        mobileNo,
+        password,
+        gender
     }:
-     UserSignupParams) => {
+        UserSignupParams) => {
         const success = handleInputErrors({
-        fullName,
-		email,
-		city,
-		state,
-		pincode,
-		mobileNo,
-		password,
-		gender
+            name,
+            email,
+            city,
+            state,
+            pincode,
+            mobileNo,
+            password,
+            gender
         });
         if (!success) return;
 
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/auth/signup`, {
+            const res = await fetch(`${apiUrl}/user/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("DB-token")}`
+                    Authorization: `Bearer ${localStorage.getItem("UN-token")}`
                 },
                 body: JSON.stringify({
-                    fullName,
+                    name,
                     email,
                     city,
                     state,
@@ -60,9 +60,9 @@ const useSignupUser = () => {
             const now = new Date().getTime();
             const expiry = now + 30 * 24 * 60 * 60 * 1000; // 30 days
 
-            localStorage.setItem("DB-token", data.token);
-            localStorage.setItem("DB-user", JSON.stringify(data));
-            localStorage.setItem("DB-expiry", expiry.toString());
+            localStorage.setItem("UN-token", data.token);
+            localStorage.setItem("UN-user", JSON.stringify(data));
+            localStorage.setItem("UN-expiry", expiry.toString());
             setAuthUser(data);
 
             if (data) {
@@ -84,26 +84,18 @@ const useSignupUser = () => {
 
 export default useSignupUser;
 
-//ekhn thke thik korte hbe
-
-
-
-
-
-
-
-
-
-
 
 function handleInputErrors({
-    fullName,
+    name,
     email,
-    password,
+    city,
+    state,
+    pincode,
     mobileNo,
+    password,
     gender
 }: UserSignupParams) {
-    if (!fullName || !email || !password || !mobileNo || !gender) {
+    if (!name || !email || !password || !mobileNo || !gender || !city || !state || !pincode) {
         toast.error("Please fill all the fields");
         return false;
     }
@@ -113,12 +105,12 @@ function handleInputErrors({
         return false;
     }
 
-    if(mobileNo.length !== 10) {
+    if (mobileNo.length !== 10) {
         toast.error("Enter a valid Mobile No.");
         return false;
     }
 
-    if(gender !== "M" && gender !== "F" && gender !== "O") {
+    if (gender !== "M" && gender !== "F" && gender !== "O") {
         toast.error("Enter a valid gender");
         return false;
     }
