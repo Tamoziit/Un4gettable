@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { FaEye, FaEyeSlash, FaLock, FaPhoneAlt, FaRegUser, FaTransgenderAlt, FaUser } from "react-icons/fa";
-import useSignup from "../../hooks/useSignup";
+import { FaEye, FaEyeSlash, FaLock, FaPhoneAlt,FaCity,  FaTransgenderAlt, FaUser,FaGlobe ,FaMapPin} from "react-icons/fa";
+import useSignup from "../../hooks/useSignupUser";
 import Spinner from "../../components/Spinner";
 import { Link } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 
-const Signup = () => {
+const UserSignup = () => {
 	const [inputs, setInputs] = useState({
 		fullName: "",
 		username: "",
 		email: "",
-		password: "",
+		city:"",
+		state: "",
+		pincode:"",
 		mobileNo: "",
+		password: "",
 		gender: ""
 	});
 	const { signup, loading } = useSignup();
@@ -28,7 +31,7 @@ const Signup = () => {
 
 	return (
 		<div className="flex flex-col gap-3 items-center justify-center min-h-screen w-full pb-6">
-			<h1 className="text-[30px] md:text-[35px] lg:text-[40px] text-secondary">Signup</h1>
+			<h1 className="text-[30px] md:text-[35px] lg:text-[40px] text-secondary">User Signup</h1>
 			<div className="h-[3.3px] -mt-1 bg-blue-400 w-10 rounded-lg" />
 
 			<div className="flex w-full items-center justify-center">
@@ -50,17 +53,17 @@ const Signup = () => {
 							/>
 						</div>
 
-						<div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaRegUser />Username</label>
+							{/* <div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaUserTag />Username</label>
 							<input
 								type="text"
-								placeholder="Enter your Name"
+								placeholder="Create your Username"
 								required
 								className="input-primary"
-								value={inputs.username}
+								value={inputs.email}
 								onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
 							/>
-						</div>
+						</div> */}
 
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><MdEmail />Email</label>
@@ -71,6 +74,55 @@ const Signup = () => {
 								className="input-primary"
 								value={inputs.email}
 								onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+							/>
+						</div>
+
+						<div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaCity />City</label>
+							<input
+								type="text"
+								placeholder="Enter your City"
+								required
+								className="input-primary"
+								value={inputs.city}
+								onChange={(e) => setInputs({ ...inputs, city: e.target.value })}
+							/>
+						</div>
+
+						<div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaGlobe />State</label>
+							<input
+								type="text"
+								placeholder="Enter your State"
+								required
+								className="input-primary"
+								value={inputs.state}
+								onChange={(e) => setInputs({ ...inputs, state: e.target.value })}
+							/>
+						</div>
+
+						<div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaMapPin />PinCode Number</label>
+							<input
+								type="number"
+								placeholder="Enter your PinCode Number"
+								required
+								className="input-primary"
+								value={inputs.pincode}
+								onChange={(e) => setInputs({ ...inputs, pincode: e.target.value })}
+							/>
+						</div>
+
+						<div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt />Mobile Number</label>
+							<input
+								type="number"
+								placeholder="Enter your Mobile Number"
+								required
+								maxLength={10}
+								className="input-primary"
+								value={inputs.mobileNo}
+								onChange={(e) => setInputs({ ...inputs, mobileNo: e.target.value })}
 							/>
 						</div>
 
@@ -96,18 +148,6 @@ const Signup = () => {
 						</div>
 
 						<div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt />Mobile Number</label>
-							<input
-								type="text"
-								placeholder="Enter your Mobile Number"
-								required
-								className="input-primary"
-								value={inputs.mobileNo}
-								onChange={(e) => setInputs({ ...inputs, mobileNo: e.target.value })}
-							/>
-						</div>
-
-						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaTransgenderAlt />Gender</label>
 							<div className="flex justify-around w-full text-gray-300">
 								<label className="flex items-center">
@@ -116,6 +156,7 @@ const Signup = () => {
 										name="gender"
 										className="mr-2"
 										value="M"
+										required
 										onChange={(e) => setInputs({ ...inputs, gender: e.target.value })}
 									/>
 									MALE
@@ -159,4 +200,4 @@ const Signup = () => {
 	)
 }
 
-export default Signup;
+export default UserSignup;

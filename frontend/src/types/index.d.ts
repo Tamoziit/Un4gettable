@@ -1,16 +1,38 @@
-export interface SignupParams {
+export interface UserSignupParams {
     fullName: string;
-    username: string;
     email: string;
-    password: string;
+    city: string;
+    state: string;
+    pincode: string;
     mobileNo: string;
+    password: string;
     gender: string;
 }
 
-export interface LoginParams {
-    email: string;
-    password: string;
+export interface NgoSignupParams {
+        regid: string;
+        ngoname: string;
+		email: string;
+		city: string;
+		state: string;
+		pincode: string;
+		mobileNo: string;
+		password: string;
+		aim: string;
+        SDGgoal: string[];
 }
+
+export interface GovSignupParams {
+        govtId: string;
+        name: string;
+        email: string;
+        mobileNo: string;
+        city: string;
+        state: string;
+        pincode: string;
+        password: string;
+}
+
 
 export interface AuthUser {
     _id: string;
