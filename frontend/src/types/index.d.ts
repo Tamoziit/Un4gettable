@@ -1,5 +1,5 @@
 export interface UserSignupParams {
-    fullName: string;
+    name: string;
     email: string;
     city: string;
     state: string;
