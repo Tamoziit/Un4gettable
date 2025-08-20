@@ -7,8 +7,7 @@ import { MdEmail } from "react-icons/md";
 
 const UserSignup = () => {
 	const [inputs, setInputs] = useState({
-		fullName: "",
-		username: "",
+		name: "",
 		email: "",
 		city:"",
 		state: "",
@@ -48,8 +47,8 @@ const UserSignup = () => {
 								placeholder="Enter your Name"
 								required
 								className="input-primary"
-								value={inputs.fullName}
-								onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+								value={inputs.name}
+								onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
 							/>
 						</div>
 
@@ -104,7 +103,7 @@ const UserSignup = () => {
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaMapPin />PinCode Number</label>
 							<input
-								type="number"
+								type="text"
 								placeholder="Enter your PinCode Number"
 								required
 								className="input-primary"
@@ -116,7 +115,7 @@ const UserSignup = () => {
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt />Mobile Number</label>
 							<input
-								type="number"
+								type="text"
 								placeholder="Enter your Mobile Number"
 								required
 								maxLength={10}

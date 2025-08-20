@@ -14,18 +14,18 @@ export const useAuthContext = (): AuthContextType => {
 };
 
 const getStoredUser = (): AuthUser | null => {
-    const expiry = localStorage.getItem("DB-expiry");
+    const expiry = localStorage.getItem("UN-expiry");
     const now = new Date().getTime();
 
     if (!expiry || now > parseInt(expiry)) {
         // Token Expired
-        localStorage.removeItem("DB-user");
-        localStorage.removeItem("DB-token");
-        localStorage.removeItem("DB-expiry");
+        localStorage.removeItem("UN-user");
+        localStorage.removeItem("UN-token");
+        localStorage.removeItem("UN-expiry");
         return null;
     }
 
-    const user = localStorage.getItem("DB-user");
+    const user = localStorage.getItem("UN-user");
     return user ? JSON.parse(user) : null;
 };
 
