@@ -1,28 +1,36 @@
 import { useState } from "react"
 import toast from "react-hot-toast";
-import type { SignupParams } from "../types";
+import type { NgoSignupParams } from "../types";
 import { useAuthContext } from "../context/AuthContext";
 
-const useSignup = () => {
+const useSignupNgo = () => {
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const signup = async ({
-        fullName,
-        username,
-        email,
-        password,
-        mobileNo,
-        gender
-    }: SignupParams) => {
+    const signupNgo = async ({
+		regid,
+        ngoname,
+		email,
+		city,
+		state,
+		pincode,
+		mobileNo,
+		password,
+		aim,
+        SDGgoal
+    }: NgoSignupParams) => {
         const success = handleInputErrors({
-            fullName,
-            username,
-            email,
-            password,
-            mobileNo,
-            gender
+		regid,
+        ngoname,
+		email,
+		city,
+		state,
+		pincode,
+		mobileNo,
+		password,
+		aim,
+        SDGgoal
         });
         if (!success) return;
 
@@ -35,12 +43,16 @@ const useSignup = () => {
                     Authorization: `Bearer ${localStorage.getItem("DB-token")}`
                 },
                 body: JSON.stringify({
-                    fullName,
-                    username,
+                    regid,
+                    ngoname,
                     email,
-                    password,
+                    city,
+                    state,
+                    pincode,
                     mobileNo,
-                    gender
+                    password,
+                    aim,
+                    SDGgoal
                 })
             });
             const data = await res.json();
@@ -72,27 +84,26 @@ const useSignup = () => {
             setLoading(false);
         }
     }
-    return { loading, signup };
+    return { loading, signupNgo };
 }
 
-export default useSignup;
+export default useSignupNgo;
 
 
 function handleInputErrors({
-    fullName,
-    username,
-    email,
-    password,
-    mobileNo,
-    gender
-}: SignupParams) {
-    if (!fullName || !username || !email || !password || !mobileNo || !gender) {
+    regid,
+        ngoname,
+		email,
+		city,
+		state,
+		pincode,
+		mobileNo,
+		password,
+		aim,
+        SDGgoal
+}: NgoSignupParams) {
+    if (  !email || !password || !mobileNo || !regid || !ngoname || !city || !state || !pincode || !aim || !SDGgoal     ) {
         toast.error("Please fill all the fields");
-        return false;
-    }
-
-    if (username.length < 2) {
-        toast.error("Username should be atleast 2 characters long");
         return false;
     }
 
@@ -106,10 +117,6 @@ function handleInputErrors({
         return false;
     }
 
-    if(gender !== "M" && gender !== "F" && gender !== "O") {
-        toast.error("Enter a valid gender");
-        return false;
-    }
-
+    
     return true;
 }

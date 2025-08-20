@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom"
 
 const About = () => {
+	const [open, setOpen] = useState(false);
 	return (
 		<div id="about" className="mt-8 w-full items-center justify-center p-4">
 			<div className="w-full flex flex-col gap-1 items-center justify-center">
@@ -18,10 +20,40 @@ const About = () => {
 
 					</p>
 
-					<div className="w-full flex items-center justify-center mt-2">
-						<Link to="/signup" className="btn-primary py-3 px-8">Get Started</Link>
-					</div>
-				</div>
+					<div className="w-full flex items-center justify-center mt-2 relative">
+    <button
+        className="btn-primary py-3 px-8"
+        onClick={() => setOpen((prev) => !prev)}
+    >
+        Get Started
+    </button>
+    {open && (
+        <div className="absolute top-full mt-2 bg-white shadow-lg rounded z-30 min-w-[180px] flex flex-col">
+            <Link
+                to="/user/signup"
+                className="px-4 py-2 hover:bg-gray-100 text-left"
+                onClick={() => setOpen(false)}
+            >
+                User Signup
+            </Link>
+            <Link
+                to="/ngo/signup"
+                className="px-4 py-2 hover:bg-gray-100 text-left"
+                onClick={() => setOpen(false)}
+            >
+                NGO Signup
+            </Link>
+            <Link
+                to="/gov/signup"
+                className="px-4 py-2 hover:bg-gray-100 text-left"
+                onClick={() => setOpen(false)}
+            >
+                Government Signup
+            </Link>
+        </div>
+    )}
+</div>
+        </div>
 			</div>
 		</div>
 	)
