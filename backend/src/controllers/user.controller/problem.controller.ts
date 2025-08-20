@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PostProblemProps } from "../../types";
 import Problem from "../../models/problem.model";
 import User from "../../models/user.model";
+import getGeocodedAddress from "../../utils/getGeocodedAddress";
 
 export const postProblem = async (req: Request, res: Response) => {
     try {
@@ -22,13 +23,19 @@ export const postProblem = async (req: Request, res: Response) => {
             return;
         }
 
+        const address = await getGeocodedAddress(lat, lon);
+        if (!address) {
+            res.status(400).json({ error: "Error in fetching your location" });
+            return;
+        }
+
         const newProblem = new Problem({
             owner: id,
             url,
             location: {
                 lat,
                 lon,
-                address: "Esplanade, Kolkata, West Bengal 700069, India"
+                address
             },
             problem: "Deforestation",
             SDG: "13",
