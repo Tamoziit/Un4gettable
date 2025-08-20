@@ -36,8 +36,7 @@ export interface GovSignupParams {
 
 export interface AuthUser {
     _id: string;
-    fullName: string;
-    username: string;
+    name: string;
     email: string;
     mobileNo: string;
     gender: "M" | "F" | "O";
