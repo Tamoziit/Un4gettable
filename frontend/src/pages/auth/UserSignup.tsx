@@ -52,18 +52,6 @@ const UserSignup = () => {
 							/>
 						</div>
 
-							{/* <div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaUserTag />Username</label>
-							<input
-								type="text"
-								placeholder="Create your Username"
-								required
-								className="input-primary"
-								value={inputs.email}
-								onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-							/>
-						</div> */}
-
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><MdEmail />Email</label>
 							<input
