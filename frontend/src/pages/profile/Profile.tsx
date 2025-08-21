@@ -14,8 +14,8 @@ const Profile = () => {
 		if (!authUser?.profilePic) {
 			const ProfilePic =
 				authUser?.gender === "M"
-					? `https://avatar.iran.liara.run/public/boy?username=${authUser?.fullName}`
-					: `https://avatar.iran.liara.run/public/girl?username=${authUser?.fullName}`;
+					? `https://avatar.iran.liara.run/public/boy?username=${authUser?.name}`
+					: `https://avatar.iran.liara.run/public/girl?username=${authUser?.name}`;
 
 			setProfilePic(ProfilePic);
 		}
@@ -52,7 +52,7 @@ const Profile = () => {
 					<div className="flex items-center justify-center relative">
 						<img
 							src={profilePic}
-							alt={authUser?.username}
+							alt={authUser?.name}
 							className="w-[220px] rounded-full object-cover border-2 border-gray-300"
 						/>
 
@@ -76,12 +76,12 @@ const Profile = () => {
 						</label>
 					</div>
 
-					<span className="font-bold text-xl text-gray-100">{authUser?.username}</span>
+					{/* <span className="font-bold text-xl text-gray-100">{authUser?.username}</span> */}
 
 					<div className="flex flex-col items-start justify-center">
 						<p className="text-gray-200">
 							<b className="text-blue-400">Name: </b>
-							{authUser?.fullName}
+							{authUser?.name}
 						</p>
 						<p className="text-gray-200">
 							<b className="text-blue-400">Email: </b>

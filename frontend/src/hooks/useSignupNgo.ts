@@ -36,7 +36,7 @@ const useSignupNgo = () => {
 
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/auth/signup`, {
+            const res = await fetch(`${apiUrl}/ngo/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
