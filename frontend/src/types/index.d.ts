@@ -76,3 +76,25 @@ export interface Project {
     fundRaised: number;
     reports: string[];
 }
+
+export interface Problem {
+  _id: string;
+  owner: string;
+  url: string;
+  problem: string;
+  SDG: string;
+  alertLevel: string;
+  actionableInsights: string[];
+  NGOWorking: string[];
+  GovtWorking: string[];
+  reports: string[];
+  statusForUser: string;
+  statusForGovt: string;
+  location: {
+    lat: number;
+    lon: number;
+    address: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
