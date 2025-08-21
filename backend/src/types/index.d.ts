@@ -149,7 +149,7 @@ export interface CreateContactProps {
     name: string;
     email: string;
     contact: string;
-    type: string;
+    type?: string;
     reference_id: string;
 }
 
@@ -158,4 +158,45 @@ export interface FundAccountCreationProps {
     name: string;
     ifsc: string;
     account_number: string;
+}
+
+export interface OnboardingProps {
+    ifsc: string;
+    account_number: string;
+    reference_id: string;
+}
+
+export interface PaymentVerificationProps {
+    razorpay_payment_id: string;
+    razorpay_payment_link_id: string;
+    razorpay_payment_link_reference_id: string;
+    razorpay_payment_link_status: string;
+    razorpay_signature: string;
+}
+
+export interface Receiver {
+    index: number;
+    id: string;
+    entity: string;
+    type: string;
+    account_number: string;
+    ifsc: string;
+    bank_name: string;
+    name: string;
+    is_payout_account: boolean;
+    use_for_payouts: string | null;
+}
+
+export interface VirtualAccount {
+    index: number;
+    id: string;
+    status: string;
+    description: string;
+    amount_expected: number;
+    amount_paid: number;
+    customer_id: string;
+    close_by: number | null;
+    closed_at: number | null;
+    created_at: number;
+    receivers: Receiver[];
 }
