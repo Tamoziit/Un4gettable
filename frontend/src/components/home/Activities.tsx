@@ -6,6 +6,8 @@ const Activities = () => {
     { label: "Project Repository", color: "bg-green-500 hover:bg-green-600", path: "/repository/project" },
     { label: "Project Problem Dashboard", color: "bg-purple-500 hover:bg-purple-600", path: "/repository/project-problem" },
     { label: "Progress Tracker", color: "bg-orange-500 hover:bg-orange-600", path: "/repository/progress-tracker" },
+    { label: "Upload Project", color: "bg-emerald-500 hover:bg-emerald-600", path: "/repository/project/upload" },
+    { label: "Upload Problem", color: "bg-cyan-500 hover:bg-cyan-600", path: "/repository/problem/upload" },
   ]);
 
 

@@ -11,7 +11,7 @@ const About = () => {
 			</div>
 
 			<div className="flex flex-col lg:flex-row gap-4 lg:gap-8 mt-10 items-center justify-center">
-				<img src="/about.jpg" alt="about" className="w-[60%] lg:w-[45%] z-20" />
+				<img src="/about.jpg" alt="about" className="w-[30%] lg:w-[30%] z-20" />
 
 				<div className="flex flex-col items-center justify-center lg:items-start gap-2 mt-5 lg:mt-0">
 					<h1 className="text-tertiary text-4xl lg:text-5xl">Welcome to <span className="!text-blue-400">Aab-o-Hawa</span></h1>
@@ -20,13 +20,13 @@ const About = () => {
 
 					</p>
 
-					<div className="w-full flex items-center justify-center mt-2 relative">
-    <button
-        className="btn-primary py-3 px-8"
-        onClick={() => setOpen((prev) => !prev)}
-    >
-        Get Started
-    </button>
+		<div className="w-full flex items-center justify-center mt-2 relative">
+            <button
+                className="btn-primary py-3 px-8"
+                onClick={() => setOpen((prev) => !prev)}
+            >
+                Get Started
+            </button>
     {open && (
         <div className="absolute top-full mt-2 bg-white shadow-lg rounded z-30 min-w-[180px] flex flex-col">
             <Link

@@ -11,6 +11,8 @@ import { useAuthContext } from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import ProjectRepo from "./pages/repository/ProjectRepo";
 import ProjectDetails from "./pages/repository/ProjectDetails";
+import ProblemRepository from "./pages/repository/ProblemRepo";
+import ProblemUpload from "./pages/upload/ProjectUpload";
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -31,7 +33,13 @@ function App() {
 				{/* Repository Routes */}
 					<Route path="/repository/project" element={authUser ? <ProjectRepo />  : <Navigate to="/" /> } />
 					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails/> : <Navigate to="/" />} />
+					<Route path="/repository/problem" element={authUser ? <ProblemRepository /> : <Navigate to="/" />} />
 
+ 
+				{/* Uploads project & Problem */}
+					{/* <Route path="/repository/project/upload" element={authUser ? <ProjectDetails isUpload /> : <Navigate to="/" />} /> */}
+					<Route path="/repository/problem/upload" element={authUser ? <ProblemUpload/> : <Navigate to="/" />} />
+   
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
 					<Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/" />} />

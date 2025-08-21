@@ -10,7 +10,7 @@ const bgImages = [
   "/bg2.jpg",
   "/bg3.jpg",
   "/bg4.jpg",
-  // add/remove as needed
+  "/bg5.jpg",
 ];
 
 const INTERVAL_MS = 5000; // time per slide
