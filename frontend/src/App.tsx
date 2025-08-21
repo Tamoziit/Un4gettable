@@ -9,9 +9,9 @@ import GovSignup from "./pages/auth/GovSignup";
 import Home from "./pages/home/Home";
 import { useAuthContext } from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
-import ProjectRepo from "./pages/repository/ProjectRepo";
-import ProjectDetails from "./pages/repository/ProjectDetails";
-import ProblemRepository from "./pages/repository/ProblemRepo";
+import ProjectRepo from "./pages/repository/project/ProjectRepo";
+import ProjectDetails from "./pages/repository/project/ProjectDetails";
+import ProblemRepository from "./pages/repository/problem/ProblemRepo";
 import ProblemUpload from "./pages/upload/ProblemUpload";
 import ProjectUpload from "./pages/upload/ProjectUpload";
 

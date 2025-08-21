@@ -1,24 +1,12 @@
 import { useState } from "react";
 import LandingNavbar from "../../components/navbars/LandingNavbar";
-import { toast } from "react-hot-toast";
-
-type ProjectPayload = {
-  name: string;
-  city: string;
-  state: string;
-  startDate: string;   // "DD-MM-YYYY"
-  endDate: string;     // "DD-MM-YYYY"
-  SDG: string[];       // e.g., ["13.2","14.3","15.1"]
-  aim: string;
-  description: string;
-  objectives: string[];
-  tariff: number[];
-};
+import type { ProjectCreationProps } from "../../types";
+import useUploadProject from "../../hooks/useUploadProject";
 
 const SDG_OPTIONS = [
-  "13.1","13.2","13.3",
-  "14.1","14.2","14.3","14.4","14.5","14.6","14.7","14.a","14.b","14.c",
-  "15.1","15.2","15.3","15.4","15.5","15.6","15.7","15.8","15.9",
+  "13.1", "13.2", "13.3",
+  "14.1", "14.2", "14.3", "14.4", "14.5", "14.6", "14.7", "14.a", "14.b", "14.c",
+  "15.1", "15.2", "15.3", "15.4", "15.5", "15.6", "15.7", "15.8", "15.9",
 ];
 
 function toDDMMYYYY(input: string) {
@@ -33,16 +21,15 @@ const ProjectUpload = () => {
     name: "",
     city: "",
     state: "",
-    start: "", // HTML date value (YYYY-MM-DD)
-    end: "",   // HTML date value (YYYY-MM-DD)
+    start: "",
+    end: "",
     aim: "",
     description: "",
   });
-
   const [sdg, setSdg] = useState<string[]>([]);
   const [objectives, setObjectives] = useState<string[]>([""]);
   const [tariff, setTariff] = useState<number[]>([1000, 2500, 7500]);
-  const [submitting, setSubmitting] = useState(false);
+  const { loading, uploadProject } = useUploadProject();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target as { name: keyof typeof form; value: string };
@@ -72,31 +59,10 @@ const ProjectUpload = () => {
   const removeTariff = (idx: number) =>
     setTariff((prev) => prev.filter((_, i) => i !== idx));
 
-  const validate = () => {
-    if (!form.name.trim()) return "Project name is required";
-    if (!form.city.trim()) return "City is required";
-    if (!form.state.trim()) return "State is required";
-    if (!form.start) return "Start date is required";
-    if (!form.end) return "End date is required";
-    if (new Date(form.end) < new Date(form.start)) return "End date must be after start date";
-    if (sdg.length === 0) return "Select at least one SDG";
-    if (!form.aim.trim()) return "Aim is required";
-    if (!form.description.trim()) return "Description is required";
-    const nonEmptyObjectives = objectives.map(o => o.trim()).filter(Boolean);
-    if (nonEmptyObjectives.length === 0) return "Add at least one objective";
-    const validTariff = tariff.filter((t) => t > 0);
-    if (validTariff.length === 0) return "Add at least one tariff amount";
-    return null;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const err = validate();
-    if (err) {
-      toast.error(err);
-      return;
-    }
-    const payload: ProjectPayload = {
+    const payload: ProjectCreationProps = {
       name: form.name.trim(),
       city: form.city.trim(),
       state: form.state.trim(),
@@ -109,36 +75,14 @@ const ProjectUpload = () => {
       tariff: tariff.filter((t) => t > 0),
     };
 
-    try {
-      setSubmitting(true);
-      // TODO: Replace with your API call
-      // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      //   body: JSON.stringify(payload),
-      // });
-      // const data = await res.json();
-      // if (!res.ok) throw new Error(data.message || "Failed to create project");
-
-      console.log("Project payload:", payload);
-      toast.success("Project ready to submit (stub). Wire this to your API.");
-      // Optional: reset form
-      // setForm({ name:"", city:"", state:"", start:"", end:"", aim:"", description:"" });
-      // setSdg([]);
-      // setObjectives([""]);
-      // setTariff([1000, 2500, 7500]);
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong");
-    } finally {
-      setSubmitting(false);
-    }
+    await uploadProject(payload);
   };
 
   return (
     <>
       <LandingNavbar />
 
-      <form onSubmit={handleSubmit} className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12">
+      <form onSubmit={handleSubmit} className="mx-auto max-w-5xl px-6 md:px-10 pt-22">
         <header className="mb-6 md:mb-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-100">Upload Project</h1>
           <p className="text-subhead mt-1">
@@ -237,11 +181,10 @@ const ProjectUpload = () => {
                     type="button"
                     key={code}
                     onClick={() => toggleSDG(code)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
-                      active
-                        ? "bg-emerald-600 text-white"
-                        : "bg-gray-800 text-gray-200 hover:bg-gray-700"
-                    }`}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition ${active
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-800 text-gray-200 hover:bg-gray-700"
+                      }`}
                   >
                     {code}
                   </button>
@@ -325,10 +268,10 @@ const ProjectUpload = () => {
         <div className="mt-8 flex items-center gap-3">
           <button
             type="submit"
-            disabled={submitting}
+            disabled={loading}
             className="rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-6 py-3 font-semibold transition hover:scale-105"
           >
-            {submitting ? "Submitting..." : "Create Project"}
+            {loading ? "Submitting..." : "Create Project"}
           </button>
           <p className="text-xs text-gray-400">
             Review details before submitting. You can edit later in project settings.

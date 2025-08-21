@@ -119,3 +119,20 @@ export const viewProblemById = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
+export const viewProblems = async (req: Request, res: Response) => {
+    try {
+        const problems = await Problem.find({
+            owner: { $ne: req.user?._id }
+        });
+
+        if (!problems) {
+            res.status(400).json({ error: "Error in fetching problems" })
+        } else {
+            res.status(200).json(problems.reverse());
+        }
+    } catch (error) {
+        console.log("Error in User viewProblems controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}

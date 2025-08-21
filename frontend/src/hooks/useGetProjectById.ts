@@ -2,15 +2,15 @@ import { useState } from "react"
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
 
-const useGetProjects = () => {
+const useGetProjectById = () => {
     const [loading, setLoading] = useState(false);
     const { authUser } = useAuthContext();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const getProjects = async () => {
+    const getProject = async (id: string) => {
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/${authUser?.role}/project/project-repository`, {
+            const res = await fetch(`${apiUrl}/${authUser?.role}/project/project-repository/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const useGetProjects = () => {
         }
     }
 
-    return { loading, getProjects }
+    return { loading, getProject }
 }
 
-export default useGetProjects;
+export default useGetProjectById;
