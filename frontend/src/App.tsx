@@ -12,7 +12,9 @@ import Profile from "./pages/profile/Profile";
 import ProjectRepo from "./pages/repository/ProjectRepo";
 import ProjectDetails from "./pages/repository/ProjectDetails";
 import ProblemRepository from "./pages/repository/ProblemRepo";
-import ProblemUpload from "./pages/upload/ProjectUpload";
+import ProblemUpload from "./pages/upload/ProblemUpload";
+import ProjectUpload from "./pages/upload/ProjectUpload";
+
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -39,6 +41,7 @@ function App() {
 				{/* Uploads project & Problem */}
 					{/* <Route path="/repository/project/upload" element={authUser ? <ProjectDetails isUpload /> : <Navigate to="/" />} /> */}
 					<Route path="/repository/problem/upload" element={authUser ? <ProblemUpload/> : <Navigate to="/" />} />
+					<Route path="/repository/project/upload" element={authUser ? <ProjectUpload /> : <Navigate to="/" />} />
    
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
