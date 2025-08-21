@@ -68,6 +68,10 @@ export interface Project {
         city: string;
         state: string;
     };
+    timeline: {
+        startDate: string;
+        endDate: string;
+    };
     SDG: string[];
     aim: string;
     description: string;
@@ -78,23 +82,36 @@ export interface Project {
 }
 
 export interface Problem {
-  _id: string;
-  owner: string;
-  url: string;
-  problem: string;
-  SDG: string;
-  alertLevel: string;
-  actionableInsights: string[];
-  NGOWorking: string[];
-  GovtWorking: string[];
-  reports: string[];
-  statusForUser: string;
-  statusForGovt: string;
-  location: {
-    lat: number;
-    lon: number;
-    address: string;
-  };
-  createdAt: string;
-  updatedAt: string;
+    _id: string;
+    owner: string;
+    url: string;
+    problem: string;
+    SDG: string;
+    alertLevel: string;
+    actionableInsights: string[];
+    NGOWorking: string[];
+    GovtWorking: string[];
+    reports: string[];
+    statusForUser: string;
+    statusForGovt: string;
+    location: {
+        lat: number;
+        lon: number;
+        address: string;
+    };
+    createdAt: string;
+    updatedAt: string;
 }
+
+export interface ProjectCreationProps {
+    name: string;
+    city: string;
+    state: string;
+    startDate: string;   // "DD-MM-YYYY"
+    endDate: string;     // "DD-MM-YYYY"
+    SDG: string[];       // e.g., ["13.2","14.3","15.1"]
+    aim: string;
+    description: string;
+    objectives: string[];
+    tariff: number[];
+};

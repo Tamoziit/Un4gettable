@@ -5,7 +5,7 @@ import { createProject, getMyProjects, getProjectById, getProjects, getSuggestio
 const router = express.Router();
 
 router.post("/create-project", verifyNGO, createProject);
-router.get("/get-projects", verifyNGO, getProjects);
+router.get("/project-repository", verifyNGO, getProjects);
 router.get("/my-projects", verifyNGO, getMyProjects);
 router.get("/project-repository/:id", verifyNGO, getProjectById);
 router.get("/suggestions/:id", verifyNGO, getSuggestions);

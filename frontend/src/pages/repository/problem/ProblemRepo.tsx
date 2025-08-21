@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AppNavbar from "../../components/navbars/AppNavbar";
-import Spinner from "../../components/Spinner";
-import useGetProblems from "../../hooks/useGetProblems";
-import type { Problem } from "../../types";
-import ProblemSearchBar from "../../components/repo/ProblemSearch";
+import AppNavbar from "../../../components/navbars/AppNavbar";
+import Spinner from "../../../components/Spinner";
+import useGetProblems from "../../../hooks/useGetProblems";
+import type { Problem } from "../../../types";
+import ProblemSearchBar from "../../../components/repo/ProblemSearch";
 
 const ProblemRepository = () => {
   const [problems, setProblems] = useState<Problem[] | null>(null);

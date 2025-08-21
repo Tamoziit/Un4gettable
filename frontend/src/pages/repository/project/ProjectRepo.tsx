@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import AppNavbar from "../../components/navbars/AppNavbar";
+import AppNavbar from "../../../components/navbars/AppNavbar";
 import { Link } from "react-router-dom";
-import useGetProjects from "../../hooks/useGetProjects";
-import Spinner from "../../components/Spinner";
-import type { Project } from "../../types";
-import ProjectSearchBar from "../../components/repo/SearchBar"; 
+import useGetProjects from "../../../hooks/useGetProjects";
+import Spinner from "../../../components/Spinner";
+import type { Project } from "../../../types";
+import ProjectSearchBar from "../../../components/repo/SearchBar"; 
 
 const ProjectRepository = () => {
   const [projects, setProjects] = useState<Project[] | null>(null);
