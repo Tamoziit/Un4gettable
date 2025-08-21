@@ -3,6 +3,8 @@ import { PostProblemProps } from "../../types";
 import Problem from "../../models/problem.model";
 import User from "../../models/user.model";
 import getGeocodedAddress from "../../utils/getGeocodedAddress";
+import Project from "../../models/project.model";
+import twilioClient from "../../services/twilio";
 
 export const postProblem = async (req: Request, res: Response) => {
     try {
@@ -58,6 +60,25 @@ export const postProblem = async (req: Request, res: Response) => {
             user.problemRepoIds.push(newProblem._id);
 
             await Promise.all([newProblem.save(), user.save()]);
+
+            const projects = await Project.find({
+                SDG: { $elemMatch: { $regex: `^${newProblem.SDG}` } }
+            }).populate("owner");
+
+            for (const project of projects) {
+                const owner: any = project.owner;
+                if (owner && owner.mobileNo) {
+                    const message = `🚨 SOS Alert: A new ${newProblem.problem} problem has been reported near ${address}.`;
+
+                    await twilioClient.messages.create({
+                        body: message,
+                        from: process.env.TWILIO_PHONE_NUMBER,
+                        to: `+91${owner.mobileNo}`,
+                        messagingServiceSid: 'MGaf5170e85aba429fd3e1bf6a42f16a73'
+                    });
+                }
+            }
+
             res.status(201).json(newProblem);
         } else {
             res.status(400).json({ error: "Error in posting Problem" });
