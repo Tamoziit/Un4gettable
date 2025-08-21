@@ -1,54 +1,30 @@
+import { use, useEffect, useState } from "react";
 import AppNavbar from "../../components/navbars/AppNavbar";
 import { Link } from "react-router-dom";
+import useGetProjects from "../../hooks/useGetProjects";
+import Spinner from "../../components/Spinner";
+
 
 const ProjectRepository = () => {
-  const projects = [
-    {
-      id: 1,
-      name: "Flood Management System",
-      sdg: ["13", "13.1"],
-      owner: "Govt. of Odisha",
-      aim: "IoT-based sensors for early flood detection and alerts.",
-      location: "Bhubaneswar, Odisha",
-      targetFund: "₹1,00,000",
-    },
-    {
-      id: 2,
-      name: "Heatwave Shelter Locator",
-      sdg: ["13", "3.9"],
-      owner: "NGO GreenLife",
-      aim: "Mobile app to locate nearby shelters during heatwaves.",
-      location: "Ahmedabad, Gujarat",
-      targetFund: "₹5,00,000",
-    },
-    {
-      id: 3,
-      name: "Plastic-Free Rivers",
-      sdg: ["14", "14.1"],
-      owner: "RiverCare Foundation",
-      aim: "Deploy river-cleaning boats to remove plastic waste.",
-      location: "Varanasi, Uttar Pradesh",
-      targetFund: "₹2,50,000",
-    },
-    {
-      id: 4,
-      name: "Solar Microgrid for Villages",
-      sdg: ["7", "13"],
-      owner: "Govt. of Rajasthan",
-      aim: "Provide renewable electricity to rural households.",
-      location: "Jodhpur, Rajasthan",
-      targetFund: "₹10,00,000",
-    },
-    {
-      id: 5,
-      name: "Mangrove Restoration",
-      sdg: ["14", "15"],
-      owner: "NGO BlueEarth",
-      aim: "Restore degraded mangroves to protect coastal areas.",
-      location: "Sundarbans, West Bengal",
-      targetFund: "₹7,50,000",
-    },
-  ];
+  const [projects, setProjects] = useState([]);
+  const {loading, getProjects} = useGetProjects();
+
+  const fetchProjects = async () => {
+    const fetchedProjects = await getProjects();
+    setProjects(fetchedProjects);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+  
+  if (loading || !projects) {
+    return (
+      <div className="flex w-full min-h-screen items-center justify-center z-0">
+        <Spinner size="large" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -65,11 +41,11 @@ const ProjectRepository = () => {
         </h2>
 
         {/* Scrollable Notice-Board Style */}
-        <div className="bg-gray-800 rounded-2xl shadow-lg p-6 h-[400px] overflow-y-auto space-y-4">
+        <div className="w-full rounded-2xl shadow-lg p-6 space-y-4">
           {projects.map((project) => (
             <Link
-              key={project.id}
-              to={`/repository/project/${project.id}`}
+              key={project._id}
+              to={`/repository/project/${project._id}`}
               className="block bg-gray-700 rounded-xl p-4 hover:bg-gray-600 transition shadow-md"
             >
               <div className="flex justify-between items-start">
@@ -79,7 +55,7 @@ const ProjectRepository = () => {
                   </h3>
                   <p className="text-sm text-gray-300">
                     <span className="font-semibold">SDG:</span>{" "}
-                    {project.sdg.join(", ")}
+                    {project.SDG.join(", ")}
                   </p>
                   <p className="text-sm text-gray-300">
                     <span className="font-semibold">Owner:</span> {project.owner}

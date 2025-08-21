@@ -9,8 +9,8 @@ const useSignupNgo = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const signupNgo = async ({
-		regid,
-        ngoname,
+		regId,
+        name,
 		email,
 		city,
 		state,
@@ -18,11 +18,11 @@ const useSignupNgo = () => {
 		mobileNo,
 		password,
 		aim,
-        SDGgoal
+        SDG
     }: NgoSignupParams) => {
         const success = handleInputErrors({
-		regid,
-        ngoname,
+		regId,
+        name,
 		email,
 		city,
 		state,
@@ -30,7 +30,7 @@ const useSignupNgo = () => {
 		mobileNo,
 		password,
 		aim,
-        SDGgoal
+        SDG
         });
         if (!success) return;
 
@@ -40,11 +40,11 @@ const useSignupNgo = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("DB-token")}`
+                    Authorization: `Bearer ${localStorage.getItem("UN-token")}`
                 },
                 body: JSON.stringify({
-                    regid,
-                    ngoname,
+                    regId,
+                    name,
                     email,
                     city,
                     state,
@@ -52,7 +52,7 @@ const useSignupNgo = () => {
                     mobileNo,
                     password,
                     aim,
-                    SDGgoal
+                    SDG
                 })
             });
             const data = await res.json();
@@ -65,9 +65,9 @@ const useSignupNgo = () => {
             const now = new Date().getTime();
             const expiry = now + 30 * 24 * 60 * 60 * 1000; // 30 days
 
-            localStorage.setItem("DB-token", data.token);
-            localStorage.setItem("DB-user", JSON.stringify(data));
-            localStorage.setItem("DB-expiry", expiry.toString());
+            localStorage.setItem("UN-token", data.token);
+            localStorage.setItem("UN-user", JSON.stringify(data));
+            localStorage.setItem("UN-expiry", expiry.toString());
             setAuthUser(data);
 
             if (data) {
@@ -91,8 +91,8 @@ export default useSignupNgo;
 
 
 function handleInputErrors({
-    regid,
-        ngoname,
+    regId,
+        name,
 		email,
 		city,
 		state,
@@ -100,9 +100,9 @@ function handleInputErrors({
 		mobileNo,
 		password,
 		aim,
-        SDGgoal
+        SDG
 }: NgoSignupParams) {
-    if (  !email || !password || !mobileNo || !regid || !ngoname || !city || !state || !pincode || !aim || !SDGgoal     ) {
+    if (  !email || !password || !mobileNo || !regId || !name || !city || !state || !pincode || !aim || !SDG    ) {
         toast.error("Please fill all the fields");
         return false;
     }

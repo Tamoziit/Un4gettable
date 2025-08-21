@@ -9,8 +9,8 @@ import { MdEmail } from "react-icons/md";
 
 const NgoSignup = () => {
 	const [inputs, setInputs] = useState({
-		regid: "",
-    ngoname: "",
+		regId: "",
+    name: "",
 		email: "",
 		city:"",
 		state: "",
@@ -18,7 +18,7 @@ const NgoSignup = () => {
 		mobileNo: "",
 		password: "",
 		aim: "",
-    SDGgoal: [] as string[]
+    SDG: [] as string[]
 
 	});
 	const { signupNgo, loading } = useSignupNgo();
@@ -53,8 +53,8 @@ const NgoSignup = () => {
 								placeholder="Enter your Registration Id"
 								required
 								className="input-primary"
-								value={inputs.regid}
-								onChange={(e) => setInputs({ ...inputs, regid: e.target.value })}
+								value={inputs.regId}
+								onChange={(e) => setInputs({ ...inputs, regId: e.target.value })}
 							/>
 						</div>
 
@@ -65,8 +65,8 @@ const NgoSignup = () => {
 								placeholder="Enter your NGO Name" 
 								required
 								className="input-primary"
-								value={inputs.ngoname}
-								onChange={(e) => setInputs({ ...inputs, ngoname: e.target.value })}
+								value={inputs.name}
+								onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
 							/>
 						</div>
 
@@ -109,7 +109,7 @@ const NgoSignup = () => {
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaMapPin />PinCode Number</label>
 							<input
-								type="number"
+								type="text"
 								placeholder="Enter your PinCode Number"
 								required
 								className="input-primary"
@@ -121,7 +121,7 @@ const NgoSignup = () => {
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt />Mobile Number</label>
 							<input
-								type="number"
+								type="text"
 								placeholder="Enter your Mobile Number"
 								required
 								maxLength={10}
@@ -177,11 +177,11 @@ const NgoSignup = () => {
 										onChange={(e) => {
           const value = e.target.value;
           if (e.target.checked) {
-            setInputs({ ...inputs, SDGgoal: [...(inputs.SDGgoal || []), value] });
+            setInputs({ ...inputs, SDG: [...(inputs.SDG || []), value] });
           } else {
             setInputs({
               ...inputs,
-              SDGgoal: (inputs.SDGgoal || []).filter((goal) => goal !== value),
+              SDG: (inputs.SDG || []).filter((goal) => goal !== value),
             });
           }
         }}
@@ -197,11 +197,11 @@ const NgoSignup = () => {
         onChange={(e) => {
           const value = e.target.value;
           if (e.target.checked) {
-            setInputs({ ...inputs, SDGgoal: [...(inputs.SDGgoal || []), value] });
+            setInputs({ ...inputs, SDG: [...(inputs.SDG || []), value] });
           } else {
             setInputs({
               ...inputs,
-              SDGgoal: (inputs.SDGgoal || []).filter((goal) => goal !== value),
+              SDG: (inputs.SDG || []).filter((goal) => goal !== value),
             });
           }
         }}
@@ -217,11 +217,11 @@ const NgoSignup = () => {
         onChange={(e) => {
           const value = e.target.value;
           if (e.target.checked) {
-            setInputs({ ...inputs, SDGgoal: [...(inputs.SDGgoal || []), value] });
+            setInputs({ ...inputs, SDG: [...(inputs.SDG || []), value] });
           } else {
             setInputs({
               ...inputs,
-              SDGgoal: (inputs.SDGgoal || []).filter((goal) => goal !== value),
+              SDG: (inputs.SDG || []).filter((goal) => goal !== value),
             });
           }
         }}

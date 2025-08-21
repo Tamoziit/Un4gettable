@@ -10,8 +10,8 @@ export interface UserSignupParams {
 }
 
 export interface NgoSignupParams {
-        regid: string;
-        ngoname: string;
+        regId: string;
+        name: string;
 		email: string;
 		city: string;
 		state: string;
@@ -19,7 +19,7 @@ export interface NgoSignupParams {
 		mobileNo: string;
 		password: string;
 		aim: string;
-        SDGgoal: string[];
+        SDG: string[];
 }
 
 export interface GovSignupParams {
