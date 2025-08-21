@@ -145,6 +145,11 @@ export interface PostProblemProps {
     lon: number;
 }
 
+export interface PaymentProps {
+    purpose?: string;
+    amount: number;
+}
+
 export interface CreateContactProps {
     name: string;
     email: string;
