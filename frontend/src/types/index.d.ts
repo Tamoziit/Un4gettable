@@ -10,6 +10,7 @@ export interface UserSignupParams {
 }
 
 export interface LoginParams {
+    role: "user" | "ngo" | "govt" | string;
     email: string;
     password: string;
 }
@@ -41,6 +42,7 @@ export interface GovSignupParams {
 
 export interface AuthUser {
     _id: string;
+    role: "user" | "ngo" | "govt";
     name: string;
     email: string;
     mobileNo: string;

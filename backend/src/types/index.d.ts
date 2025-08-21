@@ -3,7 +3,7 @@ import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
 
 export interface AdminToken {
-    password: string
+    password: string;
 }
 
 export interface UserSignupBody {
@@ -143,4 +143,19 @@ export interface PostProblemProps {
     description?: string | null;
     lat: number;
     lon: number;
+}
+
+export interface CreateContactProps {
+    name: string;
+    email: string;
+    contact: string;
+    type: string;
+    reference_id: string;
+}
+
+export interface FundAccountCreationProps {
+    contact_id: string;
+    name: string;
+    ifsc: string;
+    account_number: string;
 }
