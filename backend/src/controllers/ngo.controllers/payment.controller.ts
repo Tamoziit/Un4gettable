@@ -22,9 +22,9 @@ export const payFund = async (req: Request, res: Response) => {
             description: purpose,
             reference_id: uuidv4(),
             customer: {
-                name: req.govt?.name || "Payer",
-                email: req.govt?.email || undefined,
-                contact: req.govt?.mobileNo || undefined
+                name: req.ngo?.name || "Payer",
+                email: req.ngo?.email || undefined,
+                contact: req.ngo?.mobileNo || undefined
             },
             notify: {
                 sms: true,
@@ -38,7 +38,7 @@ export const payFund = async (req: Request, res: Response) => {
 
         res.status(200).json(link.short_url);
     } catch (error) {
-        console.log("Error in Govt. payFund controller", error);
+        console.log("Error in NGO payFund controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -50,12 +50,12 @@ export const onboardUser = async (req: Request, res: Response) => {
             account_number
         }: OnboardingProps = req.body;
 
-        if (req.govt) {
+        if (req.ngo) {
             const contactRes = await createContact({
-                name: req.govt.name,
-                email: req.govt.email,
-                contact: req.govt.mobileNo,
-                reference_id: req.govt._id.toString()
+                name: req.ngo.name,
+                email: req.ngo.email,
+                contact: req.ngo.mobileNo,
+                reference_id: req.ngo._id.toString()
             });
 
             if (!contactRes) {
@@ -65,7 +65,7 @@ export const onboardUser = async (req: Request, res: Response) => {
 
             const fundRes = await createFundAccountBank({
                 contact_id: contactRes.id,
-                name: req.govt.name,
+                name: req.ngo.name,
                 ifsc,
                 account_number
             });
@@ -76,8 +76,8 @@ export const onboardUser = async (req: Request, res: Response) => {
             }
 
             const newOnboarding = new Onboarding({
-                customerId: req.govt._id,
-                customerModel: "Govt",
+                customerId: req.ngo._id,
+                customerModel: "NGO",
                 contactId: contactRes.id,
                 fundAccountId: fundRes.id
             });
@@ -94,7 +94,7 @@ export const onboardUser = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Cannot find Govt. Body Data" });
         }
     } catch (error) {
-        console.log("Error in Govt. onboardUser controller", error);
+        console.log("Error in NGO onboardUser controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -211,7 +211,7 @@ export const verifyPayment = async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.log("Error in Govt. verifyPayment controller", error);
+        console.log("Error in NGO verifyPayment controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }

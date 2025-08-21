@@ -16,10 +16,12 @@ import adminRoutes from './routes/admin.routes';
 import userAuthRoutes from './routes/user.routes/auth.routes';
 import userProfileRoutes from "./routes/user.routes/profile.routes";
 import userProblemRoutes from "./routes/user.routes/problem.routes";
+import userPaymentRoutes from "./routes/user.routes/payment.routes";
 
 import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
 import ngoProjectRoutes from "./routes/ngo.routes/project.routes";
 import ngoProblemRoutes from "./routes/ngo.routes/problem.routes";
+import ngoPaymentRoutes from "./routes/ngo.routes/payment.routes";
 
 import govtAuthRoutes from "./routes/govt.routes/auth.routes";
 import govtProjectRoutes from "./routes/govt.routes/project.routes";
@@ -68,11 +70,13 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/user/auth', userAuthRoutes);
 app.use('/api/v1/user/profile', userProfileRoutes);
 app.use('/api/v1/user/problem', userProblemRoutes);
+app.use('/api/v1/user/payments', userPaymentRoutes);
 
 // NGO routes
 app.use('/api/v1/ngo/auth', ngoAuthRoutes);
 app.use('/api/v1/ngo/project', ngoProjectRoutes);
 app.use('/api/v1/ngo/problem', ngoProblemRoutes);
+app.use('/api/v1/ngo/payments', ngoPaymentRoutes);
 
 // Govt. routes
 app.use('/api/v1/govt/auth', govtAuthRoutes);
