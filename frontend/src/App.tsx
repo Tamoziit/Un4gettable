@@ -29,8 +29,8 @@ function App() {
 					<Route path="/gov/signup" element={authUser ? <Navigate to="/home" /> : <GovSignup />} />
 
 				{/* Repository Routes */}
-					<Route path="/repository/project" element={authUser ? <ProjectRepo />  : <Navigate to="/home" /> } />
-					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails/> : <ProjectRepo />} />
+					<Route path="/repository/project" element={authUser ? <ProjectRepo />  : <Navigate to="/" /> } />
+					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails/> : <Navigate to="/" />} />
 
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
