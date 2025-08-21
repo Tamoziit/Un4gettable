@@ -1,291 +1,342 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import LandingNavbar from "../../components/navbars/LandingNavbar";
 import { toast } from "react-hot-toast";
 
-type CaptureMode = "none" | "camera" | "upload";
+type ProjectPayload = {
+  name: string;
+  city: string;
+  state: string;
+  startDate: string;   // "DD-MM-YYYY"
+  endDate: string;     // "DD-MM-YYYY"
+  SDG: string[];       // e.g., ["13.2","14.3","15.1"]
+  aim: string;
+  description: string;
+  objectives: string[];
+  tariff: number[];
+};
 
-const ProblemUpload = () => {
-  const [mode, setMode] = useState<CaptureMode>("none");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [description, setDescription] = useState<string>("");
+const SDG_OPTIONS = [
+  "13.1","13.2","13.3",
+  "14.1","14.2","14.3","14.4","14.5","14.6","14.7","14.a","14.b","14.c",
+  "15.1","15.2","15.3","15.4","15.5","15.6","15.7","15.8","15.9",
+];
 
-  // Camera refs/state
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
+function toDDMMYYYY(input: string) {
+  // Accepts "YYYY-MM-DD" from <input type='date'> and returns "DD-MM-YYYY"
+  if (!input) return "";
+  const [y, m, d] = input.split("-");
+  return `${d}-${m}-${y}`;
+}
 
-  // Start camera when mode === "camera"
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }, // prefer rear camera on mobile
-          audio: false,
-        });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-      } catch (err) {
-        toast.error("Unable to access camera");
-        setMode("none");
-      }
-    };
+const ProjectUpload = () => {
+  const [form, setForm] = useState({
+    name: "",
+    city: "",
+    state: "",
+    start: "", // HTML date value (YYYY-MM-DD)
+    end: "",   // HTML date value (YYYY-MM-DD)
+    aim: "",
+    description: "",
+  });
 
-    if (mode === "camera") {
-      startCamera();
-    }
+  const [sdg, setSdg] = useState<string[]>([]);
+  const [objectives, setObjectives] = useState<string[]>([""]);
+  const [tariff, setTariff] = useState<number[]>([1000, 2500, 7500]);
+  const [submitting, setSubmitting] = useState(false);
 
-    return () => {
-      // Stop tracks when leaving camera mode
-      if (mode !== "camera" && streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-    };
-  }, [mode]);
-
-  // Clean up stream on unmount
-  useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-    };
-  }, []);
-
-  const handleMode = (newMode: CaptureMode) => {
-    // Reset previous media when switching
-    setImageFile(null);
-    setImagePreview(null);
-    setMode(newMode);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target as { name: keyof typeof form; value: string };
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select a valid image file");
-      return;
-    }
-    setImageFile(file);
-    const url = URL.createObjectURL(file);
-    setImagePreview(url);
-  };
-
-  const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return;
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    // Set canvas size equal to video stream frame
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Convert canvas to blob and create a File
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) return;
-        const file = new File([blob], `capture-${Date.now()}.png`, {
-          type: "image/png",
-        });
-        setImageFile(file);
-        const url = URL.createObjectURL(blob);
-        setImagePreview(url);
-        toast.success("Photo captured");
-      },
-      "image/png",
-      0.95
+  const toggleSDG = (code: string) => {
+    setSdg((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
     );
   };
 
-  const removeImage = () => {
-    setImageFile(null);
-    if (imagePreview) URL.revokeObjectURL(imagePreview);
-    setImagePreview(null);
+  const updateObjective = (idx: number, value: string) => {
+    setObjectives((prev) => prev.map((o, i) => (i === idx ? value : o)));
+  };
+
+  const addObjective = () => setObjectives((prev) => [...prev, ""]);
+  const removeObjective = (idx: number) =>
+    setObjectives((prev) => prev.filter((_, i) => i !== idx));
+
+  const updateTariff = (idx: number, value: string) => {
+    const num = Number(value.replace(/[^\d]/g, ""));
+    setTariff((prev) => prev.map((t, i) => (i === idx ? (isNaN(num) ? 0 : num) : t)));
+  };
+
+  const addTariff = () => setTariff((prev) => [...prev, 0]);
+  const removeTariff = (idx: number) =>
+    setTariff((prev) => prev.filter((_, i) => i !== idx));
+
+  const validate = () => {
+    if (!form.name.trim()) return "Project name is required";
+    if (!form.city.trim()) return "City is required";
+    if (!form.state.trim()) return "State is required";
+    if (!form.start) return "Start date is required";
+    if (!form.end) return "End date is required";
+    if (new Date(form.end) < new Date(form.start)) return "End date must be after start date";
+    if (sdg.length === 0) return "Select at least one SDG";
+    if (!form.aim.trim()) return "Aim is required";
+    if (!form.description.trim()) return "Description is required";
+    const nonEmptyObjectives = objectives.map(o => o.trim()).filter(Boolean);
+    if (nonEmptyObjectives.length === 0) return "Add at least one objective";
+    const validTariff = tariff.filter((t) => t > 0);
+    if (validTariff.length === 0) return "Add at least one tariff amount";
+    return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile) {
-      toast.error("Please capture or upload an image");
+    const err = validate();
+    if (err) {
+      toast.error(err);
       return;
     }
+    const payload: ProjectPayload = {
+      name: form.name.trim(),
+      city: form.city.trim(),
+      state: form.state.trim(),
+      startDate: toDDMMYYYY(form.start),
+      endDate: toDDMMYYYY(form.end),
+      SDG: sdg,
+      aim: form.aim.trim(),
+      description: form.description.trim(),
+      objectives: objectives.map((o) => o.trim()).filter(Boolean),
+      tariff: tariff.filter((t) => t > 0),
+    };
 
-    // Build form data
-    const form = new FormData();
-    form.append("image", imageFile);
-    if (description.trim()) form.append("description", description.trim());
+    try {
+      setSubmitting(true);
+      // TODO: Replace with your API call
+      // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/project`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      //   body: JSON.stringify(payload),
+      // });
+      // const data = await res.json();
+      // if (!res.ok) throw new Error(data.message || "Failed to create project");
 
-    // TODO: Replace with your actual API endpoint
-    // Example:
-    // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/problem/upload`, {
-    //   method: "POST",
-    //   headers: { Authorization: `Bearer ${token}` },
-    //   body: form,
-    // });
-    // const data = await res.json();
-    // if (!res.ok) return toast.error(data.message || "Upload failed");
-    // toast.success("Problem uploaded successfully");
-
-    toast.success("Ready to upload (stub). Wire this to your API.");
+      console.log("Project payload:", payload);
+      toast.success("Project ready to submit (stub). Wire this to your API.");
+      // Optional: reset form
+      // setForm({ name:"", city:"", state:"", start:"", end:"", aim:"", description:"" });
+      // setSdg([]);
+      // setObjectives([""]);
+      // setTariff([1000, 2500, 7500]);
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <>
       <LandingNavbar />
 
-      <div className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12">
+      <form onSubmit={handleSubmit} className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12">
         <header className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100">
-            Upload Your Problem
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100">Upload Project</h1>
           <p className="text-subhead mt-1">
-            Capture a photo using your camera or upload an existing image. Add an optional description to help reviewers.
+            Fill out the project details. Fields marked with an asterisk (*) are required.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Mode selection */}
-          <section className="lg:col-span-1">
-            <div className="rounded-2xl bg-gray-800/70 p-5 shadow-lg">
-              <h2 className="text-lg font-semibold text-gray-100">Choose an option</h2>
-              <div className="mt-4 flex flex-col gap-3">
-                <button
-                  onClick={() => handleMode("camera")}
-                  className={`w-full rounded-xl py-3 font-medium text-white transition hover:scale-105 ${
-                    mode === "camera"
-                      ? "bg-emerald-600"
-                      : "bg-emerald-500 hover:bg-emerald-600"
-                  }`}
-                >
-                  Capture Image
-                </button>
-                <label
-                  className={`w-full rounded-xl py-3 text-center font-medium text-white cursor-pointer transition hover:scale-105 ${
-                    mode === "upload"
-                      ? "bg-cyan-600"
-                      : "bg-cyan-500 hover:bg-cyan-600"
-                  }`}
-                >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      handleMode("upload");
-                      onFileChange(e);
-                    }}
-                    className="hidden"
-                  />
-                  Upload Image
-                </label>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Project Name *</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={onChange}
+              placeholder="Sundarbans Climate Resilience Project"
+              className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">City *</label>
+            <input
+              name="city"
+              value={form.city}
+              onChange={onChange}
+              placeholder="Canning"
+              className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">State *</label>
+            <input
+              name="state"
+              value={form.state}
+              onChange={onChange}
+              placeholder="West Bengal"
+              className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">Start Date *</label>
+              <input
+                type="date"
+                name="start"
+                value={form.start}
+                onChange={onChange}
+                className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+              />
             </div>
-          </section>
+            <div>
+              <label className="block text-sm text-gray-300 mb-1">End Date *</label>
+              <input
+                type="date"
+                name="end"
+                value={form.end}
+                onChange={onChange}
+                className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+              />
+            </div>
+          </div>
 
-          {/* Center: Camera / Upload area */}
-          <section className="lg:col-span-2">
-            <div className="rounded-2xl bg-gray-800/70 p-5 shadow-lg">
-              <h2 className="text-lg font-semibold text-gray-100">Preview</h2>
+          <div className="md:col-span-2">
+            <label className="block text-sm text-gray-300 mb-1">Aim *</label>
+            <input
+              name="aim"
+              value={form.aim}
+              onChange={onChange}
+              placeholder="To strengthen climate resilience and biodiversity conservation in the Sundarbans region"
+              className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+            />
+          </div>
 
-              {/* Camera view */}
-              {mode === "camera" && !imagePreview && (
-                <div className="mt-4">
-                  <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-                    <video
-                      ref={videoRef}
-                      className="h-full w-full object-cover"
-                      playsInline
-                      muted
+          <div className="md:col-span-2">
+            <label className="block text-sm text-gray-300 mb-1">Description *</label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={onChange}
+              rows={5}
+              placeholder="This project aims to combat climate change impacts in the Sundarbans by restoring mangroves..."
+              className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+            />
+          </div>
+
+          {/* SDG multi-select */}
+          <div className="md:col-span-2">
+            <label className="block text-sm text-gray-300 mb-2">SDGs *</label>
+            <div className="flex flex-wrap gap-2">
+              {SDG_OPTIONS.map((code) => {
+                const active = sdg.includes(code);
+                return (
+                  <button
+                    type="button"
+                    key={code}
+                    onClick={() => toggleSDG(code)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                      active
+                        ? "bg-emerald-600 text-white"
+                        : "bg-gray-800 text-gray-200 hover:bg-gray-700"
+                    }`}
+                  >
+                    {code}
+                  </button>
+                );
+              })}
+            </div>
+            {sdg.length > 0 && (
+              <p className="text-xs text-gray-400 mt-2">Selected: {sdg.join(", ")}</p>
+            )}
+          </div>
+
+          {/* Objectives dynamic list */}
+          <div className="md:col-span-2">
+            <label className="block text-sm text-gray-300 mb-2">Objectives *</label>
+            <div className="flex flex-col gap-3">
+              {objectives.map((obj, i) => (
+                <div key={i} className="flex gap-2">
+                  <input
+                    value={obj}
+                    onChange={(e) => updateObjective(i, e.target.value)}
+                    placeholder={`Objective ${i + 1}`}
+                    className="flex-1 rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeObjective(i)}
+                    className="px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white transition"
+                    aria-label={`Remove objective ${i + 1}`}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addObjective}
+                className="self-start mt-1 px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-white text-sm transition"
+              >
+                + Add Objective
+              </button>
+            </div>
+          </div>
+
+          {/* Tariff dynamic list */}
+          <div className="md:col-span-2">
+            <label className="block text-sm text-gray-300 mb-2">Donation Plans (Tariff) *</label>
+            <div className="flex flex-col gap-3">
+              {tariff.map((amt, i) => (
+                <div key={i} className="flex gap-2">
+                  <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">₹</span>
+                    <input
+                      value={amt}
+                      onChange={(e) => updateTariff(i, e.target.value)}
+                      inputMode="numeric"
+                      className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-green-500 focus:ring-green-500 text-gray-100 p-3 pl-7 outline-none"
                     />
                   </div>
-                  <div className="mt-4 flex items-center gap-3">
-                    <button
-                      onClick={capturePhoto}
-                      className="rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 font-medium transition hover:scale-105"
-                    >
-                      Capture Photo
-                    </button>
-                    <button
-                      onClick={() => handleMode("none")}
-                      className="rounded-xl bg-gray-600 hover:bg-gray-700 text-white px-5 py-3 font-medium transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <canvas ref={canvasRef} className="hidden" />
+                  <button
+                    type="button"
+                    onClick={() => removeTariff(i)}
+                    className="px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white transition"
+                    aria-label={`Remove tariff ${i + 1}`}
+                  >
+                    Remove
+                  </button>
                 </div>
-              )}
-
-              {/* Image preview (from capture or upload) */}
-              {imagePreview && (
-                <div className="mt-4">
-                  <img
-                    src={imagePreview}
-                    alt="Selected problem"
-                    className="w-full rounded-xl object-cover"
-                  />
-                  <div className="mt-3">
-                    <button
-                      onClick={removeImage}
-                      className="rounded-xl bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 font-medium transition"
-                    >
-                      Remove Image
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Placeholder when no mode selected and no image */}
-              {mode === "none" && !imagePreview && (
-                <div className="mt-6 rounded-xl border border-dashed border-gray-600 p-8 text-center text-subhead">
-                  Choose “Capture Image” to use your camera, or “Upload Image” to select a file.
-                </div>
-              )}
-
-              {/* Optional description */}
-              <div className="mt-6">
-                <label
-                  htmlFor="desc"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Description (optional)
-                </label>
-                <textarea
-                  id="desc"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={4}
-                  placeholder="Describe what you see, location cues, time, or any context that helps verification…"
-                  className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
-                />
-              </div>
-
-              {/* Submit */}
-              <div className="mt-6 flex items-center gap-3">
-                <button
-                  onClick={handleSubmit}
-                  className="rounded-xl bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 font-semibold transition hover:scale-105"
-                >
-                  Submit Problem
-                </button>
-                <p className="text-xs text-gray-400">
-                  Ensure the photo is original and taken at the incident location/time.
-                </p>
-              </div>
+              ))}
+              <button
+                type="button"
+                onClick={addTariff}
+                className="self-start mt-1 px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-white text-sm transition"
+              >
+                + Add Tariff
+              </button>
             </div>
-          </section>
+          </div>
         </div>
-      </div>
+
+        {/* Submit */}
+        <div className="mt-8 flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={submitting}
+            className="rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-6 py-3 font-semibold transition hover:scale-105"
+          >
+            {submitting ? "Submitting..." : "Create Project"}
+          </button>
+          <p className="text-xs text-gray-400">
+            Review details before submitting. You can edit later in project settings.
+          </p>
+        </div>
+      </form>
     </>
   );
 };
 
-export default ProblemUpload;
+export default ProjectUpload;
