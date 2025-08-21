@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useState } from "react";
 const Activities = () => {
   const [activities] = useState([
@@ -31,3 +32,4 @@ const Activities = () => {
 };
 
 export default Activities;
+

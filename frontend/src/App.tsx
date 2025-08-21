@@ -9,6 +9,8 @@ import GovSignup from "./pages/auth/GovSignup";
 import Home from "./pages/home/Home";
 import { useAuthContext } from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
+import ProjectRepo from "./pages/repository/ProjectRepo";
+import ProjectDetails from "./pages/repository/ProjectDetails";
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -20,9 +22,17 @@ function App() {
 				<Routes>
 					<Route path="/" element={authUser ? <Navigate to="/home" /> : <Landing />} />
 					<Route path="/login" element={authUser ? <Navigate to="/home" /> : <Login />} />
+
+				{/* Signup Routes */}
 					<Route path="/user/signup" element={authUser ? <Navigate to="/home" /> : <UserSignup />} />
 					<Route path="/ngo/signup" element={authUser ? <Navigate to="/home" /> : <NgoSignup />} />
 					<Route path="/gov/signup" element={authUser ? <Navigate to="/home" /> : <GovSignup />} />
+
+				{/* Repository Routes */}
+					<Route path="/repository/project" element={authUser ? <ProjectRepo />  : <Navigate to="/home" /> } />
+					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails/> : <ProjectRepo />} />
+
+
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
 					<Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/" />} />
 				</Routes>
