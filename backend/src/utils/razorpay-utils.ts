@@ -1,13 +1,20 @@
 import axios from "axios";
 import { CreateContactProps, FundAccountCreationProps } from "../types";
 
-const BASE_URL = "https://api.razorpay.com/v1";
-const auth = {
-    username: process.env.RP_KEY_ID!,
-    password: process.env.RP_KEY_SECRET!,
-};
+export const BASE_URL = "https://api.razorpay.com/v1";
+export const KEY_ID = process.env.RAZORPAY_KEY_ID!;
+export const KEY_SECRET = process.env.RAZORPAY_KEY_SECRET!
 
-export const createContact = async ({ name, email, contact, type = "customer", reference_id }: CreateContactProps) => {
+/**
+ * Create a contact in Razorpay
+ */
+export const createContact = async ({
+    name,
+    email,
+    contact,
+    type = "customer",
+    reference_id,
+}: CreateContactProps) => {
     const body = {
         name,
         email,
@@ -15,21 +22,60 @@ export const createContact = async ({ name, email, contact, type = "customer", r
         type,
         reference_id
     };
+    const auth = {
+        username: KEY_ID,
+        password: KEY_SECRET,
+    }
 
-    const res = await axios.post(`${BASE_URL}/contacts`, body, { auth });
-    return res.data;
-}
+    try {
+        const res = await axios.post(`${BASE_URL}/contacts`, body, { auth });
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errMsg =
+                error.response?.data?.error?.description || error.message || "Unknown error";
+            console.log("Razorpay createContact error:", errMsg);
+            return null;
+        }
+        console.log("Unexpected createContact error:", error);
+        return null;
+    }
+};
 
-export const createFundAccountBank = async ({ contact_id, name, ifsc, account_number }: FundAccountCreationProps) => {
+/**
+ * Create a fund account (bank) in Razorpay
+ */
+export const createFundAccountBank = async ({
+    contact_id,
+    name,
+    ifsc,
+    account_number,
+}: FundAccountCreationProps) => {
     const body = {
         contact_id,
         bank_account: {
-            name, ifsc,
+            name,
+            ifsc,
             account_number
         },
-        type: "bank_account",
+        account_type: "bank_account",
     };
+    const auth = {
+        username: KEY_ID,
+        password: KEY_SECRET,
+    }
 
-    const res = await axios.post(`${BASE_URL}/fund_accounts`, body, { auth });
-    return res.data;
-}
+    try {
+        const res = await axios.post(`${BASE_URL}/fund_accounts`, body, { auth });
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const errMsg =
+                error.response?.data?.error?.description || error.message || "Unknown error";
+            console.log("Razorpay createFundAccountBank error:", errMsg);
+            return null;
+        }
+        console.log("Unexpected createFundAccountBank error:", error);
+        return null;
+    }
+};
