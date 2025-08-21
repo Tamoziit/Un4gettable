@@ -9,6 +9,8 @@ import morgan from "morgan";
 
 import connecToMongoDB from './db/connectToMongoDB';
 import client from './redis/client';
+import twilioClient from './services/twilio';
+import razorpay from './services/razorpay';
 import adminRoutes from './routes/admin.routes';
 
 import userAuthRoutes from './routes/user.routes/auth.routes';
@@ -22,6 +24,7 @@ import ngoProblemRoutes from "./routes/ngo.routes/problem.routes";
 import govtAuthRoutes from "./routes/govt.routes/auth.routes";
 import govtProjectRoutes from "./routes/govt.routes/project.routes";
 import govtProblemRoutes from "./routes/govt.routes/problem.routes";
+import govtPaymentRoutes from "./routes/govt.routes/payment.routes";
 
 const PORT = process.env.PORT || 3000;
 
@@ -75,6 +78,7 @@ app.use('/api/v1/ngo/problem', ngoProblemRoutes);
 app.use('/api/v1/gov/auth', govtAuthRoutes);
 app.use('/api/v1/gov/project', govtProjectRoutes);
 app.use('/api/v1/gov/problem', govtProblemRoutes);
+app.use('/api/v1/gov/payments', govtPaymentRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);
@@ -84,5 +88,17 @@ app.listen(PORT, () => {
         console.log("📦 Connected to Redis");
     } else {
         console.log("❌ Error in connecting to Redis");
+    }
+
+    if (twilioClient) {
+        console.log("💬 Connected to Twilio");
+    } else {
+        console.log("❌ Error in connecting to Twilio");
+    }
+
+    if (razorpay) {
+        console.log("💳 Razorpay Initialized");
+    } else {
+        console.log("❌ Error in connecting to Razorpay");
     }
 });
