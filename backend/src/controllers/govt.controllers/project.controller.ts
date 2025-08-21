@@ -170,7 +170,7 @@ export const getSuggestions = async (req: Request, res: Response) => {
 
         res.json(relatedProblems);
     } catch (error) {
-        console.log("Error in NGO getSuggestions controller", error);
+        console.log("Error in Govt. getSuggestions controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
