@@ -75,10 +75,10 @@ app.use('/api/v1/ngo/project', ngoProjectRoutes);
 app.use('/api/v1/ngo/problem', ngoProblemRoutes);
 
 // Govt. routes
-app.use('/api/v1/gov/auth', govtAuthRoutes);
-app.use('/api/v1/gov/project', govtProjectRoutes);
-app.use('/api/v1/gov/problem', govtProblemRoutes);
-app.use('/api/v1/gov/payments', govtPaymentRoutes);
+app.use('/api/v1/govt/auth', govtAuthRoutes);
+app.use('/api/v1/govt/project', govtProjectRoutes);
+app.use('/api/v1/govt/problem', govtProblemRoutes);
+app.use('/api/v1/govt/payments', govtPaymentRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);
