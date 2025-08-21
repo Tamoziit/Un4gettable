@@ -22,7 +22,7 @@ const useGetProjects = () => {
             }
 
             if (data) {
-                return data.threads;
+                return data;
             }
         } catch (error) {
             if (error instanceof Error) {

@@ -9,28 +9,33 @@ export interface UserSignupParams {
     gender: string;
 }
 
+export interface LoginParams {
+    email: string;
+    password: string;
+}
+
 export interface NgoSignupParams {
-        regId: string;
-        name: string;
-		email: string;
-		city: string;
-		state: string;
-		pincode: string;
-		mobileNo: string;
-		password: string;
-		aim: string;
-        SDG: string[];
+    regId: string;
+    name: string;
+    email: string;
+    city: string;
+    state: string;
+    pincode: string;
+    mobileNo: string;
+    password: string;
+    aim: string;
+    SDG: string[];
 }
 
 export interface GovSignupParams {
-        govtId: string;
-        name: string;
-        email: string;
-        mobileNo: string;
-        city: string;
-        state: string;
-        pincode: string;
-        password: string;
+    govtId: string;
+    name: string;
+    email: string;
+    mobileNo: string;
+    city: string;
+    state: string;
+    pincode: string;
+    password: string;
 }
 
 
@@ -50,4 +55,22 @@ export interface AuthContextType {
 
 export interface AuthContextProviderProps {
     children: ReactNode;
+}
+
+export interface Project {
+    _id: string;
+    owner: string;
+    ownerModel: "NGO" | "Govt";
+    name: string;
+    location: {
+        city: string;
+        state: string;
+    };
+    SDG: string[];
+    aim: string;
+    description: string;
+    objectives: string[];
+    tariff: number[];
+    fundRaised: number;
+    reports: string[];
 }
