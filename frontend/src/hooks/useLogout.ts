@@ -10,11 +10,11 @@ const useLogout = () => {
     const logout = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/auth/logout/${authUser?._id}`, {
+            const res = await fetch(`${apiUrl}/${authUser?.role}/auth/logout/${authUser?._id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("FGPT-token")}`
+                    Authorization: `Bearer ${localStorage.getItem("UN-token")}`
                 }
             });
             const data = await res.json();
@@ -23,9 +23,9 @@ const useLogout = () => {
                 throw new Error(data.error);
             }
 
-            localStorage.removeItem("DB-token");
-            localStorage.removeItem("DB-user");
-            localStorage.removeItem("DB-expiry");
+            localStorage.removeItem("UN-token");
+            localStorage.removeItem("UN-user");
+            localStorage.removeItem("UN-expiry");
             setAuthUser(null);
 
             if (data) {

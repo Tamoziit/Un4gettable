@@ -4,9 +4,9 @@ import Spinner from "../../components/Spinner";
 import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 
-const ApplicantLogin = () => {
+const Login = () => {
 	const [inputs, setInputs] = useState({
-		log:"",
+		role: "",
 		email: "",
 		password: "",
 	});
@@ -34,43 +34,43 @@ const ApplicantLogin = () => {
 					</div>
 
 					<form className="flex flex-col gap-7 items-start justify-center glassmorphic p-4 w-[320px] md:w-[380px] lg:w-[450px] rounded-lg lg:!rounded-none lg:!rounded-r-lg" onSubmit={handleSubmit}>
-					<div className="flex flex-col gap-1 w-full">
-												<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5">Your Role</label>
-												<div className="flex justify-around w-full text-gray-300">
-													<label className="flex items-center">
-														<input
-															type="radio"
-															name="login"
-															className="mr-2"
-															value="User"
-															required
-															onChange={(e) => setInputs({ ...inputs, log: e.target.value })}
-														/>
-														USER
-													</label>
-													<label className="flex items-center">
-														<input
-															type="radio"
-															name="login"
-															className="mr-2"
-															value="NGO"
-															onChange={(e) => setInputs({ ...inputs, log: e.target.value })}
-														/>
-														NGO
-													</label>
-													<label className="flex items-center">
-														<input
-															type="radio"
-															name="login"
-															className="mr-2"
-															value="GOVT"
-															onChange={(e) => setInputs({ ...inputs, log: e.target.value })}
-														/>
-														GOVT
-													</label>
-												</div>
-											</div>
-						
+						<div className="flex flex-col gap-1 w-full">
+							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5">Your Role</label>
+							<div className="flex justify-around w-full text-gray-300">
+								<label className="flex items-center">
+									<input
+										type="radio"
+										name="login"
+										className="mr-2"
+										value="user"
+										required
+										onChange={(e) => setInputs({ ...inputs, role: e.target.value })}
+									/>
+									USER
+								</label>
+								<label className="flex items-center">
+									<input
+										type="radio"
+										name="login"
+										className="mr-2"
+										value="ngo"
+										onChange={(e) => setInputs({ ...inputs, role: e.target.value })}
+									/>
+									NGO
+								</label>
+								<label className="flex items-center">
+									<input
+										type="radio"
+										name="login"
+										className="mr-2"
+										value="govt"
+										onChange={(e) => setInputs({ ...inputs, role: e.target.value })}
+									/>
+									GOVT
+								</label>
+							</div>
+						</div>
+
 						<div className="flex flex-col gap-1 w-full">
 							<label className="text-lg font-medium text-gray-300">Email</label>
 							<input
@@ -120,4 +120,4 @@ const ApplicantLogin = () => {
 	)
 }
 
-export default ApplicantLogin
+export default Login;
