@@ -1,13 +1,13 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppNavbar from "../../components/navbars/AppNavbar";
 import { Link } from "react-router-dom";
 import useGetProjects from "../../hooks/useGetProjects";
 import Spinner from "../../components/Spinner";
-
+import type { Project } from "../../types";
 
 const ProjectRepository = () => {
-  const [projects, setProjects] = useState([]);
-  const {loading, getProjects} = useGetProjects();
+  const [projects, setProjects] = useState<Project[] | null>(null);
+  const { loading, getProjects } = useGetProjects();
 
   const fetchProjects = async () => {
     const fetchedProjects = await getProjects();
@@ -17,7 +17,7 @@ const ProjectRepository = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
-  
+
   if (loading || !projects) {
     return (
       <div className="flex w-full min-h-screen items-center justify-center z-0">
@@ -25,6 +25,8 @@ const ProjectRepository = () => {
       </div>
     );
   }
+
+  console.log(projects)
 
   return (
     <>
@@ -40,7 +42,6 @@ const ProjectRepository = () => {
           Projects that need your funding
         </h2>
 
-        {/* Scrollable Notice-Board Style */}
         <div className="w-full rounded-2xl shadow-lg p-6 space-y-4">
           {projects.map((project) => (
             <Link
@@ -65,12 +66,12 @@ const ProjectRepository = () => {
                   </p>
                   <p className="text-sm text-gray-300">
                     <span className="font-semibold">Location:</span>{" "}
-                    {project.location}
+                    {`${project.location.city}, ${project.location.state}`}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-bold text-green-400">
-                    {project.targetFund}
+                    ₹ {project.fundRaised}
                   </p>
                 </div>
               </div>
