@@ -130,3 +130,37 @@ export interface Coordinates {
     lat: number;
     lon: number;
 }
+
+export interface PaymentInitiationProps {
+    amount: number;
+    projectId: string;
+}
+
+export interface PaymentVerificationProps {
+    razorpay_payment_id: string;
+    razorpay_payment_link_id: string;
+    razorpay_payment_link_reference_id: string;
+    razorpay_payment_link_status: string;
+    razorpay_signature: string;
+    projectId: string;
+}
+
+export interface PaymentVerificationResponse {
+    ok: boolean;
+    signatureVerified: boolean;
+    projectUpdated: boolean;
+    paymentSummary: {
+        id: string;
+        status: string;
+        amount: number;
+        currency: string;
+        method: string;
+        captured: boolean;
+        created_at: number;
+    };
+    updatedProject: {
+        id: string;
+        name: string;
+        fundRaised: number;
+    };
+}

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import useGetProjects from "../../../hooks/useGetProjects";
 import Spinner from "../../../components/Spinner";
 import type { Project } from "../../../types";
-import ProjectSearchBar from "../../../components/repo/SearchBar"; 
+import ProjectSearchBar from "../../../components/repo/SearchBar";
 
 const ProjectRepository = () => {
   const [projects, setProjects] = useState<Project[] | null>(null);
@@ -21,6 +21,7 @@ const ProjectRepository = () => {
     fetchProjects();
   }, []);
 
+  // 🔍 Search
   const handleSearch = (query: string) => {
     if (!projects) return;
     const results = projects.filter((project) =>
@@ -29,18 +30,21 @@ const ProjectRepository = () => {
     setFilteredProjects(results);
   };
 
+  // 🌍 Filter by SDG
   const handleFilterSDG = (sdg: string) => {
     if (!projects) return;
     const results = projects.filter((project) => project.SDG.includes(sdg));
     setFilteredProjects(results);
   };
 
+  // 👤 Filter by Owner
   const handleFilterOwner = (owner: string) => {
     if (!projects) return;
     const results = projects.filter((project) => project.owner === owner);
     setFilteredProjects(results);
   };
 
+  // 🔄 Reset
   const resetFilters = () => {
     setFilteredProjects(projects);
   };
@@ -53,7 +57,7 @@ const ProjectRepository = () => {
     );
   }
 
-  // Extract unique SDGs & Owners for dropdowns
+  // Unique dropdowns
   const sdgOptions = Array.from(new Set(projects?.flatMap((p) => p.SDG) || []));
   const ownerOptions = Array.from(new Set(projects?.map((p) => p.owner) || []));
 
@@ -63,21 +67,21 @@ const ProjectRepository = () => {
 
       <div className="px-8 md:px-16 pt-20">
         <h1 className="text-gray-200 text-3xl md:text-4xl font-bold mb-2 text-center">
-          Project Repository
+          PROJECT REPOSITORY
         </h1>
 
-        {/* Subtitle */}
-        <h2 className="flex items-center justify-center gap-2 
-  text-2xl md:text-3xl font-bold text-blue-300 
-  bg-blue-900/40 border-2 border-blue-500 
-  rounded-xl px-6 py-3 w-fit mx-auto 
-  shadow-lg shadow-blue-500/30">
-  <span className="text-blue-400">💡</span>
-  Projects that need your funding
-  <span className="text-blue-400">💰</span>
-</h2>
+        {/* Highlight Subtitle */}
+        <h2
+          className="flex items-center justify-center gap-2 
+            text-2xl md:text-3xl font-bold text-[#2298b9] 
+            bg-[#1B2432] border-2 border-[#2298b9]
+            rounded-xl px-6 py-3 w-fit mx-auto 
+            shadow-lg shadow-[#2298b9]"
+        >
+          💡 Projects that need your funding 💰
+        </h2>
 
-        {/* Search & Filters */}
+        {/* 🔍 Search + Filters */}
         <ProjectSearchBar
           onSearch={handleSearch}
           resetFilters={resetFilters}
@@ -95,29 +99,41 @@ const ProjectRepository = () => {
               <Link
                 key={project._id}
                 to={`/repository/project/${project._id}`}
-                className="block bg-gray-700 rounded-xl p-4 hover:bg-gray-600 transition shadow-md"
+                className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-bold text-blue-300">
+                <div className="flex gap-4">
+                  <img
+                    src={project.url}
+                    alt={project.name}
+                    className="w-32 h-24 object-cover rounded-lg"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-[#61C9A8]">
                       {project.name}
                     </h3>
                     <p className="text-sm text-gray-300">
-                      <span className="font-semibold">SDG:</span>{" "}
-                      {project.SDG.join(", ")}
+                      <span className="font-semibold text-[#6290C3]">SDG:</span>{" "}
+                      {project.SDG.map((sdg: string, index: number) => (
+                        <span
+                          key={index}
+                          className="ml-2 px-2 py-1 bg-[#6290C3] rounded-lg text-xs text-[#242038] inline-block"
+                        >
+                          {sdg}
+                        </span>
+                      ))}
                     </p>
                     <p className="text-sm text-gray-300">
-                      <span className="font-semibold">Owner:</span>{" "}
-                      {project.owner}
+                      <span className="font-semibold">Owner:</span> {project.owner}
                     </p>
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm text-[#B76D68]">
                       <span className="font-semibold">Aim:</span> {project.aim}
                     </p>
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm text-[#EAD2AC]">
                       <span className="font-semibold">Location:</span>{" "}
                       {`${project.location.city}, ${project.location.state}`}
                     </p>
                   </div>
+                  {/* 💰 Funding Highlight */}
                   <div className="text-right">
                     <p className="text-xl font-bold text-green-400">
                       ₹ {project.target}

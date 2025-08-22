@@ -4,8 +4,8 @@ const Activities = () => {
   const [activities] = useState([
     { label: "Problem Repository", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/problem" },
     { label: "Project Repository", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/project" },
-    { label: "Project Problem Dashboard", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/dashboard" },
-    { label: "Progress Tracker", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/progress-tracker" },
+    { label: "Hotspot Dashboard", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/dashboard" },
+    { label: "Progress Tracker", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/progress-tracker" },
     { label: "Upload Problem", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/problem/upload" },
     { label: "Upload Project", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/project/upload" },
     { label: "Games", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/problem/upload" },

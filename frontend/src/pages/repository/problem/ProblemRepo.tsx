@@ -78,10 +78,10 @@ const ProblemRepository = () => {
 
         {/* Subtitle */}
         <h2 className="flex items-center justify-center gap-2 
-          text-2xl md:text-3xl font-bold text-blue-300 
-          bg-blue-900/40 border-2 border-blue-500 
+          text-2xl md:text-3xl font-bold text-[#2298b9] 
+          bg-[#1B2432] border-2 border-[#2298b9]
           rounded-xl px-6 py-3 w-fit mx-auto 
-          shadow-lg shadow-blue-500/30">
+          shadow-lg shadow-[#2298b9]">
           🌍 Problems reported across regions ⚠️
         </h2>
 
@@ -103,7 +103,7 @@ const ProblemRepository = () => {
               <Link
                 key={problem._id}
                 to={`/repository/problem/${problem._id}`}
-                className="block bg-gray-700 rounded-xl p-4 hover:bg-gray-600 transition shadow-md"
+                className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
               >
                 <div className="flex gap-4">
                   <img
@@ -112,15 +112,15 @@ const ProblemRepository = () => {
                     className="w-32 h-24 object-cover rounded-lg"
                   />
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-blue-300">
+                    <h3 className="text-lg font-bold text-[#61C9A8]">
                       {problem.problem}
                     </h3>
                     <p className="text-sm text-gray-300">
-                      <span className="font-semibold">SDG:</span>
+                      <span className="font-semibold text-[#6290C3]">SDG:</span>
                       {problem.SDG.map((sdg: string, index: number) => (
                         <span
                           key={index}
-                          className="ml-2 px-2 py-1 bg-slate-800 rounded-lg text-xs"
+                          className="ml-2 px-2 py-1 bg-[#6290C3] rounded-lg text-xs text-[#242038] inline-block"
                         >
                           {sdg}
                         </span>
@@ -138,7 +138,7 @@ const ProblemRepository = () => {
                         {problem.alertLevel}
                       </span>
                     </p>
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm text-[#EAD2AC]">
                       <span className="font-semibold">Location:</span>{" "}
                       {problem.location.address}
                     </p>

@@ -16,6 +16,8 @@ import ProblemUpload from "./pages/upload/ProblemUpload";
 import ProjectUpload from "./pages/upload/ProjectUpload";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProblemDetails from "./pages/repository/problem/ProblemDetails";
+import ProgressTracker from "./pages/progress-tracker/ProgressTracker";
+import PaymentSuccess from "./pages/payments/PaymentSuccess";
 import SubmitReport from "./pages/report/SubmitReport";
 
 
@@ -25,32 +27,31 @@ function App() {
 	return (
 		<>
 			<div className="min-h-screen bg-gradient-to-br from-[#1e3a2f] via-[#0f2c3f] to-[#0a1625]">
-
 				<Routes>
 					<Route path="/" element={authUser ? <Navigate to="/home" /> : <Landing />} />
 					<Route path="/login" element={authUser ? <Navigate to="/home" /> : <Login />} />
 
-				{/* Signup Routes */}
+					{/* Signup Routes */}
 					<Route path="/user/signup" element={authUser ? <Navigate to="/home" /> : <UserSignup />} />
 					<Route path="/ngo/signup" element={authUser ? <Navigate to="/home" /> : <NgoSignup />} />
 					<Route path="/gov/signup" element={authUser ? <Navigate to="/home" /> : <GovSignup />} />
 
-				{/* Repository Routes */}
-					<Route path="/repository/project" element={authUser ? <ProjectRepo />  : <Navigate to="/" /> } />
-					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails/> : <Navigate to="/" />} />
+					{/* Repository Routes */}
+					<Route path="/repository/project" element={authUser ? <ProjectRepo /> : <Navigate to="/" />} />
+					<Route path="/repository/project/:id" element={authUser ? <ProjectDetails /> : <Navigate to="/" />} />
 					<Route path="/repository/problem" element={authUser ? <ProblemRepository /> : <Navigate to="/" />} />
 
- 
-				{/* Uploads project & Problem */}
+					{/* Uploads project & Problem */}
 					{/* <Route path="/repository/project/upload" element={authUser ? <ProjectDetails isUpload /> : <Navigate to="/" />} /> */}
-					<Route path="/repository/problem/upload" element={authUser ? <ProblemUpload/> : <Navigate to="/" />} />
+					<Route path="/repository/problem/upload" element={authUser ? <ProblemUpload /> : <Navigate to="/" />} />
 					<Route path="/repository/project/upload" element={authUser ? <ProjectUpload /> : <Navigate to="/" />} />
 
 					<Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/" />} />
+					<Route path="/progress-tracker" element={authUser ? <ProgressTracker /> : <Navigate to="/" />} />
 
 					{/* Map section */}
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
-
+					<Route path="payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
 					<Route path="/report/submit" element={authUser ? <SubmitReport /> : <Navigate to="/" />} />
    
 
