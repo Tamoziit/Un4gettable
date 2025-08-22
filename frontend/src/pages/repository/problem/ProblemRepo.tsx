@@ -42,9 +42,7 @@ const ProblemRepository = () => {
     if (!problems) return;
     const results = problems.filter(
       (problem) =>
-        problem.location.address.toLowerCase().includes(location.toLowerCase()) ||
-        problem.location.city?.toLowerCase().includes(location.toLowerCase()) ||
-        problem.location.state?.toLowerCase().includes(location.toLowerCase())
+        problem.location.address.toLowerCase().includes(location.toLowerCase())
     );
     setFilteredProblems(results);
   };
@@ -65,7 +63,7 @@ const ProblemRepository = () => {
   // Unique dropdown options
   const sdgOptions = Array.from(new Set(problems?.map((p) => p.SDG) || []));
   const locationOptions = Array.from(
-    new Set(problems?.map((p) => p.location.state || p.location.city) || [])
+    new Set(problems?.map((p) => p.location.address) || [])
   );
 
   return (
