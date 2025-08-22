@@ -89,6 +89,7 @@ export interface Problem {
     problem: string;
     SDG: string[];
     alertLevel: string;
+    confidence: number;
     actionableInsights: string[];
     NGOWorking: string[];
     GovtWorking: string[];

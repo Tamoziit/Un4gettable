@@ -41,6 +41,10 @@ const ProblemSchema = new mongoose.Schema({
         required: true,
         enum: ["high", "medium", "low"]
     },
+    confidence: {
+        type: Number,
+        required: true
+    },
     actionableInsights: {
         type: Array,
         required: true
