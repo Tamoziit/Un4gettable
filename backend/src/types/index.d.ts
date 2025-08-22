@@ -213,3 +213,17 @@ export interface ModelResult {
     sdgs: string[];
     actionableInsights: string[];
 }
+
+export interface ReportGenerationProps {
+    type: "Project" | "Problem";
+    startDate: string;
+    endDate: string;
+    actions: string[];
+    workforce: number;
+    articulateProof: string[];
+}
+
+export interface CommentProps {
+    type: "Project" | "Problem";
+    message: string;
+}
