@@ -149,6 +149,7 @@ export interface PostProblemProps {
 export interface PaymentProps {
     purpose?: string;
     amount: number;
+    projectId: string;
 }
 
 export interface CreateContactProps {
@@ -178,6 +179,7 @@ export interface PaymentVerificationProps {
     razorpay_payment_link_reference_id: string;
     razorpay_payment_link_status: string;
     razorpay_signature: string;
+    projectId: string;
 }
 
 export interface Receiver {

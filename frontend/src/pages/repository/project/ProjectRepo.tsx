@@ -136,7 +136,7 @@ const ProjectRepository = () => {
                   {/* 💰 Funding Highlight */}
                   <div className="text-right">
                     <p className="text-xl font-bold text-green-400">
-                      ₹ {project.fundRaised}
+                      ₹ {project.target}
                     </p>
                   </div>
                 </div>
