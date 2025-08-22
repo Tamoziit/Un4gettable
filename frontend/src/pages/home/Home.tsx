@@ -21,12 +21,13 @@ const Home = () => {
 				/>
 
 				<div className="flex flex-col items-center md:items-end gap-1">
-					<h1 className="text-gray-200 text-3xl md:text-4xl lg:text-6xl font-semibold text-center">
+					<h1 className="text-[#87BFFF] text-3xl md:text-4xl lg:text-6xl font-semibold text-center">
 						Welcome
 					</h1>
-					<h2 className="text-blue-400 text-4xl md:text-5xl lg:text-7xl font-bold text-center">
-						{authUser?.name}
-					</h2>
+					<h2 className="text-[#6EEB83] text-4xl md:text-5xl lg:text-7xl font-bold text-right">
+          {authUser?.name}
+          </h2>
+
 				</div>
 			</div>
 			{/* Notice Board Section */}
