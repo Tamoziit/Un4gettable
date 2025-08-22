@@ -78,7 +78,7 @@ const ProjectRepository = () => {
             rounded-xl px-6 py-3 w-fit mx-auto 
             shadow-lg shadow-[#2298b9]"
         >
-          💡 Projects that need your funding 💰
+          💡 Projects That Need Your Funding 💰
         </h2>
 
         {/* 🔍 Search + Filters */}
@@ -102,11 +102,11 @@ const ProjectRepository = () => {
                 className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
               >
                 <div className="flex gap-4">
-                  <img
+                  {/* <img
                     src={project.url}
                     alt={project.name}
                     className="w-32 h-24 object-cover rounded-lg"
-                  />
+                  /> */}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-[#61C9A8]">
                       {project.name}
