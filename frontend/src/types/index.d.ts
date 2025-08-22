@@ -165,3 +165,41 @@ export interface PaymentVerificationResponse {
         fundRaised: number;
     };
 }
+
+export interface Question {
+    sdg: number;
+    question: string;
+    options: string[];
+    correct: number;
+    explanation: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+}
+
+export interface UserAnswer {
+    questionIndex: number;
+    selectedAnswer: number;
+    isCorrect: boolean;
+    points: number;
+}
+
+export interface ScoreLevel {
+    title: string;
+    color: string;
+    bg: string;
+}
+
+export interface QuizState {
+    currentQuestion: number;
+    selectedAnswer: number | null;
+    showResult: boolean;
+    points: number;
+    streak: number;
+    gameCompleted: boolean;
+    userAnswers: UserAnswer[];
+}
+
+export interface SDGInfo {
+    color: string;
+    icon: string;
+    title: string;
+}

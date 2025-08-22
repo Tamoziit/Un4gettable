@@ -3,7 +3,14 @@ import { AdminToken, Receiver, VirtualAccount } from "../types";
 import jwt from "jsonwebtoken";
 import twilioClient from "../services/twilio";
 import axios from "axios";
+import Tier from "../models/tier.model";
+import User from "../models/user.model";
+import NGO from "../models/ngo.model";
+import Govt from "../models/govt.model";
 //import AWS from "aws-sdk";
+
+export type TierName = "Earth Stewards" | "Ocean Guardians" | "Climate Vanguard";
+
 
 export const getToken = async (req: Request, res: Response) => {
 	try {
@@ -216,3 +223,69 @@ export const checkRazorpayAccount = async (req: Request, res: Response) => {
 		});
 	}
 };
+
+export const createTier = async (req: Request, res: Response) => {
+	try {
+		const tiers: TierName[] = ["Earth Stewards", "Ocean Guardians", "Climate Vanguard"];
+
+		// Check if tiers already exist
+		const existing = await Tier.find({ tier: { $in: tiers } }).select("tier");
+		const existingNames = existing.map(t => t.tier);
+
+		// Filter out already existing tiers
+		const toCreate = tiers.filter(t => !existingNames.includes(t));
+
+		if (toCreate.length === 0) {
+			return res.status(200).json({ message: "All tiers already exist" });
+		}
+
+		// Create missing tiers
+		const newTiers = await Tier.insertMany(
+			toCreate.map(tier => ({ tier, members: [] }))
+		);
+
+		res.status(201).json({
+			message: "Tiers created successfully",
+			created: newTiers,
+		});
+	} catch (error) {
+		console.error("Error creating tiers:", error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
+
+export const addMembers = async (req: Request, res: Response) => {
+	try {
+		// 1. Find the Earth Stewards tier
+		const earthStewards = await Tier.findOne({ tier: "Earth Stewards" });
+		if (!earthStewards) {
+			res.status(400).json({ error: "Earth Stewards tier not found" });
+			return;
+		}
+
+		// 2. Fetch all users, NGOs, Govt
+		const users = await User.find({}, "_id");
+		const ngos = await NGO.find({}, "_id");
+		const govts = await Govt.find({}, "_id");
+
+		// 3. Prepare members in required format
+		const members = [
+			...users.map(u => ({ id: u._id, memberModel: "User" })),
+			...ngos.map(n => ({ id: n._id, memberModel: "NGO" })),
+			...govts.map(g => ({ id: g._id, memberModel: "Govt" })),
+		];
+
+		// 4. Push all members into Earth Stewards tier
+		earthStewards.members.push(...members);
+
+		await earthStewards.save();
+
+		res.status(200).json({
+			message: "Earth Stewards tier populated successfully",
+			totalAdded: members.length,
+		});
+	} catch (error) {
+		console.error("Error populating Earth Stewards tier:", error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
