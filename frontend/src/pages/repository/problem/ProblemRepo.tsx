@@ -82,7 +82,7 @@ const ProblemRepository = () => {
           bg-[#1B2432] border-2 border-[#2298b9]
           rounded-xl px-6 py-3 w-fit mx-auto 
           shadow-lg shadow-[#2298b9]">
-          🌍 Problems reported across regions ⚠️
+          🌍 Problems Reported Across Regions ⚠️
         </h2>
 
         {/* Search & Filters */}
