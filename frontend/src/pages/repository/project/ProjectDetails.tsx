@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useGetProjectById from "../../../hooks/useGetProjectById";
 import toast from "react-hot-toast";
 import type { Project } from "../../../types";
+import { Link } from "react-router-dom";
 
 
 const ProjectDetails = () => {
@@ -124,7 +125,14 @@ const ProjectDetails = () => {
           </div>
         )}
 
-        <button className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition">Submit a report</button>
+        <div className="flex justify-center mt-6">
+      <Link
+    to="/report/submit"
+    className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
+  >
+    Submit a report
+  </Link>
+  </div>
       </div>
     </>
   );

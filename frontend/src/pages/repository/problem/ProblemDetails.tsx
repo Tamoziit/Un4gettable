@@ -3,6 +3,7 @@ import AppNavbar from "../../../components/navbars/AppNavbar";
 import MapAtCoords from "../../../components/maps/MapAtCoords";
 import type { Problem } from "../../../types";
 
+
 const ProblemDetails = () => {
   const problem: Problem = {
     _id: "68a8663bb74f9f3cbc73b9cb",
@@ -223,9 +224,21 @@ const ProblemDetails = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-400">No comments yet.</p>
+            <div className="flex w-full pb-6">
+            <span className="text-gray-300">No Reports submitted yet</span>
+          </div>
           )}
         </section>
+
+     <div className="flex justify-center mt-6">
+  <Link
+    to="/report/submit"
+    className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
+  >
+    Submit a report
+  </Link>
+</div>
+
       </div>
     </>
   );

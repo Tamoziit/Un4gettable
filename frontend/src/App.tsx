@@ -16,6 +16,7 @@ import ProblemUpload from "./pages/upload/ProblemUpload";
 import ProjectUpload from "./pages/upload/ProjectUpload";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProblemDetails from "./pages/repository/problem/ProblemDetails";
+import SubmitReport from "./pages/report/SubmitReport";
 
 
 function App() {
@@ -24,14 +25,6 @@ function App() {
 	return (
 		<>
 			<div className="min-h-screen bg-gradient-to-br from-[#1e3a2f] via-[#0f2c3f] to-[#0a1625]">
-
-
-
-
-
-
-
-
 
 				<Routes>
 					<Route path="/" element={authUser ? <Navigate to="/home" /> : <Landing />} />
@@ -57,6 +50,8 @@ function App() {
 
 					{/* Map section */}
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
+
+					<Route path="/report/submit" element={authUser ? <SubmitReport /> : <Navigate to="/" />} />
    
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
