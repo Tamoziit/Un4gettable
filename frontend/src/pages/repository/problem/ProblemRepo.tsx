@@ -61,7 +61,8 @@ const ProblemRepository = () => {
   }
 
   // Unique dropdown options
-  const sdgOptions = Array.from(new Set(problems?.map((p) => p.SDG) || []));
+  const sdgOptions = Array.from(new Set(problems?.flatMap((p) => p.SDG) || []));
+
   const locationOptions = Array.from(
     new Set(problems?.map((p) => p.location.address) || [])
   );
@@ -115,7 +116,15 @@ const ProblemRepository = () => {
                       {problem.problem}
                     </h3>
                     <p className="text-sm text-gray-300">
-                      <span className="font-semibold">SDG:</span> {problem.SDG}
+                      <span className="font-semibold">SDG:</span>
+                      {problem.SDG.map((sdg: string, index: number) => (
+                        <span
+                          key={index}
+                          className="ml-2 px-2 py-1 bg-slate-800 rounded-lg text-xs"
+                        >
+                          {sdg}
+                        </span>
+                      ))}
                     </p>
                     <p className="text-sm text-gray-300">
                       <span className="font-semibold">Alert Level:</span>{" "}

@@ -76,6 +76,7 @@ export interface Project {
     aim: string;
     description: string;
     objectives: string[];
+    target: number;
     tariff: number[];
     fundRaised: number;
     reports: string[];
@@ -86,7 +87,7 @@ export interface Problem {
     owner: string;
     url: string;
     problem: string;
-    SDG: string;
+    SDG: string[];
     alertLevel: string;
     actionableInsights: string[];
     NGOWorking: string[];
@@ -113,6 +114,7 @@ export interface ProjectCreationProps {
     aim: string;
     description: string;
     objectives: string[];
+    target: number;
     tariff: number[];
 };
 

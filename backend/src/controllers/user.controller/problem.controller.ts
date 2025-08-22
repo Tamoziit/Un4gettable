@@ -58,7 +58,7 @@ export const postProblem = async (req: Request, res: Response) => {
                 address
             },
             problem: modelResult.problem,
-            SDG: modelResult.sdgs[0],
+            SDG: modelResult.sdgs,
             description,
             alertLevel: "high",
             actionableInsights: modelResult.actionableInsights
