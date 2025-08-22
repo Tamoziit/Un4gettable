@@ -100,6 +100,7 @@ export interface Problem {
         lon: number;
         address: string;
     };
+    comments: { name: string; message: string }[];
     createdAt: string;
     updatedAt: string;
 }

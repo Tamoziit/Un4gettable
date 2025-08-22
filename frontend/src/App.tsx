@@ -15,6 +15,7 @@ import ProblemRepository from "./pages/repository/problem/ProblemRepo";
 import ProblemUpload from "./pages/upload/ProblemUpload";
 import ProjectUpload from "./pages/upload/ProjectUpload";
 import Dashboard from "./pages/dashboard/Dashboard";
+import ProblemDetails from "./pages/repository/problem/ProblemDetails";
 
 
 function App() {
@@ -53,6 +54,9 @@ function App() {
 					<Route path="/repository/project/upload" element={authUser ? <ProjectUpload /> : <Navigate to="/" />} />
 
 					<Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/" />} />
+
+					{/* Map section */}
+					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
    
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
