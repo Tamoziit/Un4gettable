@@ -16,7 +16,8 @@ import ProblemUpload from "./pages/upload/ProblemUpload";
 import ProjectUpload from "./pages/upload/ProjectUpload";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProblemDetails from "./pages/repository/problem/ProblemDetails";
-import ProgressTracker from "./pages/progress-tracker/progressTracker";
+import ProgressTracker from "./pages/progress-tracker/ProgressTracker";
+import PaymentSuccess from "./pages/payments/PaymentSuccess";
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -48,6 +49,8 @@ function App() {
 
 					{/* Map section */}
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
+
+					<Route path="payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
 					<Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/" />} />

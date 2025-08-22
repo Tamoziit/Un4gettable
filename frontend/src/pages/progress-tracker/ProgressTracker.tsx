@@ -51,21 +51,12 @@ const ProgressTracker = () => {
 			sdg15: stats.problems15 || 0
 		},
 		projectStatus: {
-			pending: {
-				sdg13: Math.min(stats.pendingProblems, stats.problems13) || 0,
-				sdg14: Math.min(stats.pendingProblems, stats.problems14) || 0,
-				sdg15: Math.min(stats.pendingProblems, stats.problems15) || 0
-			},
-			ongoing: {
-				sdg13: Math.min(stats.ongoingProblems, stats.problems13) || 0,
-				sdg14: Math.min(stats.ongoingProblems, stats.problems14) || 0,
-				sdg15: Math.min(stats.ongoingProblems, stats.problems15) || 0
-			},
-			resolved: {
-				sdg13: (stats.problems13 || 0) - (stats.pendingProblems || 0) - (stats.ongoingProblems || 0),
-				sdg14: (stats.problems14 || 0),
-				sdg15: (stats.problems15 || 0)
-			}
+			pending: stats.pendingProblems || 0,
+			ongoing: stats.ongoingProblems || 0,
+			resolved:
+				(stats.problems || 0) -
+				(stats.pendingProblems || 0) -
+				(stats.ongoingProblems || 0)
 		},
 		resolvedComparison: {
 			byUsers: stats.resolvedForUser || 0,
@@ -95,25 +86,18 @@ const ProgressTracker = () => {
 	};
 
 	const projectStatusData = {
-		labels: ['SDG 13', 'SDG 14', 'SDG 15'],
+		labels: ['Pending', 'Ongoing', 'Resolved'],
 		datasets: [
 			{
-				label: 'Pending',
-				data: [data.projectStatus.pending.sdg13, data.projectStatus.pending.sdg14, data.projectStatus.pending.sdg15],
-				backgroundColor: '#FF6B6B',
-				borderRadius: 4
-			},
-			{
-				label: 'Ongoing',
-				data: [data.projectStatus.ongoing.sdg13, data.projectStatus.ongoing.sdg14, data.projectStatus.ongoing.sdg15],
-				backgroundColor: '#4ECDC4',
-				borderRadius: 4
-			},
-			{
-				label: 'Resolved',
-				data: [data.projectStatus.resolved.sdg13, data.projectStatus.resolved.sdg14, data.projectStatus.resolved.sdg15],
-				backgroundColor: '#45B7D1',
-				borderRadius: 4
+				label: 'Problems',
+				data: [
+					data.projectStatus.pending,
+					data.projectStatus.ongoing,
+					data.projectStatus.resolved
+				],
+				backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1'],
+				borderRadius: 6,
+				borderSkipped: false
 			}
 		]
 	};
@@ -161,16 +145,12 @@ const ProgressTracker = () => {
 						<p className="text-3xl font-bold">{data.totalProblems}</p>
 					</div>
 					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<h3>Active Projects</h3>
-						<p className="text-3xl font-bold text-blue-600">
-							{data.projectStatus.ongoing.sdg13 + data.projectStatus.ongoing.sdg14 + data.projectStatus.ongoing.sdg15}
-						</p>
+						<h3>Active Problems</h3>
+						<p className="text-3xl font-bold text-blue-600">{data.projectStatus.ongoing}</p>
 					</div>
 					<div className="bg-white rounded-lg shadow-md p-6 text-center">
 						<h3>Total Resolved</h3>
-						<p className="text-3xl font-bold text-green-600">
-							{data.projectStatus.resolved.sdg13 + data.projectStatus.resolved.sdg14 + data.projectStatus.resolved.sdg15}
-						</p>
+						<p className="text-3xl font-bold text-green-600">{data.projectStatus.resolved}</p>
 					</div>
 					<div className="bg-white rounded-lg shadow-md p-6 text-center">
 						<h3>Total Funds</h3>
@@ -187,7 +167,7 @@ const ProgressTracker = () => {
 						<div className="h-80"><Doughnut data={problemsData} options={chartOptions} /></div>
 					</div>
 					<div className="bg-white rounded-lg shadow-md p-6">
-						<h2>Project Status Overview</h2>
+						<h2>Problem Status Overview</h2>
 						<div className="h-80"><Bar data={projectStatusData} options={stackedBarOptions} /></div>
 					</div>
 					<div className="bg-white rounded-lg shadow-md p-6">
