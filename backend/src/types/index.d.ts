@@ -205,3 +205,10 @@ export interface VirtualAccount {
     created_at: number;
     receivers: Receiver[];
 }
+
+export interface ModelResult {
+    problem: string;
+    ConfidenceScore: number;
+    sdgs: string[];
+    actionableInsights: string[];
+}

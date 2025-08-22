@@ -107,11 +107,23 @@ export interface ProjectCreationProps {
     name: string;
     city: string;
     state: string;
-    startDate: string;   // "DD-MM-YYYY"
-    endDate: string;     // "DD-MM-YYYY"
-    SDG: string[];       // e.g., ["13.2","14.3","15.1"]
+    startDate: string;
+    endDate: string;
+    SDG: string[];
     aim: string;
     description: string;
     objectives: string[];
     tariff: number[];
 };
+
+export interface ProblemCreationProps {
+    url: string;
+    description?: string | null;
+    lat: number;
+    lon: number;
+}
+
+export interface Coordinates {
+    lat: number;
+    lon: number;
+}

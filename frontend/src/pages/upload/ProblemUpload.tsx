@@ -1,6 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import LandingNavbar from "../../components/navbars/LandingNavbar";
 import { toast } from "react-hot-toast";
+import Webcam from "react-webcam";
+import { uploadBlobToCloudinary } from "../../utils/uploadToCloudinary";
+import { getUserCoordinates } from "../../utils/getCoordinates";
+import usePostProblem from "../../hooks/usePostProblem";
 
 type CaptureMode = "none" | "camera" | "upload";
 
@@ -9,62 +13,41 @@ const ProblemUpload = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
+  const { loading, postProblem } = usePostProblem();
 
-  // Camera refs/state
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-
-  // Start camera when mode === "camera"
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" }, // prefer rear camera on mobile
-          audio: false,
-        });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-      } catch (err) {
-        toast.error("Unable to access camera");
-        setMode("none");
-      }
-    };
-
-    if (mode === "camera") {
-      startCamera();
-    }
-
-    return () => {
-      // Stop tracks when leaving camera mode
-      if (mode !== "camera" && streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-    };
-  }, [mode]);
-
-  // Clean up stream on unmount
-  useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-    };
-  }, []);
+  const webcamRef = useRef<Webcam | null>(null);
 
   const handleMode = (newMode: CaptureMode) => {
-    // Reset previous media when switching
     setImageFile(null);
     setImagePreview(null);
     setMode(newMode);
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const capturePhoto = async () => {
+    if (!webcamRef.current) return;
+
+    const screenshot = webcamRef.current.getScreenshot();
+    if (!screenshot) return;
+
+    try {
+      const response = await fetch(screenshot);
+      const blob = await response.blob();
+      const file = new File([blob], `capture-${Date.now()}.png`, {
+        type: "image/png",
+      });
+
+      setImageFile(file);
+
+      const uploadedUrl = await uploadBlobToCloudinary(screenshot, "image");
+      if (!uploadedUrl) throw new Error("Failed to upload media");
+
+      setImagePreview(uploadedUrl);
+    } catch (error) {
+      toast.error("Error in capturing/uploading picture");
+    }
+  };
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
@@ -73,37 +56,14 @@ const ProblemUpload = () => {
     }
     setImageFile(file);
     const url = URL.createObjectURL(file);
-    setImagePreview(url);
-  };
 
-  const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return;
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    // Set canvas size equal to video stream frame
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Convert canvas to blob and create a File
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) return;
-        const file = new File([blob], `capture-${Date.now()}.png`, {
-          type: "image/png",
-        });
-        setImageFile(file);
-        const url = URL.createObjectURL(blob);
-        setImagePreview(url);
-        toast.success("Photo captured");
-      },
-      "image/png",
-      0.95
-    );
+    try {
+      const uploadedUrl = await uploadBlobToCloudinary(url, "image");
+      if (!uploadedUrl) throw new Error("Failed to upload media");
+      setImagePreview(uploadedUrl);
+    } catch {
+      toast.error("Error in uploading picture");
+    }
   };
 
   const removeImage = () => {
@@ -114,41 +74,32 @@ const ProblemUpload = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile) {
+    if (!imageFile || !imagePreview) {
       toast.error("Please capture or upload an image");
       return;
     }
 
-    // Build form data
-    const form = new FormData();
-    form.append("image", imageFile);
-    if (description.trim()) form.append("description", description.trim());
-
-    // TODO: Replace with your actual API endpoint
-    // Example:
-    // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/problem/upload`, {
-    //   method: "POST",
-    //   headers: { Authorization: `Bearer ${token}` },
-    //   body: form,
-    // });
-    // const data = await res.json();
-    // if (!res.ok) return toast.error(data.message || "Upload failed");
-    // toast.success("Problem uploaded successfully");
-
-    toast.success("Ready to upload (stub). Wire this to your API.");
+    const { lat, lon } = await getUserCoordinates();
+    await postProblem({
+      url: imagePreview,
+      description,
+      lat,
+      lon
+    });
   };
+
+  console.log(imagePreview);
 
   return (
     <>
       <LandingNavbar />
-
-      <div className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12">
+      <div className="mx-auto max-w-5xl px-6 md:px-10 pt-22 pb-6">
         <header className="mb-6 md:mb-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-100">
             Upload Your Problem
           </h1>
           <p className="text-subhead mt-1">
-            Capture a photo using your camera or upload an existing image. Add an optional description to help reviewers.
+            Capture a photo using your camera or upload an existing image.
           </p>
         </header>
 
@@ -160,20 +111,18 @@ const ProblemUpload = () => {
               <div className="mt-4 flex flex-col gap-3">
                 <button
                   onClick={() => handleMode("camera")}
-                  className={`w-full rounded-xl py-3 font-medium text-white transition hover:scale-105 ${
-                    mode === "camera"
-                      ? "bg-emerald-600"
-                      : "bg-emerald-500 hover:bg-emerald-600"
-                  }`}
+                  className={`w-full rounded-xl py-3 font-medium text-white transition hover:scale-105 ${mode === "camera"
+                    ? "bg-emerald-600"
+                    : "bg-emerald-500 hover:bg-emerald-600"
+                    }`}
                 >
                   Capture Image
                 </button>
                 <label
-                  className={`w-full rounded-xl py-3 text-center font-medium text-white cursor-pointer transition hover:scale-105 ${
-                    mode === "upload"
-                      ? "bg-cyan-600"
-                      : "bg-cyan-500 hover:bg-cyan-600"
-                  }`}
+                  className={`w-full rounded-xl py-3 text-center font-medium text-white cursor-pointer transition hover:scale-105 ${mode === "upload"
+                    ? "bg-cyan-600"
+                    : "bg-cyan-500 hover:bg-cyan-600"
+                    }`}
                 >
                   <input
                     type="file"
@@ -199,11 +148,12 @@ const ProblemUpload = () => {
               {mode === "camera" && !imagePreview && (
                 <div className="mt-4">
                   <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-                    <video
-                      ref={videoRef}
+                    <Webcam
+                      ref={webcamRef}
+                      screenshotFormat="image/png"
+                      mirrored={true}
+                      videoConstraints={{ facingMode: "environment" }}
                       className="h-full w-full object-cover"
-                      playsInline
-                      muted
                     />
                   </div>
                   <div className="mt-4 flex items-center gap-3">
@@ -220,11 +170,10 @@ const ProblemUpload = () => {
                       Cancel
                     </button>
                   </div>
-                  <canvas ref={canvasRef} className="hidden" />
                 </div>
               )}
 
-              {/* Image preview (from capture or upload) */}
+              {/* Image preview */}
               {imagePreview && (
                 <div className="mt-4">
                   <img
@@ -243,14 +192,14 @@ const ProblemUpload = () => {
                 </div>
               )}
 
-              {/* Placeholder when no mode selected and no image */}
+              {/* Placeholder */}
               {mode === "none" && !imagePreview && (
                 <div className="mt-6 rounded-xl border border-dashed border-gray-600 p-8 text-center text-subhead">
-                  Choose “Capture Image” to use your camera, or “Upload Image” to select a file.
+                  Choose “Capture Image” or “Upload Image”.
                 </div>
               )}
 
-              {/* Optional description */}
+              {/* Description */}
               <div className="mt-6">
                 <label
                   htmlFor="desc"
@@ -263,7 +212,7 @@ const ProblemUpload = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
-                  placeholder="Describe what you see, location cues, time, or any context that helps verification…"
+                  placeholder="Describe what you see…"
                   className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
                 />
               </div>
