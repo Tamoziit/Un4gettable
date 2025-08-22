@@ -33,7 +33,7 @@ const useSignupGov = () => {
 
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/govt/signup`, {
+            const res = await fetch(`${apiUrl}/govt/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,9 +60,9 @@ const useSignupGov = () => {
             const now = new Date().getTime();
             const expiry = now + 30 * 24 * 60 * 60 * 1000;
 
-            localStorage.setItem("DB-govt-token", data.token);
-            localStorage.setItem("DB-govt-user", JSON.stringify(data));
-            localStorage.setItem("DB-govt-expiry", expiry.toString());
+            localStorage.setItem("UN-token", data.token);
+            localStorage.setItem("UN-user", JSON.stringify(data));
+            localStorage.setItem("UN-expiry", expiry.toString());
 
             setAuthUser(data);
 
