@@ -95,8 +95,8 @@ const ProblemUpload = () => {
       <LandingNavbar />
       <div className="mx-auto max-w-5xl px-6 md:px-10 pt-22 pb-6">
         <header className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100">
-            Upload Your Problem
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-100 ">
+            UPLOAD YOUR PROBLEM
           </h1>
           <p className="text-subhead mt-1">
             Capture a photo using your camera or upload an existing image.
@@ -106,22 +106,22 @@ const ProblemUpload = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Mode selection */}
           <section className="lg:col-span-1">
-            <div className="rounded-2xl bg-gray-800/70 p-5 shadow-lg">
+            <div className="rounded-2xl bg-[#242038] p-5 shadow-lg">
               <h2 className="text-lg font-semibold text-gray-100">Choose an option</h2>
               <div className="mt-4 flex flex-col gap-3">
                 <button
                   onClick={() => handleMode("camera")}
                   className={`w-full rounded-xl py-3 font-medium text-white transition hover:scale-105 ${mode === "camera"
-                    ? "bg-emerald-600"
-                    : "bg-emerald-500 hover:bg-emerald-600"
+                    ? "bg-[#71af3e]"
+                    : "bg-[#71af3e] hover:bg-[#49752b]"
                     }`}
                 >
                   Capture Image
                 </button>
                 <label
                   className={`w-full rounded-xl py-3 text-center font-medium text-white cursor-pointer transition hover:scale-105 ${mode === "upload"
-                    ? "bg-cyan-600"
-                    : "bg-cyan-500 hover:bg-cyan-600"
+                    ? "bg-[#2298b9]"
+                    : "bg-[#2298b9] hover:bg-[#1d4d86]"
                     }`}
                 >
                   <input
@@ -141,7 +141,7 @@ const ProblemUpload = () => {
 
           {/* Center: Camera / Upload area */}
           <section className="lg:col-span-2">
-            <div className="rounded-2xl bg-gray-800/70 p-5 shadow-lg">
+            <div className="rounded-2xl bg-[#242038] p-5 shadow-lg">
               <h2 className="text-lg font-semibold text-gray-100">Preview</h2>
 
               {/* Camera view */}
@@ -194,7 +194,7 @@ const ProblemUpload = () => {
 
               {/* Placeholder */}
               {mode === "none" && !imagePreview && (
-                <div className="mt-6 rounded-xl border border-dashed border-gray-600 p-8 text-center text-subhead">
+                <div className="mt-6 rounded-xl border border-dashed border-[#A1B5D8] p-8 text-center text-subhead bg-[#22333B]">
                   Choose “Capture Image” or “Upload Image”.
                 </div>
               )}
@@ -213,7 +213,7 @@ const ProblemUpload = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
                   placeholder="Describe what you see…"
-                  className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
+                  className="w-full rounded-xl bg-[#22333B] border border-[#A1B5D8] focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
                 />
               </div>
 
@@ -221,11 +221,11 @@ const ProblemUpload = () => {
               <div className="mt-6 flex items-center gap-3">
                 <button
                   onClick={handleSubmit}
-                  className="rounded-xl bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 font-semibold transition hover:scale-105"
+                  className="rounded-xl bg-[#744253] hover:bg-red-600 text-white px-6 py-3 font-semibold transition hover:scale-105"
                 >
                   Submit Problem
                 </button>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-[#ffffff]">
                   Ensure the photo is original and taken at the incident location/time.
                 </p>
               </div>
