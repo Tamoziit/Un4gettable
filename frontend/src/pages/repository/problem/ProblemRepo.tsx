@@ -73,7 +73,7 @@ const ProblemRepository = () => {
 
       <div className="px-8 md:px-16 pt-20">
         <h1 className="text-gray-200 text-3xl md:text-4xl font-bold mb-2 text-center">
-          Problem Repository
+          PROBLEM REPOSITORY
         </h1>
 
         {/* Subtitle */}

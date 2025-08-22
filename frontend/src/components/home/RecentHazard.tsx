@@ -12,19 +12,19 @@ const NoticeBoard = () => {
 
   return (
     <div className="px-8 md:px-16 mt-16">
-      <h2 className="text-gray-200 text-2xl md:text-3xl font-semibold mb-4 text-center">
+      <h2 className="text-[#ffffff] text-2xl md:text-3xl font-bold mb-4 text-center uppercase">
         Recent Hazard News
       </h2>
 
-      <div className="bg-gray-800 rounded-xl shadow-lg p-4 h-96 overflow-y-auto">
+      <div className="bg-[#2E2E3A] rounded-xl shadow-lg p-4 h-96 overflow-y-auto">
         <ul className="space-y-3">
           {notices.map((notice) => (
             <li
               key={notice.id}
-              className="bg-gray-700 rounded-lg p-3 flex flex-col hover:bg-gray-600 transition"
+              className="bg-[#373F51] rounded-lg p-3 flex flex-col hover:bg-gray-600 transition"
             >
-              <span className="text-blue-400 font-semibold">{notice.title}</span>
-              <span className="text-sm text-gray-400">{notice.date}</span>
+              <span className="text-[#ffffff] font-semibold">{notice.title}</span>
+              <span className="text-sm text-[#C5EBC3]">{notice.date}</span>
             </li>
           ))}
         </ul>

@@ -26,15 +26,15 @@ const ProblemSearchBar: React.FC<ProblemSearchBarProps> = ({
   };
 
   return (
-    <div className="w-full flex justify-center mt-6">
-      <div className="w-full lg:w-[85%] rounded-xl shadow-lg p-4 bg-gray-700">
-        <div className="flex flex-col gap-4 px-4 py-5">
+    <div className="w-full flex justify-center mt-6  ">
+      <div className="w-full lg:w-[85%] rounded-xl shadow-lg p-4 bg-[#2E2E3A]">
+        <div className="flex flex-col gap-4 px-4 py-5 bg-[#2E2E3A]">
           
           {/* Search Box */}
-          <div className="w-full rounded-full p-2 bg-gray-600 flex items-center gap-4 border-2 border-gray-500 focus-within:border-blue-500">
+          <div className="w-full rounded-full p-2 bg-[#373F51]  flex items-center gap-4 border-2 border-[#373F51] focus-within:border-[#6EEB83]">
             <FaSearch className="text-gray-300 ml-2" />
             <input
-              className="bg-gray-600 text-gray-200 outline-none border-none rounded-md px-2 py-1 w-full"
+              className="bg-[#373F51]  text-gray-200 outline-none border-none rounded-md px-2 py-1 w-full"
               type="text"
               placeholder="Search by Problem Name"
               value={search}
@@ -52,10 +52,10 @@ const ProblemSearchBar: React.FC<ProblemSearchBarProps> = ({
           {/* Filter Controls */}
           <div className="flex flex-wrap gap-4 items-center justify-center mt-2">
             {/* SDG Dropdown */}
-            <div className="flex items-center gap-2 bg-gray-600 py-1 px-3 rounded-full border-2 border-gray-500 hover:border-blue-500">
+            <div className="flex items-center gap-2 bg-[#373F51]  py-1 px-3 rounded-full border-2 border-[#373F51] hover:border-[#6EEB83] ">
               <FaGlobe className="text-blue-400" />
               <select
-                className=" bg-gray-600 text-gray-200 outline-none border-none rounded-md px-2 py-1"
+                className=" bg-[#373F51]  text-gray-200 outline-none border-none rounded-md px-2 py-1"
                 onChange={(e) => onFilterSDG(e.target.value)}
                 defaultValue=""
               >
@@ -71,31 +71,32 @@ const ProblemSearchBar: React.FC<ProblemSearchBarProps> = ({
             </div>
 
             {/* Location Dropdown */}
-            <div className="flex items-center gap-2 bg-gray-600 py-1 px-3 rounded-full border-2 border-gray-500 hover:border-blue-500">
-              <FaMapMarkerAlt className="text-red-400" />
-              <select
-                className="bg-gray-600 text-gray-200 outline-none border-none rounded-md px-2 py-1"
-                onChange={(e) => onFilterLocation(e.target.value)}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Filter by Location
-                </option>
-                {locationOptions.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="flex items-center gap-2 bg-[#373F51]  py-1 px-3 rounded-full border-2 border-[#373F51] hover:border-[#6EEB83] ">
+  <FaMapMarkerAlt className="text-red-400" />
+  <select
+    className="bg-[#373F51]  text-gray-200 outline-none border-none rounded-md px-2 py-1 w-48"
+    onChange={(e) => onFilterLocation(e.target.value)}
+    defaultValue=""
+  >
+    <option value="" disabled>
+      Filter by Location
+    </option>
+    {locationOptions.map((location) => (
+      <option key={location} value={location}>
+        {location}
+      </option>
+    ))}
+  </select>
+</div>
+
 
             {/* Reset Filters */}
             <button
-              className="flex items-center gap-2 bg-gray-600 text-base py-1 px-3 rounded-full border-2 border-gray-500 text-gray-200 hover:border-blue-500 hover:text-blue-400"
+              className="flex items-center gap-2 bg-[#373F51] text-base py-1 px-3 rounded-full border-2 border-[#373F51] text-gray-200 hover:border-[#6EEB83]  hover:text-gray-400"
               onClick={resetFilters}
             >
               <MdDelete className="text-red-400" />
-              <span className="bg-gray-600 text-gray-200 outline-none border-none rounded-md px-2 py-1">
+              <span className="bg-[#373F51]text-gray-200 outline-none border-none rounded-md px-2 py-1">
                 Reset Filters
               </span>
             </button>
