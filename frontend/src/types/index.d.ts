@@ -80,6 +80,7 @@ export interface Project {
     tariff: number[];
     fundRaised: number;
     reports: string[];
+    comments: { name: string; message: string }[];
 }
 
 export interface Problem {
