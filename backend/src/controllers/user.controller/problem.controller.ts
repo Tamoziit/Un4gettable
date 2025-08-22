@@ -61,6 +61,7 @@ export const postProblem = async (req: Request, res: Response) => {
             SDG: modelResult.sdgs,
             description,
             alertLevel: "high",
+            confidence: modelResult.ConfidenceScore,
             actionableInsights: modelResult.actionableInsights
         });
 

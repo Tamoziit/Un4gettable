@@ -1,39 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AppNavbar from "../../../components/navbars/AppNavbar";
 import MapAtCoords from "../../../components/maps/MapAtCoords";
 import type { Problem } from "../../../types";
+import { useEffect, useState } from "react";
+import useGetProblemById from "../../../hooks/useGetProblemById";
+import toast from "react-hot-toast";
 
 
 const ProblemDetails = () => {
-  const problem: Problem = {
-    _id: "68a8663bb74f9f3cbc73b9cb",
-    owner: "68a85799748a7533bbc1674c",
-    url: "https://res.cloudinary.com/dc23g63i8/image/upload/v1755866660/r0nhvtbyhbpigiom4izf.jpg",
-    problem: "No Deforestation (Compliance)",
-    SDG: ["15", "13", "12"],
-    alertLevel: "high",
-    actionableInsights: [
-      "Announce no-deforestation zones; publish forest-clearance transparency dashboards",
-      "Implement certification and traceability for timber and NTFPs with monitoring, reporting, and verification",
-      "Strengthen urban bylaws to prevent forest-edge encroachment; tighten compensatory afforestation quality checks",
-      "Embed no-deforestation clauses in national supply chains and trade agreements with long-term monitoring",
-      "Conduct landscape-level planning to protect conservation corridors alongside development",
-    ],
-    NGOWorking: ["WWF India", "Green Earth Trust"],
-    GovtWorking: ["MoEFCC", "State Forest Dept"],
-    reports: ["Annual Deforestation Report 2025", "Kolkata Green Audit 2024"],
-    statusForUser: "pending",
-    statusForGovt: "done",
-    location: {
-      lat: 22.517319418548563,
-      lon: 88.41849368922372,
-      address:
-        "GC89+WFX, Mundapara, Chak Kolarkhal, Kolkata, West Bengal 700107, India",
-    },
-    comments: [{ name: "gggg", message: "gvvdjcvjhca" }],
-    createdAt: "2025-08-22T12:44:43.817Z",
-    updatedAt: "2025-08-22T12:44:43.817Z",
-  };
+  const { id } = useParams();
+  const [problem, setProblem] = useState<Problem | null>(null);
+  const { loading, getProblem } = useGetProblemById();
+
+  const fetchProblem = async () => {
+    if (!id) {
+      toast.error("Cannot get Problem ID");
+      return;
+    }
+
+    const data = await getProblem(id);
+    setProblem(data);
+  }
+
+  useEffect(() => {
+    fetchProblem();
+  }, []);
+
+  if (loading || !problem) {
+    return (
+      <div className="text-center text-white p-6">Loading Problem Data...</div>
+    )
+  }
 
   const createdDate = new Date(problem.createdAt).toLocaleString();
   const isHigh = problem.alertLevel?.toLowerCase() === "high";
@@ -97,14 +94,18 @@ const ProblemDetails = () => {
               <p className="text-sm text-gray-300 flex items-center gap-2">
                 <span className="font-semibold">Alert Level:</span>{" "}
                 <span
-                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${
-                    isHigh
-                      ? "bg-red-900/40 text-red-400"
-                      : "bg-yellow-900/40 text-yellow-400"
-                  }`}
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${isHigh
+                    ? "bg-red-900/40 text-red-400"
+                    : "bg-yellow-900/40 text-yellow-400"
+                    }`}
                 >
                   ⚠️ {problem.alertLevel}
                 </span>
+              </p>
+
+              <p className="text-sm text-gray-300 flex items-center gap-2">
+                <span className="font-semibold">Confidence:</span>{" "}
+                <span className="font-medium">{problem.confidence.toFixed(4)}</span>
               </p>
             </div>
           </div>
@@ -188,7 +189,7 @@ const ProblemDetails = () => {
           {/* Status */}
           <div className="rounded-2xl bg-gray-800/60 p-6 shadow-lg space-y-3">
             <h2 className="text-2xl font-semibold text-gray-100 mb-3">
-              Status
+              Problem Resolution Status
             </h2>
             <p className="text-sm text-gray-300">
               <span className="font-semibold">User Status:</span>{" "}
