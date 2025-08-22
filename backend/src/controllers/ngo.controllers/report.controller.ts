@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Project from "../../models/project.model";
 import Problem from "../../models/problem.model";
 import Report from "../../models/report.model";
+import { ReportGenerationProps } from "../../types";
 
 export const generateReport = async (req: Request, res: Response) => {
     try {
@@ -13,7 +14,7 @@ export const generateReport = async (req: Request, res: Response) => {
             actions,
             workforce,
             articulateProof
-        } = req.body;
+        }: ReportGenerationProps = req.body;
 
         let intent;
         if (type === "Project") {

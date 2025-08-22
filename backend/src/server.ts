@@ -12,6 +12,7 @@ import client from './redis/client';
 import twilioClient from './services/twilio';
 import razorpay from './services/razorpay';
 import adminRoutes from './routes/admin.routes';
+import progressTrackerRoutes from "./routes/progressTracker.routes";
 
 import userAuthRoutes from './routes/user.routes/auth.routes';
 import userProfileRoutes from "./routes/user.routes/profile.routes";
@@ -19,6 +20,7 @@ import userProjectRoutes from "./routes/user.routes/project.routes";
 import userProblemRoutes from "./routes/user.routes/problem.routes";
 import userPaymentRoutes from "./routes/user.routes/payment.routes";
 import userReportRoutes from "./routes/user.routes/report.routes";
+import userCommentRoutes from "./routes/user.routes/comment.routes";
 
 import ngoAuthRoutes from "./routes/ngo.routes/auth.routes";
 import ngoProjectRoutes from "./routes/ngo.routes/project.routes";
@@ -77,6 +79,7 @@ app.use('/api/v1/user/project', userProjectRoutes);
 app.use('/api/v1/user/problem', userProblemRoutes);
 app.use('/api/v1/user/payments', userPaymentRoutes);
 app.use('/api/v1/user/reports', userReportRoutes);
+app.use('/api/v1/user/comments', userCommentRoutes);
 
 // NGO routes
 app.use('/api/v1/ngo/auth', ngoAuthRoutes);
@@ -91,6 +94,8 @@ app.use('/api/v1/govt/project', govtProjectRoutes);
 app.use('/api/v1/govt/problem', govtProblemRoutes);
 app.use('/api/v1/govt/payments', govtPaymentRoutes);
 app.use('/api/v1/govt/reports', govtReportRoutes);
+
+app.use("/api/v1/progress-tracker", progressTrackerRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on PORT: ${PORT}`);

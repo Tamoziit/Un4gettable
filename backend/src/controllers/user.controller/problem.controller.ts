@@ -74,14 +74,18 @@ export const postProblem = async (req: Request, res: Response) => {
 
             await Promise.all([newProblem.save(), user.save()]);
 
+            const sdgRegexConditions = newProblem.SDG.map((sdg: string) => ({
+                SDG: { $regex: `^${sdg}\\.` }
+            }));
+
             const projects = await Project.find({
-                SDG: { $elemMatch: { $regex: `^${newProblem.SDG}` } }
+                $or: sdgRegexConditions
             }).populate("owner");
 
             for (const project of projects) {
                 const owner: any = project.owner;
                 if (owner && owner.mobileNo) {
-                    const message = `🚨 SOS Alert: A new ${newProblem.problem} problem has been reported near ${address}.`;
+                    const message = `🚨 SOS Alert: ${newProblem.problem} - ${address}`;
 
                     await twilioClient.messages.create({
                         body: message,
