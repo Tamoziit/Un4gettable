@@ -135,6 +135,7 @@ export interface ProjectCreationProps {
     aim: string;
     description: string;
     objectives: string[];
+    target: number;
     tariff: number[];
 }
 

@@ -18,6 +18,7 @@ const useUploadProject = () => {
         aim,
         description,
         objectives,
+        target,
         tariff
     }: ProjectCreationProps) => {
         const success = handleInputErrors({
@@ -30,6 +31,7 @@ const useUploadProject = () => {
             aim,
             description,
             objectives,
+            target,
             tariff
         });
         if (!success) return;
@@ -52,6 +54,7 @@ const useUploadProject = () => {
                     aim,
                     description,
                     objectives,
+                    target,
                     tariff
                 })
             });
@@ -92,6 +95,7 @@ function handleInputErrors({
     aim,
     description,
     objectives,
+    target,
     tariff
 }: ProjectCreationProps): boolean {
 
@@ -149,6 +153,11 @@ function handleInputErrors({
     const validTariff = tariff?.filter((t) => t > 0) || [];
     if (validTariff.length === 0) {
         toast.error("Add at least one tariff amount");
+        return false;
+    }
+
+    if(target <= 0) {
+        toast.error("Set a valid Target.");
         return false;
     }
 

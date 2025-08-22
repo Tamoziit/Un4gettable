@@ -71,8 +71,12 @@ const ProjectDetails = () => {
             {project.timeline.endDate}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Funding:</span>{" "}
-            {project.fundRaised}
+            <span className="font-semibold">Target:</span>{" "}
+            ₹ {project.target}
+          </p>
+          <p className="text-gray-300">
+            <span className="font-semibold">Funding Raised:</span>{" "}
+            ₹ {project.fundRaised}
           </p>
         </div>
 

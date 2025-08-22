@@ -29,6 +29,7 @@ export type ProjectExtrasState = {
   sdg: string[];
   description: string;
   objectives: string[];
+  target: string;
   tariff: number[];
 };
 
@@ -95,7 +96,6 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
       {/* SDG Dropdown */}
       <div className="mb-6" ref={sdgDropdownRef}>
         <label className="block text-sm text-gray-300 mb-2">SDGs *</label>
-
         <button
           type="button"
           onClick={() => setOpenSdg((v) => !v)}
@@ -161,10 +161,6 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
             </ul>
           </div>
         )}
-
-        {value.sdg.length > 0 && (
-          <p className="text-xs text-gray-400 mt-2">Selected ({value.sdg.length}): {value.sdg.join(", ")}</p>
-        )}
       </div>
 
       {/* Objectives */}
@@ -208,7 +204,17 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
         </div>
       </div>
 
-   
+      {/* Numeric Target */}
+      <div className="mb-6">
+        <label className="block text-sm text-gray-300 mb-1">Target Value *</label>
+        <input
+          type="text"
+          value={value.target}
+          onChange={(e) => update({ target: e.target.value })}
+          className="w-full rounded-xl bg-gray-900/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none"
+        />
+      </div>
+
       {/* Tariff */}
       <div className="mb-6">
         <label className="block text-sm text-gray-300 mb-2">Donation Plans (Tariff) *</label>
@@ -238,7 +244,6 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
             </div>
           ))}
 
-          {/* Show add button only if less than 3 tariffs */}
           {value.tariff.length < 3 && (
             <button
               type="button"
