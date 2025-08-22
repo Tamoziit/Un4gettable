@@ -8,7 +8,7 @@ const Activities = () => {
     { label: "Progress Tracker", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/progress-tracker" },
     { label: "Upload Problem", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/problem/upload" },
     { label: "Upload Project", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/project/upload" },
-    { label: "Games", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/problem/upload" },
+    { label: "Games", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/game" },
     { label: "Know More About SDG", color:"bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/problem/upload"  }
   ]);
 
