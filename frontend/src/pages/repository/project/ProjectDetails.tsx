@@ -5,6 +5,8 @@ import useGetProjectById from "../../../hooks/useGetProjectById";
 import toast from "react-hot-toast";
 import type { Project } from "../../../types";
 import useInitiatePayment from "../../../hooks/useInitiatePayment";
+import { Link } from "react-router-dom";
+
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -161,9 +163,14 @@ const ProjectDetails = () => {
           </div>
         )}
 
-        <button className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition">
+        <div className="flex justify-center mt-6">
+          <Link
+            to="/report/submit"
+            className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
+          >
           Submit a report
-        </button>
+        </Link>
+      </div>
       </div>
     </>
   );
