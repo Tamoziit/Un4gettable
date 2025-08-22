@@ -22,7 +22,15 @@ function App() {
 
 	return (
 		<>
-			<div className="min-h-screen bg-gradient-to-br from-slate-800 to-black">
+			<div className="min-h-screen bg-gradient-to-br from-[#1e3a2f] via-[#0f2c3f] to-[#0a1625]">
+
+
+
+
+
+
+
+
 
 				<Routes>
 					<Route path="/" element={authUser ? <Navigate to="/home" /> : <Landing />} />
