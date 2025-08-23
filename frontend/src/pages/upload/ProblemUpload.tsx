@@ -5,6 +5,7 @@ import Webcam from "react-webcam";
 import { uploadBlobToCloudinary } from "../../utils/uploadToCloudinary";
 import { getUserCoordinates } from "../../utils/getCoordinates";
 import usePostProblem from "../../hooks/usePostProblem";
+import Spinner from "../../components/Spinner";
 
 type CaptureMode = "none" | "camera" | "upload";
 
@@ -14,6 +15,8 @@ const ProblemUpload = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const { loading, postProblem } = usePostProblem();
+  const [prediction, setPrediction] = useState<any | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const webcamRef = useRef<Webcam | null>(null);
 
@@ -37,13 +40,15 @@ const ProblemUpload = () => {
       });
 
       setImageFile(file);
+      setUploading(true);
 
       const uploadedUrl = await uploadBlobToCloudinary(screenshot, "image");
       if (!uploadedUrl) throw new Error("Failed to upload media");
-
       setImagePreview(uploadedUrl);
     } catch (error) {
       toast.error("Error in capturing/uploading picture");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -58,11 +63,14 @@ const ProblemUpload = () => {
     const url = URL.createObjectURL(file);
 
     try {
+      setUploading(true)
       const uploadedUrl = await uploadBlobToCloudinary(url, "image");
       if (!uploadedUrl) throw new Error("Failed to upload media");
       setImagePreview(uploadedUrl);
     } catch {
       toast.error("Error in uploading picture");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -80,12 +88,13 @@ const ProblemUpload = () => {
     }
 
     const { lat, lon } = await getUserCoordinates();
-    await postProblem({
+    const data = await postProblem({
       url: imagePreview,
       description,
       lat,
       lon
     });
+    setPrediction(data);
   };
 
   console.log(imagePreview);
@@ -115,8 +124,9 @@ const ProblemUpload = () => {
                     ? "bg-[#71af3e]"
                     : "bg-[#71af3e] hover:bg-[#49752b]"
                     }`}
+                    disabled={uploading || loading}
                 >
-                  Capture Image
+                  {uploading ? <Spinner size="small" /> : "Capture Image"}
                 </button>
                 <label
                   className={`w-full rounded-xl py-3 text-center font-medium text-white cursor-pointer transition hover:scale-105 ${mode === "upload"
@@ -139,98 +149,159 @@ const ProblemUpload = () => {
             </div>
           </section>
 
-          {/* Center: Camera / Upload area */}
-          <section className="lg:col-span-2">
-            <div className="rounded-2xl bg-[#242038] p-5 shadow-lg">
-              <h2 className="text-lg font-semibold text-gray-100">Preview</h2>
+         {/* Center: Camera / Upload area */}
+<section className="lg:col-span-2">
+  <div className="rounded-2xl bg-[#242038] p-5 shadow-lg">
+    <h2 className="text-lg font-semibold text-gray-100">Preview</h2>
 
-              {/* Camera view */}
-              {mode === "camera" && !imagePreview && (
-                <div className="mt-4">
-                  <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-                    <Webcam
-                      ref={webcamRef}
-                      screenshotFormat="image/png"
-                      mirrored={true}
-                      videoConstraints={{ facingMode: "environment" }}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="mt-4 flex items-center gap-3">
-                    <button
-                      onClick={capturePhoto}
-                      className="rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 font-medium transition hover:scale-105"
-                    >
-                      Capture Photo
-                    </button>
-                    <button
-                      onClick={() => handleMode("none")}
-                      className="rounded-xl bg-gray-600 hover:bg-gray-700 text-white px-5 py-3 font-medium transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              )}
+    {/* Camera view */}
+    {mode === "camera" && !imagePreview && (
+      <div className="mt-4">
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+          <Webcam
+            ref={webcamRef}
+            screenshotFormat="image/png"
+            mirrored={true}
+            videoConstraints={{ facingMode: "environment" }}
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            onClick={capturePhoto}
+            className="rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 font-medium transition hover:scale-105"
+          >
+            Capture Photo
+          </button>
+          <button
+            onClick={() => handleMode("none")}
+            className="rounded-xl bg-gray-600 hover:bg-gray-700 text-white px-5 py-3 font-medium transition"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    )}
 
-              {/* Image preview */}
-              {imagePreview && (
-                <div className="mt-4">
-                  <img
-                    src={imagePreview}
-                    alt="Selected problem"
-                    className="w-full rounded-xl object-cover"
-                  />
-                  <div className="mt-3">
-                    <button
-                      onClick={removeImage}
-                      className="rounded-xl bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 font-medium transition"
-                    >
-                      Remove Image
-                    </button>
-                  </div>
-                </div>
-              )}
+    {/* Image preview */}
+    {imagePreview && (
+      <div className="mt-4">
+        <img
+          src={imagePreview}
+          alt="Selected problem"
+          className="w-full rounded-xl object-cover"
+        />
+        <div className="mt-3 flex items-center gap-3">
+          <button
+            onClick={removeImage}
+            className="rounded-xl bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 font-medium transition"
+          >
+            Remove Image
+          </button>
+        </div>
+      </div>
+    )}
 
-              {/* Placeholder */}
-              {mode === "none" && !imagePreview && (
-                <div className="mt-6 rounded-xl border border-dashed border-[#A1B5D8] p-8 text-center text-subhead bg-[#22333B]">
-                  Choose “Capture Image” or “Upload Image”.
-                </div>
-              )}
+    {/* Placeholder */}
+    {mode === "none" && !imagePreview && (
+      <div className="mt-6 rounded-xl border border-dashed border-[#A1B5D8] p-8 text-center text-subhead bg-[#22333B]">
+        Choose “Capture Image” or “Upload Image”.
+      </div>
+    )}
 
-              {/* Description */}
-              <div className="mt-6">
-                <label
-                  htmlFor="desc"
-                  className="block text-sm font-medium text-gray-300 mb-2"
+    {/* Description */}
+    <div className="mt-6">
+      <label
+        htmlFor="desc"
+        className="block text-sm font-medium text-gray-300 mb-2"
+      >
+        Description (optional)
+      </label>
+      <textarea
+        id="desc"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={4}
+        placeholder="Describe what you see…"
+        className="w-full rounded-xl bg-[#22333B] border border-[#A1B5D8] focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
+      />
+    </div>
+
+    {/* Prediction panel */}
+    {prediction && (
+      <div className="mt-6 rounded-2xl bg-[#1B2432]/60 border border-[#2298b9]/40 p-5">
+        <h3 className="text-lg font-semibold text-gray-100 mb-3">
+          Model Prediction
+        </h3>
+
+        {/* Confidence + Class */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-xl bg-[#242038] p-4">
+            <p className="text-sm text-gray-300">Problem</p>
+            <p className="text-xl font-semibold text-[#61C9A8]">
+              {prediction.problem}
+            </p>
+          </div>
+          <div className="rounded-xl bg-[#242038] p-4">
+            <p className="text-sm text-gray-300">Confidence Score</p>
+            <p className="text-xl font-semibold text-[#61C9A8]">
+              {prediction.confidence.toFixed(4) * 100.0}
+            </p>
+          </div>
+        </div>
+
+        {/* SDGs */}
+        <div className="mt-4">
+          <p className="text-sm text-gray-300 mb-2">SDG Tags</p>
+          <div className="flex flex-wrap gap-2">
+            {(prediction.SDG || [])
+              .map((sdg: string, i: number) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 rounded-lg bg-[#6290C3] text-[#242038] text-sm font-medium"
                 >
-                  Description (optional)
-                </label>
-                <textarea
-                  id="desc"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={4}
-                  placeholder="Describe what you see…"
-                  className="w-full rounded-xl bg-[#22333B] border border-[#A1B5D8] focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
-                />
-              </div>
+                  SDG {sdg}
+                </span>
+              ))}
+            {(!prediction.SDG && !prediction.sdg && !prediction.sdgs) && (
+              <span className="text-gray-400 text-sm">—</span>
+            )}
+          </div>
+        </div>
 
-              {/* Submit */}
-              <div className="mt-6 flex items-center gap-3">
-                <button
-                  onClick={handleSubmit}
-                  className="rounded-xl bg-[#744253] hover:bg-red-600 text-white px-6 py-3 font-semibold transition hover:scale-105"
-                >
-                  Submit Problem
-                </button>
-                <p className="text-xs text-[#ffffff]">
-                  Ensure the photo is original and taken at the incident location/time.
-                </p>
-              </div>
-            </div>
-          </section>
+        {/* Actionable Insights */}
+        <div className="mt-4">
+          <p className="text-sm text-gray-300 mb-2">Actionable Insights</p>
+          {Array.isArray(prediction.actionableInsights) &&
+          prediction.actionableInsights.length > 0 ? (
+            <ul className="list-disc list-inside space-y-1 text-gray-200">
+              {prediction.actionableInsights.map((tip: string, idx: number) => (
+                <li key={idx}>{tip}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400 text-sm">No insights provided.</p>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Submit */}
+    <div className="mt-6 flex items-center gap-3">
+      <button
+        onClick={handleSubmit}
+        className="rounded-xl bg-[#744253] hover:bg-red-600 text-white px-6 py-3 font-semibold transition hover:scale-105"
+        disabled={loading || uploading || !imagePreview || !imageFile}
+      >
+        {loading ? <Spinner size="small" /> : "Submit Problem"}
+      </button>
+      <p className="text-xs text-[#ffffff]">
+        Ensure the photo is original and taken at the incident location/time.
+      </p>
+    </div>
+  </div>
+</section>
+
         </div>
       </div>
     </>
