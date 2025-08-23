@@ -60,7 +60,7 @@ const ProblemDetails = () => {
     if (!message) return;
 
     if (!id) {
-      toast.error("cannot find id");
+      toast.error("Cannot find id");
       return;
     }
 
@@ -74,7 +74,7 @@ const ProblemDetails = () => {
   return (
     <>
       <AppNavbar />
-      <div className="px-6 md:px-12 pt-24 max-w-6xl mx-auto">
+      <div className="px-6 md:px-12 pt-24 max-w-6xl mx-auto pb-6">
         <header className="mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-100">
@@ -245,7 +245,20 @@ const ProblemDetails = () => {
             </span>
           </div>
 
-          <div className="text-center">
+          {Array.isArray(problem.comments) && problem.comments.length > 0 ? (
+            <ul className="space-y-4">
+              {problem.comments.map((c) => (
+                <li key={c._id} className="bg-gray-900/70 p-3 rounded-lg border border-gray-700">
+                  <p className="text-sm text-gray-300 font-semibold">{c.name}</p>
+                  <p className="text-gray-200 mt-1">{c.message}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400">No comments yet.</p>
+          )}
+
+          <div className="text-center mt-4">
             <button
               type="button"
               onClick={() => {

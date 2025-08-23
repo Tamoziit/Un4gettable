@@ -80,7 +80,11 @@ export interface Project {
     tariff: number[];
     fundRaised: number;
     reports: string[];
-    comments: { name: string; message: string }[];
+    comments: {
+        _id: string;
+        name: string;
+        message: string
+    }[];
 }
 
 export interface Problem {
@@ -102,7 +106,11 @@ export interface Problem {
         lon: number;
         address: string;
     };
-    comments: { name: string; message: string }[];
+    comments: {
+        _id: string;
+        name: string;
+        message: string
+    }[];
     createdAt: string;
     updatedAt: string;
 }

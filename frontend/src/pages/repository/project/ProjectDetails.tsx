@@ -5,6 +5,7 @@ import useGetProjectById from "../../../hooks/useGetProjectById";
 import toast from "react-hot-toast";
 import type { Project } from "../../../types";
 import useInitiatePayment from "../../../hooks/useInitiatePayment";
+import useAddComment from "../../../hooks/useAddComment";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -14,10 +15,9 @@ const ProjectDetails = () => {
 
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
 
-  // NEW: comment modal state
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [submittingComment, setSubmittingComment] = useState(false);
-  const [commentForm, setCommentForm] = useState({ name: "", message: "" });
+  const [commentForm, setCommentForm] = useState({ message: "" });
+  const { loading: commenting, addComment } = useAddComment();
 
   const fetchProject = async () => {
     if (id) {
@@ -32,7 +32,6 @@ const ProjectDetails = () => {
     fetchProject();
   }, []);
 
-  // NEW: close modal on Escape
   useEffect(() => {
     function onEsc(e: KeyboardEvent) {
       if (e.key === "Escape") setShowCommentModal(false);
@@ -79,50 +78,21 @@ const ProjectDetails = () => {
     );
   }
 
-  // NEW: submit comment handler (stub -> replace with API)
   const submitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    const name = commentForm.name.trim();
     const message = commentForm.message.trim();
     if (!message) return;
 
-    try {
-      setSubmittingComment(true);
-
-      // TODO: Replace with your actual API endpoint
-      // Example:
-      // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/project/${project._id}/comment`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ name: name || "Anonymous", message }),
-      // });
-      // const data = await res.json();
-      // if (!res.ok) throw new Error(data.message || "Failed to submit comment");
-
-      // Simulate success
-      await new Promise((r) => setTimeout(r, 800));
-
-      // Optimistic UI update (assumes project has comments: {name,message}[])
-      setProject((prev) =>
-        prev
-          ? {
-              ...prev,
-              comments: [
-                ...(prev.comments || []),
-                { name: name || "Anonymous", message },
-              ],
-            }
-          : prev
-      );
-
-      toast.success("Comment submitted");
-      setShowCommentModal(false);
-      setCommentForm({ name: "", message: "" });
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to submit comment");
-    } finally {
-      setSubmittingComment(false);
+    if (!id) {
+      toast.error("Cannot find id");
+      return;
     }
+
+    await addComment({
+      id,
+      type: "Project",
+      message
+    });
   };
 
   return (
@@ -230,12 +200,25 @@ const ProjectDetails = () => {
             </span>
           </div>
 
-          <div className="text-center">
+          {Array.isArray(project.comments) && project.comments.length > 0 ? (
+            <ul className="space-y-4">
+              {project.comments.map((c) => (
+                <li key={c._id} className="bg-gray-900/70 p-3 rounded-lg border border-gray-700">
+                  <p className="text-sm text-gray-300 font-semibold">{c.name}</p>
+                  <p className="text-gray-200 mt-1">{c.message}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400">No comments yet.</p>
+          )}
+
+          <div className="text-center mt-4">
             <button
               type="button"
               onClick={() => {
                 setShowCommentModal(true);
-                setCommentForm({ name: "", message: "" });
+                setCommentForm({ message: "" });
               }}
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
             >
@@ -313,17 +296,17 @@ const ProjectDetails = () => {
                 <button
                   type="button"
                   onClick={() => setShowCommentModal(false)}
-                  disabled={submittingComment}
+                  disabled={commenting}
                   className="rounded-xl bg-gray-700 hover:bg-gray-600 disabled:opacity-50 text-white px-4 py-2 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submittingComment || !commentForm.message.trim()}
+                  disabled={commenting || !commentForm.message.trim()}
                   className="rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
                 >
-                  {submittingComment ? "Submitting..." : "Submit Comment"}
+                  {commenting ? "Submitting..." : "Submit Comment"}
                 </button>
               </div>
             </form>
