@@ -250,7 +250,7 @@ const ProjectDetails = () => {
 
         <div className="flex justify-center mt-6">
           <Link
-            to="/report/submit"
+            to={`/report/submit/Project/${id}`}
             className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
           >
             Submit a report

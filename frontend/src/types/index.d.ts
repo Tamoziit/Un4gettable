@@ -204,3 +204,19 @@ export interface SDGInfo {
     icon: string;
     title: string;
 }
+
+export interface SubmitReportProps {
+    id: string,
+    type: "Project" | "Problem";
+    startDate: string;
+    endDate: string;
+    actions: string[];
+    workforce: number;
+    articulateProof: string[];
+}
+
+export interface AddCommentProps {
+    id: string;
+    type: "Project" | "Problem";
+    message: string;
+}

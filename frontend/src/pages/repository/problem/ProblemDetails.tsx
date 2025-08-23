@@ -5,16 +5,16 @@ import type { Problem } from "../../../types";
 import { useEffect, useState } from "react";
 import useGetProblemById from "../../../hooks/useGetProblemById";
 import toast from "react-hot-toast";
+import useAddComment from "../../../hooks/useAddComment";
 
 const ProblemDetails = () => {
   const { id } = useParams();
   const [problem, setProblem] = useState<Problem | null>(null);
   const { loading, getProblem } = useGetProblemById();
 
-  // NEW: comment modal state
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [commentForm, setCommentForm] = useState({ name: "", message: "" });
-  const [submittingComment, setSubmittingComment] = useState(false);
+  const [commentForm, setCommentForm] = useState({ message: "" });
+  const { loading: commenting, addComment } = useAddComment();
 
   const fetchProblem = async () => {
     if (!id) {
@@ -29,7 +29,6 @@ const ProblemDetails = () => {
     fetchProblem();
   }, []);
 
-  // NEW: close modal on Escape
   useEffect(() => {
     function onEsc(e: KeyboardEvent) {
       if (e.key === "Escape") setShowCommentModal(false);
@@ -47,7 +46,6 @@ const ProblemDetails = () => {
   const createdDate = new Date(problem.createdAt).toLocaleString();
   const isHigh = problem.alertLevel?.toLowerCase() === "high";
 
-  // Utility to style status
   const getStatusClass = (status: string) => {
     const lower = status.toLowerCase();
     if (lower === "pending") return "text-yellow-400 font-bold";
@@ -56,50 +54,21 @@ const ProblemDetails = () => {
     return "text-gray-300";
   };
 
-  // NEW: submit comment handler (stub -> replace with API)
   const submitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    const name = commentForm.name.trim();
     const message = commentForm.message.trim();
     if (!message) return;
 
-    try {
-      setSubmittingComment(true);
-
-      // TODO: Replace with your actual API endpoint
-      // Example:
-      // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/ngo/problem/${problem._id}/comment`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ name: name || "Anonymous", message }),
-      // });
-      // const data = await res.json();
-      // if (!res.ok) throw new Error(data.message || "Failed to submit comment");
-
-      // Simulate success
-      await new Promise((r) => setTimeout(r, 800));
-
-      // Optimistic UI: add to local list (optional)
-      setProblem((prev) =>
-        prev
-          ? {
-              ...prev,
-              comments: [
-                ...prev.comments,
-                { name: name || "Anonymous", message },
-              ],
-            }
-          : prev
-      );
-
-      toast.success("Comment submitted");
-      setShowCommentModal(false);
-      setCommentForm({ name: "", message: "" });
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to submit comment");
-    } finally {
-      setSubmittingComment(false);
+    if (!id) {
+      toast.error("cannot find id");
+      return;
     }
+
+    await addComment({
+      id,
+      type: "Problem",
+      message
+    });
   };
 
   return (
@@ -152,11 +121,10 @@ const ProblemDetails = () => {
               <p className="text-sm text-gray-300 flex items-center gap-2">
                 <span className="font-semibold">Alert Level:</span>{" "}
                 <span
-                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${
-                    isHigh
-                      ? "bg-red-900/40 text-red-400"
-                      : "bg-yellow-900/40 text-yellow-400"
-                  }`}
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${isHigh
+                    ? "bg-red-900/40 text-red-400"
+                    : "bg-yellow-900/40 text-yellow-400"
+                    }`}
                 >
                   ⚠️ {problem.alertLevel}
                 </span>
@@ -178,8 +146,8 @@ const ProblemDetails = () => {
               lon={problem.location.lon}
               height={300}
               zoom={16}
-              // If your MapAtCoords doesn't accept showAddress, just remove this prop
-              // showAddress={false}
+            // If your MapAtCoords doesn't accept showAddress, just remove this prop
+            // showAddress={false}
             />
             <p className="mt-3 text-sm text-gray-300">
               <span className="font-semibold">Location:</span>{" "}
@@ -282,7 +250,7 @@ const ProblemDetails = () => {
               type="button"
               onClick={() => {
                 setShowCommentModal(true);
-                setCommentForm({ name: "", message: "" });
+                setCommentForm({ message: "" });
               }}
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
             >
@@ -298,7 +266,7 @@ const ProblemDetails = () => {
         {/* Submit report CTA */}
         <div className="flex justify-center mt-6">
           <Link
-            to="/report/submit"
+            to={`/report/submit/Problem/${id}`}
             className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
           >
             Submit a report
@@ -362,17 +330,17 @@ const ProblemDetails = () => {
                 <button
                   type="button"
                   onClick={() => setShowCommentModal(false)}
-                  disabled={submittingComment}
+                  disabled={commenting}
                   className="rounded-xl bg-gray-700 hover:bg-gray-600 disabled:opacity-50 text-white px-4 py-2 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={submittingComment || !commentForm.message.trim()}
+                  disabled={commenting || !commentForm.message.trim()}
                   className="rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
                 >
-                  {submittingComment ? "Submitting..." : "Submit Comment"}
+                  {commenting ? "Submitting..." : "Submit Comment"}
                 </button>
               </div>
             </form>
