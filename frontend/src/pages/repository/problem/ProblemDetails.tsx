@@ -168,19 +168,34 @@ const ProblemDetails = () => {
           </ul>
         </section>
 
-        {/* Reports */}
-        <section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-100 mb-3">Reports</h2>
-          {problem.reports.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-200 space-y-1">
-              {problem.reports.map((rep, idx) => (
-                <li key={idx}>{rep}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-400">No reports yet.</p>
-          )}
-        </section>
+   {/* Reports */}
+<section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
+  <h2 className="text-2xl font-semibold text-gray-100 mb-3">Reports</h2>
+
+  {Array.isArray(problem.reports) && problem.reports.length > 0 ? (
+    <ul className="divide-y divide-gray-700 rounded-xl overflow-hidden border border-gray-700">
+      {problem.reports.map((reportId: string) => (
+        <li key={reportId} className="bg-gray-900/40 hover:bg-gray-900/60 transition">
+          <Link
+            to={`/report/${reportId}`}
+            className="flex items-center justify-between w-full px-4 py-3"
+          >
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-400">Report</span>
+              <span className="text-gray-200 text-sm truncate">
+                ID: {reportId}
+              </span>
+            </div>
+            <span className="text-[#2298b9] font-medium">View →</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className="text-gray-400">No reports yet.</p>
+  )}
+</section>
+
 
         {/* NGOs + Govt + Status (3 in a row) */}
         <section className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
