@@ -57,7 +57,7 @@ const ProjectUpload = () => {
       <LandingNavbar />
       <main className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12 pb-40">
         <header className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100 pt-4 pb-4">
+          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100 pt-10 pb-4">
             Upload Project
           </h1>
           <p className="text-subhead mt-1">
