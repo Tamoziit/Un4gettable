@@ -228,3 +228,8 @@ export interface AddCommentProps {
     type: "Project" | "Problem";
     message: string;
 }
+
+export interface SendMessageProps {
+    id: string;
+    message: string;
+}
