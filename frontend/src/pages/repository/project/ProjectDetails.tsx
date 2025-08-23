@@ -112,39 +112,39 @@ const ProjectDetails = () => {
         />
 
         {/* Details */}
-        <div className="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 space-y-3">
+        <div className="bg-[#242038] rounded-2xl shadow-lg p-6 mb-8 space-y-3">
           <p className="text-gray-300">
-            <span className="font-semibold">SDG:</span>{" "}
+            <span className="font-semibold text-[#6290C3]">SDG:</span>{" "}
             {project.SDG.join(", ")}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Owner:</span> {project.owner}
+            <span className="font-semibold text-[#B76D68]">Owner:</span> {project.owner}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Aim:</span> {project.aim}
+            <span className="font-semibold text-red-600">Aim:</span> {project.aim}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Location:</span>{" "}
+            <span className="font-semibold text-orange-200">Location:</span>{" "}
             {`${project.location.city}, ${project.location.state}`}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Timeline:</span>{" "}
+            <span className="font-semibold text-purple-300">Timeline:</span>{" "}
             {project.timeline.startDate} → {project.timeline.endDate}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Target:</span> ₹ {project.target}
+            <span className="font-semibold text-green-200">Target:</span> ₹ {project.target}
           </p>
           <p className="text-gray-300">
-            <span className="font-semibold">Funding Raised:</span> ₹{" "}
+            <span className="font-semibold text-yellow-300">Funding Raised:</span> ₹{" "}
             {project.fundRaised}
           </p>
         </div>
 
         {/* Tariff Plans */}
-        <h2 className="text-blue-400 text-2xl font-semibold mb-4">
+        <h2 className="text-[#B4DC7F] text-2xl font-semibold uppercase mb-4  ">
           Donation Plans
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-gray-200">
           {project.tariff.map((plan, idx) => {
             const planLabel = String.fromCharCode(65 + idx); // 65 = 'A'
             const isSelected = selectedAmount === plan;
@@ -165,17 +165,17 @@ const ProjectDetails = () => {
         <button
           onClick={handleDonate}
           disabled={paying}
-          className="w-full py-3 text-lg font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition disabled:opacity-50"
+          className="w-full py-3 text-lg font-semibold rounded-xl shadow-md bg-[#9BA7C0]  hover:bg-[#758BFD] text-[#00241B] transition disabled:opacity-50"
         >
           {paying ? "Processing..." : "Donate Now"}
         </button>
 
         {/* Reports */}
-        <h2 className="text-blue-400 text-2xl font-semibold mt-10 pb-4">
+        <h2 className="text-blue-400 text-2xl font-semibold mt-10 pb-4 ">
           Reports
         </h2>
         {project.reports.length > 0 ? (
-          <div className="bg-gray-800 rounded-2xl shadow-lg p-6 overflow-y-auto space-y-3">
+          <div className="bg-[#242038] rounded-2xl shadow-lg p-6 overflow-y-auto space-y-3">
             {project.reports.map((report, i) => (
               <div
                 key={i}
@@ -192,7 +192,7 @@ const ProjectDetails = () => {
         )}
 
         {/* NEW: Comments section with modal trigger */}
-        <section className="mt-10 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
+        <section className="mt-10 rounded-2xl bg-[#242038] p-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-gray-100">💬 Comments</h2>
             <span className="text-sm text-gray-400">
@@ -220,7 +220,7 @@ const ProjectDetails = () => {
                 setShowCommentModal(true);
                 setCommentForm({ message: "" });
               }}
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0]  hover:bg-[#758BFD] text-[#00241B] px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
             >
               <span>➕</span>
               Add Comment
@@ -285,7 +285,7 @@ const ProjectDetails = () => {
                   required
                   rows={4}
                   maxLength={500}
-                  className="w-full rounded-xl bg-gray-800/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none resize-none"
+                  className="w-full rounded-xl bg-[#ffffff] border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none resize-none"
                 />
                 <p className="mt-1 text-xs text-gray-400">
                   {commentForm.message.length}/500 characters
@@ -304,7 +304,7 @@ const ProjectDetails = () => {
                 <button
                   type="submit"
                   disabled={commenting || !commentForm.message.trim()}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
+                  className="rounded-xl bg-[#744253] hover:bg-red-600 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
                 >
                   {commenting ? "Submitting..." : "Submit Comment"}
                 </button>

@@ -74,7 +74,7 @@ const ProblemDetails = () => {
   return (
     <>
       <AppNavbar />
-      <div className="px-6 md:px-12 pt-24 max-w-6xl mx-auto pb-6">
+      <div className="px-8 md:px-16 pt-20 max-w-6xl mx-auto pb-6">
         <header className="mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-100">
@@ -93,7 +93,7 @@ const ProblemDetails = () => {
         {/* Hero */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left: Image + Info */}
-          <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-800/60">
+          <div className="rounded-2xl overflow-hidden shadow-lg bg-[#242038]">
             <img
               src={problem.url}
               alt={problem.problem}
@@ -140,14 +140,12 @@ const ProblemDetails = () => {
           </div>
 
           {/* Right: Map + Location */}
-          <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-800/60 p-4 flex flex-col">
+          <div className="rounded-2xl overflow-hidden shadow-lg bg-[#242038] p-4 flex flex-col">
             <MapAtCoords
               lat={problem.location.lat}
               lon={problem.location.lon}
               height={300}
               zoom={16}
-            // If your MapAtCoords doesn't accept showAddress, just remove this prop
-            // showAddress={false}
             />
             <p className="mt-3 text-sm text-gray-300">
               <span className="font-semibold">Location:</span>{" "}
@@ -157,8 +155,8 @@ const ProblemDetails = () => {
         </div>
 
         {/* Actionable Insights */}
-        <section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-100 mb-3">
+        <section className="mt-8 rounded-2xl bg-[#242038] p-6 shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
             Actionable Insights
           </h2>
           <ul className="list-disc list-inside space-y-2 text-gray-200">
@@ -169,8 +167,10 @@ const ProblemDetails = () => {
         </section>
 
         {/* Reports */}
-        <section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-100 mb-3">Reports</h2>
+        <section className="mt-8 rounded-2xl bg-[#242038] p-6 shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
+            Reports
+          </h2>
           {problem.reports.length > 0 ? (
             <ul className="list-disc list-inside text-gray-200 space-y-1">
               {problem.reports.map((rep, idx) => (
@@ -182,11 +182,10 @@ const ProblemDetails = () => {
           )}
         </section>
 
-        {/* NGOs + Govt + Status (3 in a row) */}
+        {/* NGOs + Govt + Status */}
         <section className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* NGOs */}
-          <div className="rounded-2xl bg-gray-800/60 p-6 shadow-lg">
-            <h2 className="text-2xl font-semibold text-gray-100 mb-3">
+          <div className="rounded-2xl bg-[#242038] p-6 shadow-lg">
+            <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
               NGOs Working
             </h2>
             {problem.NGOWorking.length > 0 ? (
@@ -200,9 +199,8 @@ const ProblemDetails = () => {
             )}
           </div>
 
-          {/* Govt */}
-          <div className="rounded-2xl bg-gray-800/60 p-6 shadow-lg">
-            <h2 className="text-2xl font-semibold text-gray-100 mb-3">
+          <div className="rounded-2xl bg-[#242038] p-6 shadow-lg">
+            <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
               Govt Bodies Working
             </h2>
             {problem.GovtWorking.length > 0 ? (
@@ -216,9 +214,8 @@ const ProblemDetails = () => {
             )}
           </div>
 
-          {/* Status */}
-          <div className="rounded-2xl bg-gray-800/60 p-6 shadow-lg space-y-3">
-            <h2 className="text-2xl font-semibold text-gray-100 mb-3">
+          <div className="rounded-2xl bg-[#242038] p-6 shadow-lg space-y-3">
+            <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
               Problem Resolution Status
             </h2>
             <p className="text-sm text-gray-300">
@@ -236,8 +233,8 @@ const ProblemDetails = () => {
           </div>
         </section>
 
-        {/* COMMENTS -> replaced with "Add Comment" button and modal */}
-        <section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
+        {/* Comments */}
+        <section className="mt-8 rounded-2xl bg-[#242038] p-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-gray-100">💬 Comments</h2>
             <span className="text-sm text-gray-400">
@@ -265,7 +262,7 @@ const ProblemDetails = () => {
                 setShowCommentModal(true);
                 setCommentForm({ message: "" });
               }}
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0] hover:bg-[#758BFD] text-[#00241B] px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
             >
               <span>➕</span>
               Add Comment
@@ -280,7 +277,7 @@ const ProblemDetails = () => {
         <div className="flex justify-center mt-6">
           <Link
             to={`/report/submit/Problem/${id}`}
-            className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
+            className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition hover:scale-105"
           >
             Submit a report
           </Link>
@@ -296,12 +293,10 @@ const ProblemDetails = () => {
           aria-labelledby="comment-modal-title"
           onClick={() => setShowCommentModal(false)}
         >
-          {/* Overlay */}
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-          {/* Panel */}
           <div
-            className="relative z- w-full sm:max-w-lg sm:rounded-2xl bg-gray-900 text-gray-100 shadow-2xl p-5 sm:p-6 mx-0 sm:mx-4"
+            className="relative z- w-full sm:max-w-lg sm:rounded-2xl bg-gray-900 text-gray-100 shadow-2xl p-6 sm:p-8 mx-0 sm:mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4 mb-4">
@@ -319,9 +314,11 @@ const ProblemDetails = () => {
             </div>
 
             <form onSubmit={submitComment} className="space-y-4">
-
               <div>
-                <label htmlFor="comment-message" className="block text-sm font-medium text-gray-300 mb-1">
+                <label
+                  htmlFor="comment-message"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
                   Comment *
                 </label>
                 <textarea
@@ -332,7 +329,7 @@ const ProblemDetails = () => {
                   required
                   rows={4}
                   maxLength={500}
-                  className="w-full rounded-xl bg-gray-800/70 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-100 p-3 outline-none resize-none"
+                  className="w-full rounded-xl bg-white border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-900 p-3 outline-none resize-none"
                 />
                 <p className="mt-1 text-xs text-gray-400">
                   {commentForm.message.length}/500 characters
@@ -351,7 +348,7 @@ const ProblemDetails = () => {
                 <button
                   type="submit"
                   disabled={commenting || !commentForm.message.trim()}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
+                  className="rounded-xl bg-[#744253] hover:bg-red-600 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
                 >
                   {commenting ? "Submitting..." : "Submit Comment"}
                 </button>

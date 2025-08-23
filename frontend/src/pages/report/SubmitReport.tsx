@@ -90,9 +90,10 @@ const SubmitReport = () => {
   return (
     <>
       <AppNavbar />
+      <div>
       <form
         onSubmit={handleSubmit}
-        className="pt-40 mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg space-y-6"
+        
       >
         <h2 className="text-2xl font-semibold text-gray-100 mb-4">📑 Submit Report</h2>
 
@@ -210,6 +211,7 @@ const SubmitReport = () => {
           </button>
         </div>
       </form>
+      </div>
     </>
   );
 };
