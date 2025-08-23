@@ -78,12 +78,12 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
   };
 
   return (
-    <div className="rounded-2xl bg-gray-800/70 p-6 shadow-lg">
+    <div className="rounded-2xl bg-[#242038] p-6 shadow-lg">
       <h2 className="text-xl font-semibold text-gray-100 mb-4">Description, SDGs & Plans</h2>
 
       {/* Description */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-1">Description *</label>
+        <label className="block text-sm text-[#E2DBBE] mb-1">Description *</label>
         <textarea
           rows={5}
           value={value.description}
@@ -95,7 +95,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
 
       {/* SDG Dropdown */}
       <div className="mb-6" ref={sdgDropdownRef}>
-        <label className="block text-sm text-gray-300 mb-2">SDGs *</label>
+        <label className="block text-sm text-[#E2DBBE] mb-2">SDGs *</label>
         <button
           type="button"
           onClick={() => setOpenSdg((v) => !v)}
@@ -165,7 +165,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
 
       {/* Objectives */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Objectives *</label>
+        <label className="block text-sm text-[#E2DBBE] mb-2">Objectives *</label>
         <div className="flex flex-col gap-3">
           {value.objectives.map((obj, i) => (
             <div key={i} className="flex gap-2">
@@ -188,7 +188,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
                     objectives: value.objectives.filter((_, idx) => idx !== i),
                   })
                 }
-                className="px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white transition"
+                className="px-3 rounded-xl bg-[#744253] hover:bg-red-600 text-white transition"
               >
                 Remove
               </button>
@@ -206,7 +206,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
 
       {/* Numeric Target */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-1">Target Value *</label>
+        <label className="block text-sm text-[#E2DBBE] mb-1">Target Value *</label>
         <input
           type="text"
           value={value.target}
@@ -217,7 +217,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
 
       {/* Tariff */}
       <div className="mb-6">
-        <label className="block text-sm text-gray-300 mb-2">Donation Plans (Tariff) *</label>
+        <label className="block text-sm text-[#E2DBBE] mb-2">Donation Plans (Tariff) *</label>
         <div className="flex flex-col gap-3">
           {value.tariff.map((amt, i) => (
             <div key={i} className="flex gap-2">
@@ -236,7 +236,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
                   onClick={() =>
                     update({ tariff: value.tariff.filter((_, idx) => idx !== i) })
                   }
-                  className="px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white transition"
+                  className="px-3 rounded-xl bg-[#744253] hover:bg-red-600 text-white transition"
                 >
                   Remove
                 </button>
@@ -262,11 +262,12 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
           type="button"
           onClick={onSubmit}
           disabled={submitting}
-          className="rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-6 py-3 font-semibold transition hover:scale-105"
+          className="rounded-xl bg-[#2298b9]
+                     hover:bg-[#1d4d86] disabled:opacity-60 text-white px-6 py-3 font-semibold transition hover:scale-105"
         >
           {submitting ? "Submitting..." : "Create Project"}
         </button>
-        <p className="text-xs text-gray-400">You can edit details later in project settings.</p>
+        <p className="text-xs text-[#ffffff]">You can edit details later in project settings.</p>
       </div>
     </div>
   );

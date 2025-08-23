@@ -54,7 +54,7 @@ function App() {
 					{/* Map section */}
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
 					<Route path="payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
-					<Route path="/report/submit" element={authUser ? <SubmitReport /> : <Navigate to="/" />} />
+					<Route path="/report/submit/:type/:id" element={authUser ? <SubmitReport /> : <Navigate to="/" />} />
 					<Route path="/game" element={authUser ? <QuizPage /> : <Navigate to="/" />} />
 					<Route path="/community" element={authUser ? <CommunityChat /> : <Navigate to="/" />} />
 
