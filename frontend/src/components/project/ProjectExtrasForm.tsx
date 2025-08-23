@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Spinner from "../Spinner";
 
 const SDG_OPTIONS_WITH_TITLES: { code: string; title: string }[] = [
   { code: "13.1", title: "Resilience to climate-related hazards and disasters" },
@@ -265,7 +266,7 @@ const ProjectExtrasForm: React.FC<Props> = ({ value, onChange, onSubmit, submitt
           className="rounded-xl bg-[#2298b9]
                      hover:bg-[#1d4d86] disabled:opacity-60 text-white px-6 py-3 font-semibold transition hover:scale-105"
         >
-          {submitting ? "Submitting..." : "Create Project"}
+          {submitting ? <Spinner size="small" /> : "Create Project"}
         </button>
         <p className="text-xs text-[#ffffff]">You can edit details later in project settings.</p>
       </div>

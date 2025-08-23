@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import type { Project } from "../../../types";
 import useInitiatePayment from "../../../hooks/useInitiatePayment";
 import useAddComment from "../../../hooks/useAddComment";
+import Spinner from "../../../components/Spinner";
 
 
 
@@ -73,8 +74,8 @@ const ProjectDetails = () => {
     return (
       <>
         <AppNavbar />
-        <div className="px-8 md:px-16 pt-20 text-center text-red-400 text-xl">
-          Project Not Found
+        <div className="px-8 md:px-16 pt-20 text-center text-red-400 text-xl h-screen flex items-center justify-center">
+          <Spinner size="large" />
         </div>
       </>
     );
