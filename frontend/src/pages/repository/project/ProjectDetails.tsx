@@ -6,6 +6,9 @@ import toast from "react-hot-toast";
 import type { Project } from "../../../types";
 import useInitiatePayment from "../../../hooks/useInitiatePayment";
 import useAddComment from "../../../hooks/useAddComment";
+import Spinner from "../../../components/Spinner";
+
+
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -71,8 +74,8 @@ const ProjectDetails = () => {
     return (
       <>
         <AppNavbar />
-        <div className="px-8 md:px-16 pt-20 text-center text-red-400 text-xl">
-          Project Not Found
+        <div className="px-8 md:px-16 pt-20 text-center text-red-400 text-xl h-screen flex items-center justify-center">
+          <Spinner size="large" />
         </div>
       </>
     );
@@ -171,25 +174,32 @@ const ProjectDetails = () => {
         </button>
 
         {/* Reports */}
-        <h2 className="text-blue-400 text-2xl font-semibold mt-10 pb-4 ">
-          Reports
-        </h2>
-        {project.reports.length > 0 ? (
-          <div className="bg-[#242038] rounded-2xl shadow-lg p-6 overflow-y-auto space-y-3">
-            {project.reports.map((report, i) => (
-              <div
-                key={i}
-                className="bg-gray-700 rounded-xl p-3 shadow-md flex justify-between"
-              >
-                <span className="text-gray-400">{report}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex w-full pb-6">
-            <span className="text-gray-300">No Reports submitted yet</span>
-          </div>
-        )}
+        <section className="mt-8 rounded-2xl bg-gray-800/60 p-6 shadow-lg">
+          <h2 className="text-blue-400 text-2xl font-semibold mt-10 pb-4">Reports</h2>
+
+          {Array.isArray(project.reports) && project.reports.length > 0 ? (
+            <ul className="divide-y divide-gray-700 rounded-xl overflow-hidden border border-gray-700">
+              {project.reports.map((reportId: string) => (
+                <li key={reportId} className="bg-[#242038] hover:bg-gray-900/60 transition">
+                  <Link
+                    to={`/report/${reportId}`}
+                    className="flex items-center justify-between w-full px-4 py-3"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-400">Report</span>
+                      <span className="text-gray-200 text-sm truncate">
+                        ID: {reportId}
+                      </span>
+                    </div>
+                    <span className="text-[#2298b9] font-medium">View →</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-400">No reports yet.</p>
+          )}
+        </section>
 
         {/* NEW: Comments section with modal trigger */}
         <section className="mt-10 rounded-2xl bg-[#242038] p-6 shadow-lg">

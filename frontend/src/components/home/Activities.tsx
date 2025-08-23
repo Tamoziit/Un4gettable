@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "../Spinner";
 const Activities = () => {
   const [activities] = useState([
     { label: "Problem Repository", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/problem" },

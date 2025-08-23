@@ -84,7 +84,7 @@ const ProblemRepository = () => {
           shadow-lg shadow-[#2298b9]">
           🌍 Problems Reported Across Regions ⚠️
         </h2>
-
+        
         {/* Search & Filters */}
         <ProblemSearchBar
           onSearch={handleSearch}

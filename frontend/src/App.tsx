@@ -21,6 +21,8 @@ import PaymentSuccess from "./pages/payments/PaymentSuccess";
 import SubmitReport from "./pages/report/SubmitReport";
 import QuizPage from "./pages/game/QuizPage";
 import CommunityChat from "./pages/community/Community";
+import OnBoard from "./pages/repository/problem/OnBoard";
+import ReportDetails from "./pages/showreport/ReportDetails";
 
 
 function App() {
@@ -44,12 +46,18 @@ function App() {
 					<Route path="/repository/problem" element={authUser ? <ProblemRepository /> : <Navigate to="/" />} />
 
 					{/* Uploads project & Problem */}
-					{/* <Route path="/repository/project/upload" element={authUser ? <ProjectDetails isUpload /> : <Navigate to="/" />} /> */}
 					<Route path="/repository/problem/upload" element={authUser ? <ProblemUpload /> : <Navigate to="/" />} />
 					<Route path="/repository/project/upload" element={authUser ? <ProjectUpload /> : <Navigate to="/" />} />
 
 					<Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/" />} />
 					<Route path="/progress-tracker" element={authUser ? <ProgressTracker /> : <Navigate to="/" />} />
+
+					{/* Show Report */}
+					<Route path="/report/:id" element={authUser ? <ReportDetails /> : <Navigate to="/" />} />
+
+
+					{/* On board section */}
+					<Route path="/repository/problem/onboard" element={authUser ? <OnBoard /> : <Navigate to="/" />} />
 
 					{/* Map section */}
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
@@ -60,8 +68,8 @@ function App() {
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
 					<Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/" />} />
-				</Routes>
-
+					
+					</Routes>
 				<Toaster />
 			</div>
 		</>

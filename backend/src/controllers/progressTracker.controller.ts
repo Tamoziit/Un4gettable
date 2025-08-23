@@ -49,6 +49,24 @@ export const getStats = async (req: Request, res: Response) => {
                     resolvedGovt: [
                         { $match: { statusForGovt: "solved" } },
                         { $count: "count" }
+                    ],
+
+                    // Problems reported in time ranges
+                    oneHourAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 1 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
+                    ],
+                    sixHoursAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 6 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
+                    ],
+                    twelveHoursAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 12 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
+                    ],
+                    oneDayAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
                     ]
                 }
             },
@@ -61,7 +79,13 @@ export const getStats = async (req: Request, res: Response) => {
                     pendingProblems: { $ifNull: [{ $arrayElemAt: ["$pending.count", 0] }, 0] },
                     ongoingProblems: { $ifNull: [{ $arrayElemAt: ["$ongoing.count", 0] }, 0] },
                     resolvedForUser: { $ifNull: [{ $arrayElemAt: ["$resolvedUser.count", 0] }, 0] },
-                    resolvedForGovt: { $ifNull: [{ $arrayElemAt: ["$resolvedGovt.count", 0] }, 0] }
+                    resolvedForGovt: { $ifNull: [{ $arrayElemAt: ["$resolvedGovt.count", 0] }, 0] },
+                    problemsReported: {
+                        oneHourAgo: { $ifNull: [{ $arrayElemAt: ["$oneHourAgo.count", 0] }, 0] },
+                        sixHoursAgo: { $ifNull: [{ $arrayElemAt: ["$sixHoursAgo.count", 0] }, 0] },
+                        twelveHoursAgo: { $ifNull: [{ $arrayElemAt: ["$twelveHoursAgo.count", 0] }, 0] },
+                        oneDayAgo: { $ifNull: [{ $arrayElemAt: ["$oneDayAgo.count", 0] }, 0] }
+                    }
                 }
             }
         ]);
@@ -72,13 +96,64 @@ export const getStats = async (req: Request, res: Response) => {
                 $project: {
                     fundRaised: 1,
                     sdg13: {
-                        $cond: [{ $gt: [{ $size: { $filter: { input: "$SDG", as: "s", cond: { $regexMatch: { input: "$$s", regex: /^13\./ } } } } }, 0] }, "$fundRaised", 0]
+                        $cond: [
+                            {
+                                $gt: [
+                                    {
+                                        $size: {
+                                            $filter: {
+                                                input: "$SDG",
+                                                as: "s",
+                                                cond: { $regexMatch: { input: "$$s", regex: /^13\./ } }
+                                            }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            "$fundRaised",
+                            0
+                        ]
                     },
                     sdg14: {
-                        $cond: [{ $gt: [{ $size: { $filter: { input: "$SDG", as: "s", cond: { $regexMatch: { input: "$$s", regex: /^14\./ } } } } }, 0] }, "$fundRaised", 0]
+                        $cond: [
+                            {
+                                $gt: [
+                                    {
+                                        $size: {
+                                            $filter: {
+                                                input: "$SDG",
+                                                as: "s",
+                                                cond: { $regexMatch: { input: "$$s", regex: /^14\./ } }
+                                            }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            "$fundRaised",
+                            0
+                        ]
                     },
                     sdg15: {
-                        $cond: [{ $gt: [{ $size: { $filter: { input: "$SDG", as: "s", cond: { $regexMatch: { input: "$$s", regex: /^15\./ } } } } }, 0] }, "$fundRaised", 0]
+                        $cond: [
+                            {
+                                $gt: [
+                                    {
+                                        $size: {
+                                            $filter: {
+                                                input: "$SDG",
+                                                as: "s",
+                                                cond: { $regexMatch: { input: "$$s", regex: /^15\./ } }
+                                            }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            "$fundRaised",
+                            0
+                        ]
                     }
                 }
             },
