@@ -81,6 +81,22 @@ const ProjectRepository = () => {
           💡 Projects That Need Your Funding 💰
         </h2>
 
+
+        {/* Onboard CTA (redirects to Submit Report form) */}
+<div className="mt-6 w-full flex items-center justify-center">
+  <Link
+    to="/repository/problem/onboard"
+    className="inline-flex items-center justify-center gap-2
+               rounded-xl px-6 py-3
+               text-white font-semibold
+               bg-[#2298b9] hover:bg-[#1f89a7] active:bg-[#1c7b95]
+               shadow-lg shadow-[#2298b9]/30
+               transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[#2298b9]"
+  >
+    On Board
+  </Link>
+</div>
+
         {/* 🔍 Search + Filters */}
         <ProjectSearchBar
           onSearch={handleSearch}
@@ -102,11 +118,6 @@ const ProjectRepository = () => {
                 className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
               >
                 <div className="flex gap-4">
-                  {/* <img
-                    src={project.url}
-                    alt={project.name}
-                    className="w-32 h-24 object-cover rounded-lg"
-                  /> */}
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-[#61C9A8]">
                       {project.name}

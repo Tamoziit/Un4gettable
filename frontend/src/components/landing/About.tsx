@@ -20,9 +20,8 @@ const About = () => {
 
 					</p>
 
-		<div className="w-full flex items-center justify-center mt-2 relative">
-            <button
-                className="btn-primary py-3 px-8"
+		<div className="w-full flex justify-center mt-2 relative">
+  <button className="py-2 px-6 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
                 onClick={() => setOpen((prev) => !prev)}
             >
                 Get Started

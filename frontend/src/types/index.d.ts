@@ -233,3 +233,18 @@ export interface SendMessageProps {
     id: string;
     message: string;
 }
+
+export interface Report {
+  _id: string;
+  timeline: ReportTimeline;
+  reporter: ReporterRef;
+  reporterModel: ReporterModel;
+  intentId: string;
+  intentModel: IntentModel;
+  actions: string[];
+  workforce: number;
+  articulateProof: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
