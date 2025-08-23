@@ -19,6 +19,7 @@ import ProblemDetails from "./pages/repository/problem/ProblemDetails";
 import ProgressTracker from "./pages/progress-tracker/ProgressTracker";
 import PaymentSuccess from "./pages/payments/PaymentSuccess";
 import SubmitReport from "./pages/report/SubmitReport";
+import QuizPage from "./pages/game/QuizPage";
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
 					<Route path="/repository/problem/:id" element={authUser ? <ProblemDetails /> : <Navigate to="/" />} />
 					<Route path="payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
 					<Route path="/report/submit" element={authUser ? <SubmitReport /> : <Navigate to="/" />} />
+					<Route path="/game" element={authUser ? <QuizPage /> : <Navigate to="/" />} />
    
 
 					<Route path="/home" element={authUser ? <Home /> : <Navigate to="/" />} />
