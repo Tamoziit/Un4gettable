@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -54,9 +54,7 @@ const ProgressTracker = () => {
 			pending: stats.pendingProblems || 0,
 			ongoing: stats.ongoingProblems || 0,
 			resolved:
-				(stats.problems || 0) -
-				(stats.pendingProblems || 0) -
-				(stats.ongoingProblems || 0)
+				(stats.problems || 0) - (stats.pendingProblems || 0) - (stats.ongoingProblems || 0)
 		},
 		resolvedComparison: {
 			byUsers: stats.resolvedForUser || 0,
@@ -66,6 +64,12 @@ const ProgressTracker = () => {
 			sdg13: stats.funds13 || 0,
 			sdg14: stats.funds14 || 0,
 			sdg15: stats.funds15 || 0
+		},
+		reportedProblems: {
+			oneHour: stats.problemsReported?.oneHourAgo || 0,
+			sixHours: stats.problemsReported?.sixHoursAgo || 0,
+			twelveHours: stats.problemsReported?.twelveHoursAgo || 0,
+			oneDay: stats.problemsReported?.oneDayAgo || 0
 		}
 	};
 
@@ -124,7 +128,28 @@ const ProgressTracker = () => {
 		}]
 	};
 
-	// === Chart options remain same ===
+	// === New: Timeline data for reported problems ===
+	const reportedTimelineData = {
+		labels: ['1 Hour Ago', '6 Hours Ago', '12 Hours Ago', '1 Day Ago'],
+		datasets: [{
+			label: 'Problems Reported',
+			data: [
+				data.reportedProblems.oneHour,
+				data.reportedProblems.sixHours,
+				data.reportedProblems.twelveHours,
+				data.reportedProblems.oneDay
+			],
+			borderColor: '#FF6B6B',
+			backgroundColor: 'rgba(255,107,107,0.3)',
+			tension: 0.4,
+			fill: true,
+			pointBackgroundColor: '#FF6B6B',
+			pointBorderColor: '#fff',
+			pointRadius: 6
+		}]
+	};
+
+	// === Chart options ===
 	const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' as const } } };
 	const barOptions = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } };
 	const stackedBarOptions = { ...barOptions, scales: { x: { stacked: true }, y: { stacked: true } } };
@@ -177,6 +202,11 @@ const ProgressTracker = () => {
 					<div className="bg-white rounded-lg shadow-md p-6">
 						<h2>Funds Raised by SDG</h2>
 						<div className="h-80"><Bar data={fundsData} options={barOptions} /></div>
+					</div>
+					{/* New timeline graph */}
+					<div className="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
+						<h2>Reported Problems Timeline</h2>
+						<div className="h-96"><Line data={reportedTimelineData} options={barOptions} /></div>
 					</div>
 				</div>
 			</div>
