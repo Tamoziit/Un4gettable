@@ -135,6 +135,7 @@ export interface ProjectCreationProps {
     aim: string;
     description: string;
     objectives: string[];
+    target: number;
     tariff: number[];
 }
 
@@ -143,6 +144,12 @@ export interface PostProblemProps {
     description?: string | null;
     lat: number;
     lon: number;
+}
+
+export interface PaymentProps {
+    purpose?: string;
+    amount: number;
+    projectId: string;
 }
 
 export interface CreateContactProps {
@@ -172,6 +179,7 @@ export interface PaymentVerificationProps {
     razorpay_payment_link_reference_id: string;
     razorpay_payment_link_status: string;
     razorpay_signature: string;
+    projectId: string;
 }
 
 export interface Receiver {
@@ -199,4 +207,25 @@ export interface VirtualAccount {
     closed_at: number | null;
     created_at: number;
     receivers: Receiver[];
+}
+
+export interface ModelResult {
+    problem: string;
+    ConfidenceScore: number;
+    sdgs: string[];
+    actionableInsights: string[];
+}
+
+export interface ReportGenerationProps {
+    type: "Project" | "Problem";
+    startDate: string;
+    endDate: string;
+    actions: string[];
+    workforce: number;
+    articulateProof: string[];
+}
+
+export interface CommentProps {
+    type: "Project" | "Problem";
+    message: string;
 }

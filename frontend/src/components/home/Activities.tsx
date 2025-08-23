@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 const Activities = () => {
   const [activities] = useState([
-    { label: "Problem Repository", color: "bg-blue-500 hover:bg-blue-600", path: "/repository/problem" },
-    { label: "Project Repository", color: "bg-green-500 hover:bg-green-600", path: "/repository/project" },
-    { label: "Project Problem Dashboard", color: "bg-purple-500 hover:bg-purple-600", path: "/repository/project-problem" },
-    { label: "Progress Tracker", color: "bg-orange-500 hover:bg-orange-600", path: "/repository/progress-tracker" },
-    { label: "Upload Project", color: "bg-emerald-500 hover:bg-emerald-600", path: "/repository/project/upload" },
-    { label: "Upload Problem", color: "bg-cyan-500 hover:bg-cyan-600", path: "/repository/problem/upload" },
+    { label: "Problem Repository", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/problem" },
+    { label: "Project Repository", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/project" },
+    { label: "Hotspot Dashboard", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/dashboard" },
+    { label: "Progress Tracker", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/progress-tracker" },
+    { label: "Upload Problem", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/repository/problem/upload" },
+    { label: "Upload Project", color: "bg-[#1d4d86] hover:bg-[#2298b9]", path: "/repository/project/upload" },
+    { label: "Games", color: "bg-[#49752b] hover:bg-[#71af3e]", path: "/game" },
+    { label: "Community", color:"bg-[#1d4d86] hover:bg-[#2298b9]", path: "/community"  }
   ]);
 
 

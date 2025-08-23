@@ -10,7 +10,7 @@ const useGetProjects = () => {
     const getProjects = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/${authUser?.role}/project/get-projects`, {
+            const res = await fetch(`${apiUrl}/${authUser?.role}/project/project-repository`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

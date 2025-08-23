@@ -29,7 +29,8 @@ const ProblemSchema = new mongoose.Schema({
         required: true
     },
     SDG: {
-        type: String,
+        type: Array,
+        default: [],
         required: true
     },
     decription: {
@@ -39,6 +40,10 @@ const ProblemSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ["high", "medium", "low"]
+    },
+    confidence: {
+        type: Number,
+        required: true
     },
     actionableInsights: {
         type: Array,
@@ -63,6 +68,18 @@ const ProblemSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             refPath: "Report"
+        }
+    ],
+    comments: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            message: {
+                type: String,
+                required: true
+            }
         }
     ],
     statusForUser: {

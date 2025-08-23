@@ -17,6 +17,7 @@ export const createProject = async (req: Request, res: Response) => {
             aim,
             description,
             objectives,
+            target,
             tariff
         }: ProjectCreationProps = req.body;
 
@@ -52,6 +53,10 @@ export const createProject = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Timeline is required" });
             return;
         }
+        if(target < 0) {
+            res.status(400).json({ error: "Valid target is required" });
+            return;
+        }
 
         const newProject = new Project({
             owner: id,
@@ -69,6 +74,7 @@ export const createProject = async (req: Request, res: Response) => {
             aim,
             description,
             objectives,
+            target,
             tariff
         });
 

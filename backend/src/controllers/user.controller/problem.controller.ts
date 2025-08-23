@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PostProblemProps } from "../../types";
+import { ModelResult, PostProblemProps } from "../../types";
 import Problem from "../../models/problem.model";
 import User from "../../models/user.model";
 import getGeocodedAddress from "../../utils/getGeocodedAddress";
@@ -31,6 +31,24 @@ export const postProblem = async (req: Request, res: Response) => {
             return;
         }
 
+        const response = await fetch(`${process.env.MODEL_URL}/predict`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                imgUrl: url,
+                description: description || "Climate & Biodiversity Hazard"
+            })
+        });
+
+        const modelResult = await response.json() as ModelResult;
+
+        if (!modelResult) {
+            res.status(400).json({ error: "Error in uploading Problem. Try again later" });
+            return;
+        }
+
         const newProblem = new Problem({
             owner: id,
             url,
@@ -39,16 +57,12 @@ export const postProblem = async (req: Request, res: Response) => {
                 lon,
                 address
             },
-            problem: "Deforestation",
-            SDG: "13",
+            problem: modelResult.problem,
+            SDG: modelResult.sdgs,
             description,
             alertLevel: "high",
-            actionableInsights: [
-                "Deploy forest rangers to monitor and prevent illegal logging",
-                "Launch community awareness campaigns on sustainable land use",
-                "Collaborate with local authorities to enforce anti-deforestation laws",
-                "Introduce reforestation programs with native species"
-            ],
+            confidence: modelResult.ConfidenceScore,
+            actionableInsights: modelResult.actionableInsights
         });
 
         if (newProblem) {
@@ -61,14 +75,18 @@ export const postProblem = async (req: Request, res: Response) => {
 
             await Promise.all([newProblem.save(), user.save()]);
 
+            const sdgRegexConditions = newProblem.SDG.map((sdg: string) => ({
+                SDG: { $regex: `^${sdg}\\.` }
+            }));
+
             const projects = await Project.find({
-                SDG: { $elemMatch: { $regex: `^${newProblem.SDG}` } }
+                $or: sdgRegexConditions
             }).populate("owner");
 
             for (const project of projects) {
                 const owner: any = project.owner;
                 if (owner && owner.mobileNo) {
-                    const message = `🚨 SOS Alert: A new ${newProblem.problem} problem has been reported near ${address}.`;
+                    const message = `🚨 SOS Alert: ${newProblem.problem} - ${address}`;
 
                     await twilioClient.messages.create({
                         body: message,
@@ -116,6 +134,23 @@ export const viewProblemById = async (req: Request, res: Response) => {
         }
     } catch (error) {
         console.log("Error in User viewProblemById controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+export const viewProblems = async (req: Request, res: Response) => {
+    try {
+        const problems = await Problem.find({
+            owner: { $ne: req.user?._id }
+        });
+
+        if (!problems) {
+            res.status(400).json({ error: "Error in fetching problems" })
+        } else {
+            res.status(200).json(problems.reverse());
+        }
+    } catch (error) {
+        console.log("Error in User viewProblems controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }

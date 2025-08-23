@@ -58,6 +58,10 @@ const ProjectSchema = new mongoose.Schema({
         default: [],
         required: true
     },
+    target: {
+        type: Number,
+        required: true
+    },
     fundRaised: {
         type: Number,
         default: 0,
@@ -69,7 +73,19 @@ const ProjectSchema = new mongoose.Schema({
             required: true,
             refPath: "Report",
         }
-    ]
+    ],
+    comments: [
+        {
+            name: {
+                type: String,
+                required: true
+            },
+            message: {
+                type: String,
+                required: true
+            }
+        }
+    ],
 }, { timestamps: true });
 
 const Project = mongoose.model("Project", ProjectSchema);
