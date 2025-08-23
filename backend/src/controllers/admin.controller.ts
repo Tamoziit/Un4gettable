@@ -7,6 +7,7 @@ import Tier from "../models/tier.model";
 import User from "../models/user.model";
 import NGO from "../models/ngo.model";
 import Govt from "../models/govt.model";
+import Community from "../models/community.model";
 //import AWS from "aws-sdk";
 
 export type TierName = "Earth Stewards" | "Ocean Guardians" | "Climate Vanguard";
@@ -286,6 +287,47 @@ export const addMembers = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error("Error populating Earth Stewards tier:", error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
+
+export const populateCommunity = async (req: Request, res: Response) => {
+	try {
+		const { tierId } = req.params;
+
+		// Fetch all users, NGOs, and Govt
+		const users = await User.find({}, "_id");
+		const ngos = await NGO.find({}, "_id");
+		const govts = await Govt.find({}, "_id");
+
+		// Build members array
+		const members = [
+			...users.map((u) => ({ memberId: u._id, reporterModel: "User" })),
+			...ngos.map((n) => ({ memberId: n._id, reporterModel: "NGO" })),
+			...govts.map((g) => ({ memberId: g._id, reporterModel: "Govt" })),
+		];
+
+		// Either create a new Community or update existing
+		let community = await Community.findOne({ tierId });
+
+		if (!community) {
+			community = new Community({
+				tierId,
+				members,
+				chats: [],
+			});
+		} else {
+			// Avoid duplicates
+			const existingIds = new Set(community.members.map((m) => m.memberId.toString()));
+			const newMembers = members.filter((m) => !existingIds.has(m.memberId.toString()));
+			community.members.push(...newMembers);
+		}
+
+		await community.save();
+
+		res.json({ success: true, message: "Community members populated", community });
+	} catch (error) {
+		console.error("Error in populateCommunity controller:", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }

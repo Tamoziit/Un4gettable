@@ -229,6 +229,11 @@ export interface AddCommentProps {
     message: string;
 }
 
+export interface SendMessageProps {
+    id: string;
+    message: string;
+}
+
 export interface Report {
   _id: string;
   timeline: ReportTimeline;
