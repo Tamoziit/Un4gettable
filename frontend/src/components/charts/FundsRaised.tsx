@@ -17,7 +17,10 @@ const FundsRaised = ({ data }: ChartProps) => {
 	return (
 		<div className="bg-white rounded-lg shadow-md p-6">
 			<h2>Funds Raised by SDG</h2>
-			<div className="h-80"><Bar data={fundsData} options={barOptions} /></div>
+			
+			<div className="h-80">
+				<Bar data={fundsData} options={barOptions} />
+			</div>
 		</div>
 	)
 }

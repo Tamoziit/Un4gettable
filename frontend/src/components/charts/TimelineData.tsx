@@ -39,7 +39,10 @@ const TimelineData = ({ data }: ChartProps) => {
 	return (
 		<div className="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
 			<h2>Reported Problems Timeline</h2>
-			<div className="h-96"><Line data={timelineData} options={lineOptions} /></div>
+
+			<div className="h-96">
+				<Line data={timelineData} options={lineOptions} />
+			</div>
 		</div>
 	)
 }
