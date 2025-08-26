@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -13,6 +12,14 @@ import {
 	LineElement
 } from 'chart.js';
 import useGetStats from '../../hooks/useGetStats';
+import AppNavbar from '../../components/navbars/AppNavbar';
+import Spinner from '../../components/Spinner';
+import ProblemDistribution from '../../components/charts/ProblemDistribution';
+import ProblemStatus from '../../components/charts/ProblemStatus';
+import ProblemResolutions from '../../components/charts/ProblemResolutions';
+import FundsRaised from '../../components/charts/FundsRaised';
+import TimelineData from '../../components/charts/TimelineData';
+import type { StatsProps } from '../../types';
 
 ChartJS.register(
 	CategoryScale,
@@ -27,7 +34,7 @@ ChartJS.register(
 );
 
 const ProgressTracker = () => {
-	const [stats, setStats] = useState<any>(null);
+	const [stats, setStats] = useState<StatsProps | null>(null);
 	const { loading, getStats } = useGetStats();
 
 	const fetchStats = async () => {
@@ -40,7 +47,11 @@ const ProgressTracker = () => {
 	}, []);
 
 	if (loading || !stats) {
-		return <div className="text-center text-white p-6">Loading stats...</div>;
+		return (
+			<div className="flex w-full min-h-screen items-center justify-center z-0">
+				<Spinner size="large" />
+			</div>
+		);
 	}
 
 	const data = {
@@ -50,7 +61,7 @@ const ProgressTracker = () => {
 			sdg14: stats.problems14 || 0,
 			sdg15: stats.problems15 || 0
 		},
-		projectStatus: {
+		problemStatus: {
 			pending: stats.pendingProblems || 0,
 			ongoing: stats.ongoingProblems || 0,
 			resolved:
@@ -69,148 +80,72 @@ const ProgressTracker = () => {
 			oneHour: stats.problemsReported?.oneHourAgo || 0,
 			sixHours: stats.problemsReported?.sixHoursAgo || 0,
 			twelveHours: stats.problemsReported?.twelveHoursAgo || 0,
-			oneDay: stats.problemsReported?.oneDayAgo || 0
+			oneDay: stats.problemsReported?.oneDayAgo || 0,
+			threeDays: stats.problemsReported?.threeDaysAgo || 0,
+			sevenDays: stats.problemsReported?.sevenDaysAgo || 0,
+			thirtyDays: stats.problemsReported?.thirtyDaysAgo || 0
 		}
 	};
 
-	const sdgColors = {
-		sdg13: '#3E7E3E',
-		sdg14: '#0077BE',
-		sdg15: '#56C02B'
-	};
-
-	const problemsData = {
-		labels: ['SDG 13: Climate Action', 'SDG 14: Life Below Water', 'SDG 15: Life on Land'],
-		datasets: [{
-			data: [data.problemsBySDG.sdg13, data.problemsBySDG.sdg14, data.problemsBySDG.sdg15],
-			backgroundColor: [sdgColors.sdg13, sdgColors.sdg14, sdgColors.sdg15],
-			borderWidth: 2,
-			borderColor: '#ffffff'
-		}]
-	};
-
-	const projectStatusData = {
-		labels: ['Pending', 'Ongoing', 'Resolved'],
-		datasets: [
-			{
-				label: 'Problems',
-				data: [
-					data.projectStatus.pending,
-					data.projectStatus.ongoing,
-					data.projectStatus.resolved
-				],
-				backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1'],
-				borderRadius: 6,
-				borderSkipped: false
-			}
-		]
-	};
-
-	const resolutionData = {
-		labels: ['User Reports', 'Government Reports'],
-		datasets: [{
-			label: 'Resolved Problems',
-			data: [data.resolvedComparison.byUsers, data.resolvedComparison.byGovt],
-			backgroundColor: ['#FF9F43', '#6C5CE7'],
-			borderRadius: 6,
-			borderSkipped: false
-		}]
-	};
-
-	const fundsData = {
-		labels: ['SDG 13: Climate Action', 'SDG 14: Life Below Water', 'SDG 15: Life on Land'],
-		datasets: [{
-			label: 'Funds Raised (₹)',
-			data: [data.fundsRaised.sdg13, data.fundsRaised.sdg14, data.fundsRaised.sdg15],
-			backgroundColor: [sdgColors.sdg13, sdgColors.sdg14, sdgColors.sdg15],
-			borderRadius: 8,
-			borderSkipped: false
-		}]
-	};
-
-	// === New: Timeline data for reported problems ===
-	const reportedTimelineData = {
-		labels: ['1 Hour Ago', '6 Hours Ago', '12 Hours Ago', '1 Day Ago'],
-		datasets: [{
-			label: 'Problems Reported',
-			data: [
-				data.reportedProblems.oneHour,
-				data.reportedProblems.sixHours,
-				data.reportedProblems.twelveHours,
-				data.reportedProblems.oneDay
-			],
-			borderColor: '#FF6B6B',
-			backgroundColor: 'rgba(255,107,107,0.3)',
-			tension: 0.4,
-			fill: true,
-			pointBackgroundColor: '#FF6B6B',
-			pointBorderColor: '#fff',
-			pointRadius: 6
-		}]
-	};
-
-	// === Chart options ===
-	const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' as const } } };
-	const barOptions = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } };
-	const stackedBarOptions = { ...barOptions, scales: { x: { stacked: true }, y: { stacked: true } } };
-
 	return (
-		<div className="min-h-screen bg-slate-900 p-6">
-			<div className="max-w-7xl mx-auto">
-				{/* Header */}
-				<div className="text-center mb-8">
-					<h1 className="text-4xl font-bold text-gray-100 mb-2">SDG Monitoring Dashboard</h1>
-					<p className="text-lg text-gray-300">Climate Action, Life Below Water & Life on Land</p>
-				</div>
+		<>
+			<AppNavbar />
 
-				{/* Metrics */}
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<h3>Total Problems</h3>
-						<p className="text-3xl font-bold">{data.totalProblems}</p>
+			<div className="px-8 md:px-16 pt-20 pb-6">
+				<div className="max-w-7xl mx-auto">
+					{/* Header */}
+					<div className="text-center mb-8">
+						<h1 className="text-4xl font-bold text-gray-100 mb-2">SDG Monitoring Dashboard</h1>
+						<p className="text-lg text-gray-300">Climate Action, Life Below Water & Life on Land</p>
 					</div>
-					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<h3>Active Problems</h3>
-						<p className="text-3xl font-bold text-blue-600">{data.projectStatus.ongoing}</p>
-					</div>
-					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<h3>Total Resolved</h3>
-						<p className="text-3xl font-bold text-green-600">{data.projectStatus.resolved}</p>
-					</div>
-					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<h3>Total Funds</h3>
-						<p className="text-3xl font-bold text-purple-600">
-							₹{(data.fundsRaised.sdg13 + data.fundsRaised.sdg14 + data.fundsRaised.sdg15).toLocaleString()}
-						</p>
-					</div>
-				</div>
 
-				{/* Charts */}
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-					<div className="bg-white rounded-lg shadow-md p-6">
-						<h2>Problems Distribution by SDG</h2>
-						<div className="h-80"><Doughnut data={problemsData} options={chartOptions} /></div>
+					{/* Metrics */}
+					<div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+						<div className="bg-white rounded-lg shadow-md p-6 text-center">
+							<h3>Total Problems</h3>
+							<p className="text-3xl font-bold">{data.totalProblems}</p>
+						</div>
+						<div className="bg-white rounded-lg shadow-md p-6 text-center">
+							<h3>Active Problems</h3>
+							<p className="text-3xl font-bold text-blue-600">{data.problemStatus.ongoing}</p>
+						</div>
+						<div className="bg-white rounded-lg shadow-md p-6 text-center">
+							<h3>Total Resolved</h3>
+							<p className="text-3xl font-bold text-green-600">{data.problemStatus.resolved}</p>
+						</div>
+						<div className="bg-white rounded-lg shadow-md p-6 text-center">
+							<h3>Total Funds</h3>
+							<p className="text-3xl font-bold text-purple-600">
+								₹{(data.fundsRaised.sdg13 + data.fundsRaised.sdg14 + data.fundsRaised.sdg15).toLocaleString()}
+							</p>
+						</div>
 					</div>
-					<div className="bg-white rounded-lg shadow-md p-6">
-						<h2>Problem Status Overview</h2>
-						<div className="h-80"><Bar data={projectStatusData} options={stackedBarOptions} /></div>
-					</div>
-					<div className="bg-white rounded-lg shadow-md p-6">
-						<h2>Resolution Reporting Comparison</h2>
-						<div className="h-80"><Bar data={resolutionData} options={barOptions} /></div>
-					</div>
-					<div className="bg-white rounded-lg shadow-md p-6">
-						<h2>Funds Raised by SDG</h2>
-						<div className="h-80"><Bar data={fundsData} options={barOptions} /></div>
-					</div>
-					{/* New timeline graph */}
-					<div className="bg-white rounded-lg shadow-md p-6 lg:col-span-2">
-						<h2>Reported Problems Timeline</h2>
-						<div className="h-96"><Line data={reportedTimelineData} options={barOptions} /></div>
+
+					{/* Charts */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+						<ProblemDistribution
+							data={data}
+						/>
+
+						<ProblemStatus
+							data={data}
+						/>
+
+						<ProblemResolutions
+							data={data}
+						/>
+
+						<FundsRaised
+							data={data}
+						/>
+
+						<TimelineData
+							data={data}
+						/>
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

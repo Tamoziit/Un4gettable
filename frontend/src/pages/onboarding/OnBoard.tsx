@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import AppNavbar from "../../../components/navbars/AppNavbar";
+import AppNavbar from "../../components/navbars/AppNavbar";
 
 type OnboardForm = {
   ifsc: string;
@@ -121,10 +121,7 @@ const OnBoard = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-xl px-6 py-3 text-white font-semibold
-                       bg-[#2298b9] hover:bg-[#1f89a7] active:bg-[#1c7b95]
-                       shadow-lg shadow-[#2298b9]/30
-                       transition-transform hover:scale-[1.02] disabled:opacity-60"
+            className="w-full rounded-xl px-6 py-3 text-white font-semibold bg-[#2298b9] hover:bg-[#1f89a7] active:bg-[#1c7b95] shadow-lg shadow-[#2298b9]/30 transition-transform hover:scale-[1.02] disabled:opacity-60"
           >
             {submitting ? "Submitting..." : "Submit"}
           </button>

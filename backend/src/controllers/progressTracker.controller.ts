@@ -67,6 +67,18 @@ export const getStats = async (req: Request, res: Response) => {
                     oneDayAgo: [
                         { $match: { createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } } },
                         { $count: "count" }
+                    ],
+                    threeDaysAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
+                    ],
+                    sevenDaysAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
+                    ],
+                    thirtyDaysAgo: [
+                        { $match: { createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } } },
+                        { $count: "count" }
                     ]
                 }
             },
@@ -84,7 +96,10 @@ export const getStats = async (req: Request, res: Response) => {
                         oneHourAgo: { $ifNull: [{ $arrayElemAt: ["$oneHourAgo.count", 0] }, 0] },
                         sixHoursAgo: { $ifNull: [{ $arrayElemAt: ["$sixHoursAgo.count", 0] }, 0] },
                         twelveHoursAgo: { $ifNull: [{ $arrayElemAt: ["$twelveHoursAgo.count", 0] }, 0] },
-                        oneDayAgo: { $ifNull: [{ $arrayElemAt: ["$oneDayAgo.count", 0] }, 0] }
+                        oneDayAgo: { $ifNull: [{ $arrayElemAt: ["$oneDayAgo.count", 0] }, 0] },
+                        threeDaysAgo: { $ifNull: [{ $arrayElemAt: ["$threeDaysAgo.count", 0] }, 0] },
+                        sevenDaysAgo: { $ifNull: [{ $arrayElemAt: ["$sevenDaysAgo.count", 0] }, 0] },
+                        thirtyDaysAgo: { $ifNull: [{ $arrayElemAt: ["$thirtyDaysAgo.count", 0] }, 0] }
                     }
                 }
             }
@@ -173,7 +188,7 @@ export const getStats = async (req: Request, res: Response) => {
             ...(fundsAgg[0] || { funds13: 0, funds14: 0, funds15: 0 })
         });
     } catch (error) {
-        console.error("Error in getStats controller:", error);
+        console.log("Error in getStats controller:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 };

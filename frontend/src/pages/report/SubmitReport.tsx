@@ -4,18 +4,11 @@ import { useParams } from "react-router-dom";
 import useGenerateReport from "../../hooks/useGenerateReport";
 import { uploadBlobToCloudinary } from "../../utils/uploadToCloudinary";
 import toast from "react-hot-toast";
-
-interface ReportData {
-  startDate: string;
-  endDate: string;
-  actions: string[];
-  workforce: number;
-  articulateProof: string[]; // blob URLs or cloudinary URLs
-}
+import type { ReportSubmissionProps } from "../../types";
 
 const SubmitReport = () => {
   const { type, id } = useParams<{ type: "Project" | "Problem"; id: string }>();
-  const [report, setReport] = useState<ReportData>({
+  const [report, setReport] = useState<ReportSubmissionProps>({
     startDate: "",
     endDate: "",
     actions: [""],
