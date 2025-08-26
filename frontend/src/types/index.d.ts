@@ -234,17 +234,110 @@ export interface SendMessageProps {
     message: string;
 }
 
-export interface Report {
-  _id: string;
-  timeline: ReportTimeline;
-  reporter: ReporterRef;
-  reporterModel: ReporterModel;
-  intentId: string;
-  intentModel: IntentModel;
-  actions: string[];
-  workforce: number;
-  articulateProof: string[];
-  createdAt: string;
-  updatedAt: string;
-  __v?: number;
+export interface ReportSubmissionProps {
+    startDate: string;
+    endDate: string;
+    actions: string[];
+    workforce: number;
+    articulateProof: string[];
 }
+
+export interface ReporterRef {
+    _id: string;
+    name: string;
+    email: string;
+}
+
+export interface Report {
+    _id: string;
+    timeline: {
+        startDate: string;
+        endDate: string;
+    };
+    reporter: ReporterRef;
+    reporterModel: "NGO" | "Govt";
+    intentId: string;
+    intentModel: "Project" | "Problem";
+    actions: string[];
+    workforce: number;
+    articulateProof: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v?: number;
+}
+
+export interface StatsProps {
+    problems: number;
+    problems13: number;
+    problems14: number;
+    problems15: number;
+    pendingProblems: number;
+    ongoingProblems: number;
+    resolvedForUser: number;
+    resolvedForGovt: number;
+    problemsReported: {
+        oneHourAgo: number;
+        sixHoursAgo: number;
+        twelveHoursAgo: number;
+        oneDayAgo: number;
+        threeDaysAgo: number;
+        sevenDaysAgo: number;
+        thirtyDaysAgo: number;
+    };
+    _id?: string | null;
+    funds13: number;
+    funds14: number;
+    funds15: number;
+}
+
+export interface ProblemsBySDG {
+    sdg13: number;
+    sdg14: number;
+    sdg15: number;
+}
+
+export interface ProblemStatus {
+    pending: number;
+    ongoing: number;
+    resolved: number;
+}
+
+export interface ResolvedComparison {
+    byUsers: number;
+    byGovt: number;
+}
+
+export interface FundsRaised {
+    sdg13: number;
+    sdg14: number;
+    sdg15: number;
+}
+
+export interface ReportedProblems {
+    oneHour: number;
+    sixHours: number;
+    twelveHours: number;
+    oneDay: number;
+    threeDays: number;
+    sevenDays: number;
+    thirtyDays: number;
+}
+
+export interface DashboardData {
+    totalProblems: number;
+    problemsBySDG: ProblemsBySDG;
+    problemStatus: ProblemStatus;
+    resolvedComparison: ResolvedComparison;
+    fundsRaised: FundsRaised;
+    reportedProblems: ReportedProblems;
+}
+
+export interface SDGColors {
+    sdg13: string;
+    sdg14: string;
+    sdg15: string;
+}
+
+export interface ChartProps {
+    data: DashboardData
+};

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import AppNavbar from "../../../components/navbars/AppNavbar";
-import { Link } from "react-router-dom";
 import useGetProjects from "../../../hooks/useGetProjects";
 import Spinner from "../../../components/Spinner";
 import type { Project } from "../../../types";
@@ -81,21 +80,6 @@ const ProjectRepository = () => {
         >
           💡 Projects That Need Your Funding 💰
         </h2>
-
-        {/* Onboard CTA */}
-        <div className="mt-6 w-full flex items-center justify-center">
-          <Link
-            to="/repository/problem/onboard"
-            className="inline-flex items-center justify-center gap-2
-               rounded-xl px-6 py-3
-               text-white font-semibold
-               bg-[#2298b9] hover:bg-[#1f89a7] active:bg-[#1c7b95]
-               shadow-lg shadow-[#2298b9]/30
-               transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[#2298b9]"
-          >
-            On Board
-          </Link>
-        </div>
 
         {/* 🔍 Search + Filters */}
         <ProjectSearchBar
