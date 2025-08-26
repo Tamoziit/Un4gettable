@@ -65,7 +65,7 @@ const useUploadProject = () => {
             }
 
             if (data) {
-                toast.success("Project uploaded successfully");
+                toast.success("Project uploaded successfully!");
             }
         } catch (error) {
             if (error instanceof Error) {
