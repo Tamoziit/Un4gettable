@@ -23,7 +23,10 @@ const ProblemStatus = ({ data }: ChartProps) => {
 	return (
 		<div className="bg-white rounded-lg shadow-md p-6">
 			<h2>Problem Status Overview</h2>
-			<div className="h-80"><Bar data={problemStatusData} options={stackedBarOptions} /></div>
+
+			<div className="h-80">
+				<Bar data={problemStatusData} options={stackedBarOptions} />
+			</div>
 		</div>
 	)
 }

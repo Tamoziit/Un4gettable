@@ -17,7 +17,10 @@ const ProblemResolutions = ({ data }: ChartProps) => {
 	return (
 		<div className="bg-white rounded-lg shadow-md p-6">
 			<h2>Resolution Reporting Comparison</h2>
-			<div className="h-80"><Bar data={resolutionData} options={barOptions} /></div>
+
+			<div className="h-80">
+				<Bar data={resolutionData} options={barOptions} />
+			</div>
 		</div>
 	)
 }

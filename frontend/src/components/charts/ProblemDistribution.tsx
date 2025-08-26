@@ -16,7 +16,10 @@ const ProblemDistribution = ({ data }: ChartProps) => {
 	return (
 		<div className="bg-white rounded-lg shadow-md p-6">
 			<h2>Problems Distribution by SDG</h2>
-			<div className="h-80"><Doughnut data={problemsData} options={chartOptions} /></div>
+
+			<div className="h-80">
+				<Doughnut data={problemsData} options={chartOptions} />
+			</div>
 		</div>
 	)
 }
