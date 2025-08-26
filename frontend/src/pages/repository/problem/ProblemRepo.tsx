@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import AppNavbar from "../../../components/navbars/AppNavbar";
 import Spinner from "../../../components/Spinner";
 import useGetProblems from "../../../hooks/useGetProblems";
 import type { Problem } from "../../../types";
 import ProblemSearchBar from "../../../components/repo/ProblemSearch";
+import ProblemCard from "../../../components/repo/ProblemCard";
 
 const ProblemRepository = () => {
   const [problems, setProblems] = useState<Problem[] | null>(null);
@@ -84,7 +84,7 @@ const ProblemRepository = () => {
           shadow-lg shadow-[#2298b9]">
           🌍 Problems Reported Across Regions ⚠️
         </h2>
-        
+
         {/* Search & Filters */}
         <ProblemSearchBar
           onSearch={handleSearch}
@@ -99,52 +99,10 @@ const ProblemRepository = () => {
           {filteredProblems.length === 0 ? (
             <p className="text-gray-400 text-center">No problems found.</p>
           ) : (
-            filteredProblems.map((problem) => (
-              <Link
-                key={problem._id}
-                to={`/repository/problem/${problem._id}`}
-                className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
-              >
-                <div className="flex gap-4">
-                  <img
-                    src={problem.url}
-                    alt={problem.problem}
-                    className="w-32 h-24 object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-[#61C9A8]">
-                      {problem.problem}
-                    </h3>
-                    <p className="text-sm text-gray-300">
-                      <span className="font-semibold text-[#6290C3]">SDG:</span>
-                      {problem.SDG.map((sdg: string, index: number) => (
-                        <span
-                          key={index}
-                          className="ml-2 px-2 py-1 bg-[#6290C3] rounded-lg text-xs text-[#242038] inline-block"
-                        >
-                          {sdg}
-                        </span>
-                      ))}
-                    </p>
-                    <p className="text-sm text-gray-300">
-                      <span className="font-semibold">Alert Level:</span>{" "}
-                      <span
-                        className={
-                          problem.alertLevel === "high"
-                            ? "text-red-400 font-bold"
-                            : "text-yellow-400 font-bold"
-                        }
-                      >
-                        {problem.alertLevel}
-                      </span>
-                    </p>
-                    <p className="text-sm text-[#EAD2AC]">
-                      <span className="font-semibold">Location:</span>{" "}
-                      {problem.location.address}
-                    </p>
-                  </div>
-                </div>
-              </Link>
+            filteredProblems.map((problem: Problem) => (
+              <ProblemCard
+                problem={problem}
+              />
             ))
           )}
         </div>

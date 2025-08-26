@@ -44,7 +44,7 @@ const usePostProblem = () => {
             }
 
             if (data) {
-                toast.success("Project posted successfully");
+                toast.success("Problem posted successfully!");
                 return data;
             }
         } catch (error) {

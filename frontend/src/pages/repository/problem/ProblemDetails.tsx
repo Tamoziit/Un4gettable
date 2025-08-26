@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useGetProblemById from "../../../hooks/useGetProblemById";
 import toast from "react-hot-toast";
 import useAddComment from "../../../hooks/useAddComment";
+import Spinner from "../../../components/Spinner";
 
 const ProblemDetails = () => {
   const { id } = useParams();
@@ -39,7 +40,9 @@ const ProblemDetails = () => {
 
   if (loading || !problem) {
     return (
-      <div className="text-center text-white p-6">Loading Problem Data...</div>
+      <div className="flex items-center justify-center h-screen text-white p-6">
+        <Spinner size="large" />
+      </div>
     );
   }
 
@@ -118,7 +121,7 @@ const ProblemDetails = () => {
               </div>
 
               {/* Alert */}
-              <p className="text-sm text-gray-300 flex items-center gap-2">
+              <p className="text-base text-gray-300 flex items-center gap-2">
                 <span className="font-semibold">Alert Level:</span>{" "}
                 <span
                   className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${isHigh
@@ -130,10 +133,10 @@ const ProblemDetails = () => {
                 </span>
               </p>
 
-              <p className="text-sm text-gray-300 flex items-center gap-2">
+              <p className="text-base text-gray-300 flex items-center gap-2">
                 <span className="font-semibold">Confidence:</span>{" "}
                 <span className="font-medium">
-                  {problem.confidence.toFixed(4)}
+                  {(problem.confidence * 100).toFixed(2)}%
                 </span>
               </p>
             </div>
