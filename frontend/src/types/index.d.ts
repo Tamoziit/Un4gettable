@@ -61,7 +61,10 @@ export interface AuthContextProviderProps {
 
 export interface Project {
     _id: string;
-    owner: string;
+    owner: {
+        _id: string;
+        name: string;
+    };
     ownerModel: "NGO" | "Govt";
     name: string;
     location: {

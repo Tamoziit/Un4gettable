@@ -53,7 +53,7 @@ export const createProject = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Timeline is required" });
             return;
         }
-        if(target < 0) {
+        if (target < 0) {
             res.status(400).json({ error: "Valid target is required" });
             return;
         }
@@ -107,6 +107,9 @@ export const getProjects = async (req: Request, res: Response) => {
 
         const projects = await Project.find({
             _id: { $nin: govt.projectRepoIds }
+        }).populate({
+            path: "owner",
+            select: "name",
         });
 
         if (projects) {
@@ -130,6 +133,9 @@ export const getMyProjects = async (req: Request, res: Response) => {
 
         const projects = await Project.find({
             _id: { $in: govt.projectRepoIds }
+        }).populate({
+            path: "owner",
+            select: "name",
         });
 
         if (projects) {
@@ -147,7 +153,19 @@ export const getProjectById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
 
-        const project = await Project.findById(id);
+        const project = await Project.findById(id)
+            .populate({
+                path: "owner",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "reports",
+                populate: {
+                    path: "reporter",
+                    select: "name"
+                },
+                select: "reporterModel timeline"
+            });
 
         if (project) {
             res.status(200).json(project);
