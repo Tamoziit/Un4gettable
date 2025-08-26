@@ -64,7 +64,7 @@ function App() {
 					<Route path="/onboard" element={authUser ? <OnBoard /> : <Navigate to="/" />} />
 
 					{/* Payments */}
-					<Route path="payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
+					<Route path="/payment/payment-success" element={authUser ? <PaymentSuccess /> : <Navigate to="/" />} />
 
 					{/* Gamification & Community */}
 					<Route path="/game" element={authUser ? <QuizPage /> : <Navigate to="/" />} />
