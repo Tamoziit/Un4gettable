@@ -40,7 +40,7 @@ const ProjectRepository = () => {
   // 👤 Filter by Owner
   const handleFilterOwner = (owner: string) => {
     if (!projects) return;
-    const results = projects.filter((project) => project.owner === owner);
+    const results = projects.filter((project) => project.owner.name === owner);
     setFilteredProjects(results);
   };
 

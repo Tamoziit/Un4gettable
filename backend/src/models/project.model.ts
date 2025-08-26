@@ -71,7 +71,7 @@ const ProjectSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            refPath: "Report",
+            ref: "Report",
         }
     ],
     comments: [

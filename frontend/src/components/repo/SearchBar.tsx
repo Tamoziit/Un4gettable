@@ -6,7 +6,7 @@ type ProjectSearchBarProps = {
   onSearch: (query: string) => void;
   resetFilters: () => void;
   sdgOptions: string[];
-  ownerOptions: string[];
+  ownerOptions: { _id: string; name: string; }[];
   onFilterSDG: (sdg: string) => void;
   onFilterOwner: (owner: string) => void;
 };
@@ -29,7 +29,7 @@ const ProjectSearchBar: React.FC<ProjectSearchBarProps> = ({
     <div className="w-full flex justify-center mt-6">
       <div className="w-full lg:w-[85%] rounded-xl shadow-lg p-4 bg-[#2E2E3A]">
         <div className="flex flex-col gap-4 px-4 py-5 bg-[#2E2E3A]">
-          
+
           {/* Search Box */}
           <div className="w-full rounded-full p-2 bg-[#373F51] flex items-center gap-4 border-2 border-[#373F51] focus-within:border-[#6EEB83]">
             <FaSearch className="text-gray-300 ml-2" />
@@ -51,7 +51,7 @@ const ProjectSearchBar: React.FC<ProjectSearchBarProps> = ({
 
           {/* Filter Controls */}
           <div className="flex flex-wrap gap-4 items-center justify-center mt-2">
-            
+
             {/* SDG Dropdown */}
             <div className="flex items-center gap-2 bg-[#373F51] py-1 px-3 rounded-full border-2 border-[#373F51] hover:border-[#6EEB83]">
               <FaGlobe className="text-blue-400" />
@@ -83,8 +83,8 @@ const ProjectSearchBar: React.FC<ProjectSearchBarProps> = ({
                   Filter by Owner
                 </option>
                 {ownerOptions.map((owner) => (
-                  <option key={owner} value={owner}>
-                    {owner}
+                  <option key={owner._id} value={owner.name}>
+                    {owner.name}
                   </option>
                 ))}
               </select>

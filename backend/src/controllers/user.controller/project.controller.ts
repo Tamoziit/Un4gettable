@@ -3,7 +3,11 @@ import Project from "../../models/project.model";
 
 export const getProjects = async (req: Request, res: Response) => {
     try {
-        const projects = await Project.find();
+        const projects = await Project.find()
+            .populate({
+                path: "owner",
+                select: "name",
+            });
 
         if (projects) {
             res.status(200).json(projects);
@@ -20,7 +24,19 @@ export const getProjectById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
 
-        const project = await Project.findById(id);
+        const project = await Project.findById(id)
+            .populate({
+                path: "owner",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "reports",
+                populate: {
+                    path: "reporter",
+                    select: "name"
+                },
+                select: "reporterModel timeline"
+            });
 
         if (project) {
             res.status(200).json(project);
