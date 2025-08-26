@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface UserSignupParams {
     name: string;
     email: string;
@@ -59,12 +61,29 @@ export interface AuthContextProviderProps {
     children: ReactNode;
 }
 
-export interface Project {
+export interface OwnerPreview {
     _id: string;
-    owner: {
+    name: string;
+    email?: string;
+    profilePic?: string | null;
+}
+
+export interface ReportPreview {
+    timeline: {
+        startDate: string;
+        endDate: string;
+    };
+    _id: string;
+    reporter: {
         _id: string;
         name: string;
     };
+    reporterModel: "NGO" | "Govt"
+}
+
+export interface Project {
+    _id: string;
+    owner: OwnerPreview;
     ownerModel: "NGO" | "Govt";
     name: string;
     location: {
@@ -82,7 +101,7 @@ export interface Project {
     target: number;
     tariff: number[];
     fundRaised: number;
-    reports: string[];
+    reports: ReportPreview[] | string[];
     comments: {
         _id: string;
         name: string;
@@ -344,3 +363,15 @@ export interface SDGColors {
 export interface ChartProps {
     data: DashboardData
 };
+
+export interface CommentForm {
+    message: string;
+}
+
+export interface CommentModalProps {
+    setShowCommentModal: React.Dispatch<React.SetStateAction<boolean>>;
+    submitComment: (e: React.FormEvent) => Promise<void>;
+    commentForm: CommentForm;
+    setCommentForm: React.Dispatch<React.SetStateAction<CommentForm>>;
+    commenting: boolean;
+}
