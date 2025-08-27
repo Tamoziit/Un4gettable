@@ -1,18 +1,24 @@
 import { Link, useParams } from "react-router-dom";
 import AppNavbar from "../../../components/navbars/AppNavbar";
-import MapAtCoords from "../../../components/maps/MapAtCoords";
-import type { Problem } from "../../../types";
+import type { Problem, ReportPreview } from "../../../types";
 import { useEffect, useState } from "react";
 import useGetProblemById from "../../../hooks/useGetProblemById";
 import toast from "react-hot-toast";
 import useAddComment from "../../../hooks/useAddComment";
 import Spinner from "../../../components/Spinner";
+import CommentModal from "../../../components/CommentModal";
+import { useAuthContext } from "../../../context/AuthContext";
+import ReportPreviewCard from "../../../components/project/ReportPreviewCard";
+import ProblemInfo from "../../../components/problem/ProblemInfo";
+import ProblemContent from "../../../components/problem/ProblemContent";
+import ActionableInsights from "../../../components/problem/ActionableInsights";
+import WorkingEntityPreviewCard from "../../../components/problem/WorkingEntityPreviewCard";
 
 const ProblemDetails = () => {
   const { id } = useParams();
   const [problem, setProblem] = useState<Problem | null>(null);
   const { loading, getProblem } = useGetProblemById();
-
+  const { authUser } = useAuthContext();
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [commentForm, setCommentForm] = useState({ message: "" });
   const { loading: commenting, addComment } = useAddComment();
@@ -30,14 +36,6 @@ const ProblemDetails = () => {
     fetchProblem();
   }, []);
 
-  useEffect(() => {
-    function onEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") setShowCommentModal(false);
-    }
-    document.addEventListener("keydown", onEsc);
-    return () => document.removeEventListener("keydown", onEsc);
-  }, []);
-
   if (loading || !problem) {
     return (
       <div className="flex items-center justify-center h-screen text-white p-6">
@@ -45,9 +43,6 @@ const ProblemDetails = () => {
       </div>
     );
   }
-
-  const createdDate = new Date(problem.createdAt).toLocaleString();
-  const isHigh = problem.alertLevel?.toLowerCase() === "high";
 
   const getStatusClass = (status: string) => {
     const lower = status.toLowerCase();
@@ -77,97 +72,23 @@ const ProblemDetails = () => {
   return (
     <>
       <AppNavbar />
+
       <div className="px-8 md:px-16 pt-20 max-w-6xl mx-auto pb-6">
-        <header className="mb-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-100">
-              {problem.problem}
-            </h1>
-            <Link
-              to="/repository/problem"
-              className="text-blue-400 hover:underline"
-            >
-              ← Back to list
-            </Link>
-          </div>
-          <p className="text-sm text-gray-400">Reported: {createdDate}</p>
-        </header>
-
-        {/* Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left: Image + Info */}
-          <div className="rounded-2xl overflow-hidden shadow-lg bg-[#242038]">
-            <img
-              src={problem.url}
-              alt={problem.problem}
-              className="w-full h-72 object-cover"
-            />
-            <div className="p-4 space-y-4">
-              {/* SDGs */}
-              <div>
-                <p className="text-base font-semibold text-gray-200 mb-2">
-                  SDGs Targeted:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {problem.SDG.map((sdg) => (
-                    <span
-                      key={sdg}
-                      className="px-3 py-1 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-sm font-medium"
-                    >
-                      SDG {sdg}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Alert */}
-              <p className="text-base text-gray-300 flex items-center gap-2">
-                <span className="font-semibold">Alert Level:</span>{" "}
-                <span
-                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-base font-bold ${isHigh
-                    ? "bg-red-900/40 text-red-400"
-                    : "bg-yellow-900/40 text-yellow-400"
-                    }`}
-                >
-                  ⚠️ {problem.alertLevel}
-                </span>
-              </p>
-
-              <p className="text-base text-gray-300 flex items-center gap-2">
-                <span className="font-semibold">Confidence:</span>{" "}
-                <span className="font-medium">
-                  {(problem.confidence * 100).toFixed(2)}%
-                </span>
-              </p>
-            </div>
-          </div>
-
-          {/* Right: Map + Location */}
-          <div className="rounded-2xl overflow-hidden shadow-lg bg-[#242038] p-4 flex flex-col">
-            <MapAtCoords
-              lat={problem.location.lat}
-              lon={problem.location.lon}
-              height={300}
-              zoom={16}
-            />
-            <p className="mt-3 text-sm text-gray-300">
-              <span className="font-semibold">Location:</span>{" "}
-              {problem.location?.address}
-            </p>
-          </div>
+        <div className="mb-8">
+          <ProblemInfo
+            problem={problem}
+          />
         </div>
 
+        {/* Main Content Grid */}
+        <ProblemContent
+          problem={problem}
+        />
+
         {/* Actionable Insights */}
-        <section className="mt-8 rounded-2xl bg-[#242038] p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-100 border-b border-gray-700 pb-2 mb-3">
-            Actionable Insights
-          </h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-200">
-            {problem.actionableInsights.map((tip, idx) => (
-              <li key={idx}>{tip}</li>
-            ))}
-          </ul>
-        </section>
+        <ActionableInsights
+          actionableInsights={problem.actionableInsights}
+        />
 
         {/* Reports */}
         <section className="mt-8 rounded-2xl bg-[#242038] p-6 shadow-lg">
@@ -177,21 +98,10 @@ const ProblemDetails = () => {
 
           {Array.isArray(problem.reports) && problem.reports.length > 0 ? (
             <ul className="divide-y divide-gray-700 rounded-xl overflow-hidden border border-gray-700">
-              {problem.reports.map((reportId: string) => (
-                <li key={reportId} className="bg-gray-900/40 hover:bg-gray-900/60 transition">
-                  <Link
-                    to={`/report/${reportId}`}
-                    className="flex items-center justify-between w-full px-4 py-3"
-                  >
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-400">Report</span>
-                      <span className="text-gray-200 text-sm truncate">
-                        ID: {reportId}
-                      </span>
-                    </div>
-                    <span className="text-[#2298b9] font-medium">View →</span>
-                  </Link>
-                </li>
+              {(problem.reports as ReportPreview[]).map((report: ReportPreview) => (
+                <ReportPreviewCard
+                  report={report}
+                />
               ))}
             </ul>
           ) : (
@@ -206,9 +116,13 @@ const ProblemDetails = () => {
               NGOs Working
             </h2>
             {problem.NGOWorking.length > 0 ? (
-              <ul className="list-disc list-inside text-gray-200 space-y-1">
+              <ul className="divide-y divide-gray-700 rounded-xl overflow-hidden border border-gray-700">
                 {problem.NGOWorking.map((ngo, idx) => (
-                  <li key={idx}>{ngo}</li>
+                  <WorkingEntityPreviewCard
+                    entity={ngo}
+                    idx={idx}
+                    defaultImage="/NGO.png"
+                  />
                 ))}
               </ul>
             ) : (
@@ -221,9 +135,13 @@ const ProblemDetails = () => {
               Govt Bodies Working
             </h2>
             {problem.GovtWorking.length > 0 ? (
-              <ul className="list-disc list-inside text-gray-200 space-y-1">
+              <ul className="divide-y divide-gray-700 rounded-xl overflow-hidden border border-gray-700">
                 {problem.GovtWorking.map((gov, idx) => (
-                  <li key={idx}>{gov}</li>
+                  <WorkingEntityPreviewCard
+                    entity={gov}
+                    idx={idx}
+                    defaultImage="/Govt.png"
+                  />
                 ))}
               </ul>
             ) : (
@@ -279,7 +197,7 @@ const ProblemDetails = () => {
                 setShowCommentModal(true);
                 setCommentForm({ message: "" });
               }}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0] hover:bg-[#758BFD] text-[#00241B] px-6 py-3 font-medium transition hover:scale-105 shadow-lg"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0]  hover:bg-[#758BFD] text-[#00241B] px-4 py-2 font-medium transition hover:scale-105 shadow-lg  cursor-pointer text-sm"
             >
               <span>➕</span>
               Add Comment
@@ -290,89 +208,26 @@ const ProblemDetails = () => {
           </div>
         </section>
 
-        {/* Submit report CTA */}
-        <div className="flex justify-center mt-6">
-          <Link
-            to={`/report/submit/Problem/${id}`}
-            className="py-2 px-6 text-base font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition hover:scale-105"
-          >
-            Submit a report
-          </Link>
-        </div>
+        {authUser?.role !== "user" && (
+          <div className="flex justify-center mt-6">
+            <Link
+              to={`/report/submit/Project/${id}`}
+              className="py-3 px-12 text-lg font-semibold rounded-xl shadow-md bg-blue-500 text-white hover:bg-blue-600 transition"
+            >
+              Submit a report
+            </Link>
+          </div>
+        )}
       </div>
 
-      {/* COMMENT MODAL */}
       {showCommentModal && (
-        <div
-          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="comment-modal-title"
-          onClick={() => setShowCommentModal(false)}
-        >
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-
-          <div
-            className="relative z- w-full sm:max-w-lg sm:rounded-2xl bg-gray-900 text-gray-100 shadow-2xl p-6 sm:p-8 mx-0 sm:mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <h3 id="comment-modal-title" className="text-lg font-semibold">
-                Add Comment
-              </h3>
-              <button
-                type="button"
-                onClick={() => setShowCommentModal(false)}
-                className="rounded-lg p-2 hover:bg-gray-800 text-gray-300"
-                aria-label="Close"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={submitComment} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="comment-message"
-                  className="block text-sm font-medium text-gray-300 mb-1"
-                >
-                  Comment *
-                </label>
-                <textarea
-                  id="comment-message"
-                  value={commentForm.message}
-                  onChange={(e) => setCommentForm((p) => ({ ...p, message: e.target.value }))}
-                  placeholder="Share details or context about this problem…"
-                  required
-                  rows={4}
-                  maxLength={500}
-                  className="w-full rounded-xl bg-white border border-gray-700 focus:border-blue-500 focus:ring-blue-500 text-gray-900 p-3 outline-none resize-none"
-                />
-                <p className="mt-1 text-xs text-gray-400">
-                  {commentForm.message.length}/500 characters
-                </p>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowCommentModal(false)}
-                  disabled={commenting}
-                  className="rounded-xl bg-gray-700 hover:bg-gray-600 disabled:opacity-50 text-white px-4 py-2 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={commenting || !commentForm.message.trim()}
-                  className="rounded-xl bg-[#744253] hover:bg-red-600 disabled:opacity-50 text-white px-6 py-2 font-medium transition hover:scale-105"
-                >
-                  {commenting ? "Submitting..." : "Submit Comment"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <CommentModal
+          setShowCommentModal={setShowCommentModal}
+          submitComment={submitComment}
+          commentForm={commentForm}
+          setCommentForm={setCommentForm}
+          commenting={commenting}
+        />
       )}
     </>
   );
