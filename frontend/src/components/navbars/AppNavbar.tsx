@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaHome, FaUserAlt } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
+import { RiBankCardFill } from "react-icons/ri";
 import useLogout from "../../hooks/useLogout";
 
 const AppNavbar = () => {
@@ -17,6 +18,11 @@ const AppNavbar = () => {
 			name: "Profile",
 			icon: <FaUserAlt />,
 			link: "/profile",
+		},
+		{
+			name: "Onboarding",
+			icon: <RiBankCardFill />,
+			link: "/onboard",
 		}
 	];
 

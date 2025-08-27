@@ -114,7 +114,7 @@ export const viewMyProblems = async (req: Request, res: Response) => {
         if (!problems) {
             res.status(400).json({ error: "Error in fetching problems" })
         } else {
-            res.status(200).json(problems);
+            res.status(200).json(problems.reverse());
         }
     } catch (error) {
         console.log("Error in User viewMyProblems controller", error);
@@ -125,7 +125,27 @@ export const viewMyProblems = async (req: Request, res: Response) => {
 export const viewProblemById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const problem = await Problem.findById(id);
+        const problem = await Problem.findById(id)
+            .populate({
+                path: "owner",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "NGOWorking",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "GovtWorking",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "reports",
+                populate: {
+                    path: "reporter",
+                    select: "name"
+                },
+                select: "reporterModel timeline"
+            });
 
         if (!problem) {
             res.status(400).json({ error: "Error in fetching problem data" })

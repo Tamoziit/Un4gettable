@@ -109,18 +109,25 @@ export interface Project {
     }[];
 }
 
+export interface WorkingEntityPreview {
+    _id: string;
+    name: string;
+    email: string;
+    profilePic?: string | null;
+}
+
 export interface Problem {
     _id: string;
-    owner: string;
+    owner: OwnerPreview;
     url: string;
     problem: string;
     SDG: string[];
     alertLevel: string;
     confidence: number;
     actionableInsights: string[];
-    NGOWorking: string[];
-    GovtWorking: string[];
-    reports: string[];
+    NGOWorking: WorkingEntityPreview[];
+    GovtWorking: WorkingEntityPreview[];
+    reports: ReportPreview[] | string[];
     statusForUser: string;
     statusForGovt: string;
     location: {

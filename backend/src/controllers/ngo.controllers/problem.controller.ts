@@ -22,7 +22,27 @@ export const viewProblems = async (req: Request, res: Response) => {
 export const viewProblemById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const problem = await Problem.findById(id);
+        const problem = await Problem.findById(id)
+            .populate({
+                path: "owner",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "NGOWorking",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "GovtWorking",
+                select: "name profilePic email"
+            })
+            .populate({
+                path: "reports",
+                populate: {
+                    path: "reporter",
+                    select: "name"
+                },
+                select: "reporterModel timeline"
+            });
 
         if (!problem) {
             res.status(400).json({ error: "Error in fetching problem data" })
