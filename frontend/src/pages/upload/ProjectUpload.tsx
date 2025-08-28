@@ -6,14 +6,12 @@ import ProjectExtrasForm from "../../components/project/ProjectExtrasForm";
 import type { ProjectExtrasState } from "../../components/project/ProjectExtrasForm";
 import useUploadProject from "../../hooks/useUploadProject";
 
-// Helper: YYYY-MM-DD → DD-MM-YYYY
 const toDDMMYYYY = (input: string) => {
   if (!input) return "";
   const [y, m, d] = input.split("-");
   return `${d}-${m}-${y}`;
 };
 
-// Helper: Trim array values and drop empties
 const cleanArray = (arr: string[]) => arr.map((o) => o.trim()).filter(Boolean);
 
 const ProjectUpload = () => {
@@ -55,12 +53,12 @@ const ProjectUpload = () => {
   return (
     <>
       <LandingNavbar />
-      <main className="mx-auto max-w-5xl px-6 md:px-10 py-8 md:py-12 pb-40">
-        <header className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-100 pt-10 pb-4">
-            Upload Project
+      <main className="w-full lg:w-[80%] mx-auto px-6 md:px-10 pt-22 pb-6">
+        <header className="mb-8 flex items-center justify-center w-full flex-col gap-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-100 text-center">
+            UPLOAD YOUR PROJECT
           </h1>
-          <p className="text-subhead mt-1">
+          <p className="text-gray-300 text-lg italic  text-center">
             Step 1: Enter details. Step 2: Add description, SDGs, objectives, and donation plans.
           </p>
         </header>

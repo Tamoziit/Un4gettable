@@ -20,8 +20,8 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({
 
     return (
         <div className={`mb-6 p-4 rounded-lg ${isCorrect
-                ? 'bg-green-50 border border-green-200'
-                : 'bg-red-50 border border-red-200'
+            ? 'bg-green-50 border border-green-200'
+            : 'bg-red-50 border border-red-200'
             }`}>
             <div className="flex items-center mb-2">
                 <span className="text-2xl mr-2">

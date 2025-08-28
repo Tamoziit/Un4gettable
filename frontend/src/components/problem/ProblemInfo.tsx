@@ -22,7 +22,7 @@ const ProblemInfo = ({ problem }: ProblemProps) => {
 			<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
 				<div>
 					<h1 className="text-3xl font-bold text-gray-100 mb-2">{problem.problem}</h1>
-					<div className="flex items-center gap-2 text-sm text-gray-400">
+					<div className="flex items-center gap-2 text-base text-gray-300">
 						<FaCalendarAlt className="w-4 h-4" />
 						<span>Reported on {formatDate(problem.createdAt)}</span>
 					</div>

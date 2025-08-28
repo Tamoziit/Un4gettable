@@ -91,12 +91,12 @@ const ProgressTracker = () => {
 		<>
 			<AppNavbar />
 
-			<div className="px-8 md:px-16 pt-20 pb-6">
-				<div className="max-w-7xl mx-auto">
+			<div className="px-8 md:px-16 lg:px-22 pt-20 pb-6">
+				<div className="w-full mx-auto">
 					{/* Header */}
-					<div className="text-center mb-8">
-						<h1 className="text-4xl font-bold text-gray-100 mb-2">SDG Monitoring Dashboard</h1>
-						<p className="text-lg text-gray-300">Climate Action, Life Below Water & Life on Land</p>
+					<div className="mb-8 flex flex-col items-center justify-center w-full gap-2">
+						<h1 className="text-4xl font-bold text-gray-100 text-center">SDG Monitoring Dashboard</h1>
+						<p className="text-gray-300 text-lg italic  text-center">Climate Action, Life Below Water & Life on Land</p>
 					</div>
 
 					{/* Metrics */}

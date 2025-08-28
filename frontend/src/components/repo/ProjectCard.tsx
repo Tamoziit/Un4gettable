@@ -10,7 +10,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 		<Link
 			key={project._id}
 			to={`/repository/project/${project._id}`}
-			className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
+			className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md hover:scale-105"
 		>
 			<div className="flex gap-4">
 				<div className="flex-1 gap-0.5">

@@ -73,7 +73,7 @@ const ProblemDetails = () => {
     <>
       <AppNavbar />
 
-      <div className="px-8 md:px-16 pt-20 max-w-6xl mx-auto pb-6">
+      <div className="px-8 md:px-16 pt-20 w-full lg:w-[90%] mx-auto pb-6">
         <div className="mb-8">
           <ProblemInfo
             problem={problem}

@@ -100,12 +100,12 @@ const ProblemUpload = () => {
   return (
     <>
       <LandingNavbar />
-      <div className="mx-auto max-w-5xl px-6 md:px-10 pt-22 pb-6">
-        <header className="mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-100 ">
+      <div className="mx-auto w-full lg:w-[80%] px-6 md:px-10 pt-22 pb-6 gap-2">
+        <header className="mb-8 flex items-center justify-center w-full flex-col">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-100 text-center">
             UPLOAD YOUR PROBLEM
           </h1>
-          <p className="text-subhead mt-1">
+          <p className="text-gray-300 text-lg italic  text-center">
             Capture a photo using your camera or upload an existing image.
           </p>
         </header>
@@ -221,7 +221,7 @@ const ProblemUpload = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
                   placeholder="Describe what you see…"
-                  className="w-full rounded-xl bg-[#22333B] border border-[#A1B5D8] focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none"
+                  className="w-full rounded-xl bg-[#22333B] border border-[#A1B5D8] focus:border-emerald-500 focus:ring-emerald-500 text-gray-100 p-3 outline-none resize-none"
                 />
               </div>
 
