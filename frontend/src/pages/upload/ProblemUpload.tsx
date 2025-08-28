@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import LandingNavbar from "../../components/navbars/LandingNavbar";
 import { toast } from "react-hot-toast";
 import Webcam from "react-webcam";
 import { uploadBlobToCloudinary } from "../../utils/uploadToCloudinary";
 import { getUserCoordinates } from "../../utils/getCoordinates";
 import usePostProblem from "../../hooks/usePostProblem";
 import Spinner from "../../components/Spinner";
+import AppNavbar from "../../components/navbars/AppNavbar";
 
 type CaptureMode = "none" | "camera" | "upload";
 
@@ -99,9 +99,10 @@ const ProblemUpload = () => {
 
   return (
     <>
-      <LandingNavbar />
-      <div className="mx-auto w-full lg:w-[80%] px-6 md:px-10 pt-22 pb-6 gap-2">
-        <header className="mb-8 flex items-center justify-center w-full flex-col">
+      <AppNavbar />
+
+      <div className="mx-auto w-full lg:w-[80%] px-6 md:px-10 pt-22 pb-6">
+        <header className="mb-8 flex items-center justify-center w-full flex-col gap-2">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-100 text-center">
             UPLOAD YOUR PROBLEM
           </h1>

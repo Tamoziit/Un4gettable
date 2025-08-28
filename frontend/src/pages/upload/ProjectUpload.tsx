@@ -1,10 +1,10 @@
 import { useState } from "react";
-import LandingNavbar from "../../components/navbars/LandingNavbar";
 import ProjectDetailsForm from "../../components/project/ProjectDetailsForm";
 import type { ProjectDetailsState } from "../../components/project/ProjectDetailsForm";
 import ProjectExtrasForm from "../../components/project/ProjectExtrasForm";
 import type { ProjectExtrasState } from "../../components/project/ProjectExtrasForm";
 import useUploadProject from "../../hooks/useUploadProject";
+import AppNavbar from "../../components/navbars/AppNavbar";
 
 const toDDMMYYYY = (input: string) => {
   if (!input) return "";
@@ -52,8 +52,9 @@ const ProjectUpload = () => {
 
   return (
     <>
-      <LandingNavbar />
-      <main className="w-full lg:w-[80%] mx-auto px-6 md:px-10 pt-22 pb-6">
+      <AppNavbar />
+
+      <div className="w-full lg:w-[80%] mx-auto px-6 md:px-10 pt-22 pb-6">
         <header className="mb-8 flex items-center justify-center w-full flex-col gap-2">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-100 text-center">
             UPLOAD YOUR PROJECT
@@ -73,7 +74,7 @@ const ProjectUpload = () => {
             submitting={loading}
           />
         </section>
-      </main>
+      </div>
     </>
   );
 };

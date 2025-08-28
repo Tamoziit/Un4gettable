@@ -397,8 +397,48 @@ export interface HotspotViewState {
 }
 
 export interface StateDataProps {
-	stateData: {
+    stateData: {
         state: string;
         loss_ha: number;
     }[];
+}
+
+export interface SenderProps {
+    _id: string;
+    name: string;
+    profilePic?: string | null;
+}
+
+export interface Chat {
+    _id: string;
+    message: string;
+    sender: SenderProps;
+    senderModel: "User" | "NGO" | "Govt";
+    createdAt: string;
+}
+
+export interface Member {
+    _id: string;
+    memberId: {
+        _id: string;
+        name: string;
+        email: string;
+        profilePic?: string | null;
+    }
+    reporterModel: "User" | "NGO" | "Govt";
+}
+
+export interface Tier {
+    tierId: string;
+    tier: string;
+}
+
+export interface Community {
+    _id: string;
+    tierId: Tier;
+    members: Member[];
+    chats: Chat[];
+    createdAt: string;
+    updatedAt: string
+    __v: number;
 }
