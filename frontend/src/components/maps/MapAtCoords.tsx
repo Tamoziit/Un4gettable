@@ -1,17 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
-type Props = {
+interface LocationProps {
   lat: number;
   lon: number;
   address?: string;
-  height?: number;      // optional
-  zoom?: number;        // optional
-  showAddress?: boolean; // optional
+  height?: number;
+  zoom?: number;
+  showAddress?: boolean;
 };
 
 
-const MapWithLocation: React.FC<Props> = ({ lat, lon, address }) => {
+const MapWithLocation = ({ lat, lon, address }: LocationProps) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const MapWithLocation: React.FC<Props> = ({ lat, lon, address }) => {
       // Initialize map with backend coords
       const map = new google.maps.Map(mapRef.current, {
         center: { lat, lng: lon },
-        zoom: 15,
+        zoom: 18,
         mapId,
       });
 
@@ -47,7 +47,7 @@ const MapWithLocation: React.FC<Props> = ({ lat, lon, address }) => {
     <div>
       <div
         ref={mapRef}
-        style={{ width: "100%", height: "350px", borderRadius: "10px" }}
+        style={{ width: "100%", height: "450px", borderRadius: "10px" }}
       />
       {address && (
         <p className="mt-2 text-sm text-gray-300">📍 {address}</p>

@@ -35,11 +35,11 @@ const Dashboard = () => {
 			<div className="flex flex-col min-h-screen">
 				<div className="flex-1 px-8 md:px-16 pt-20 mx-auto pb-6 w-full">
 					{/* Header */}
-					<div className="mb-4 flex flex-col items-center justify-center w-full">
-						<h1 className="text-3xl font-bold text-gray-100 mb-2">
+					<div className="mb-4 flex flex-col items-center justify-center w-full gap-2">
+						<h1 className="text-3xl font-bold text-gray-100 text-center">
 							Global Forest Watch - India Deforestation Dashboard 2024
 						</h1>
-						<p className="text-gray-300 text-lg italic">
+						<p className="text-gray-300 text-lg italic  text-center">
 							Real-time monitoring of forest loss hotspots across Indian states
 						</p>
 					</div>

@@ -10,7 +10,7 @@ const ProblemCard = ({problem}: ProblemCardProps) => {
 		<Link
 			key={problem._id}
 			to={`/repository/problem/${problem._id}`}
-			className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md"
+			className="block bg-[#242038] rounded-xl p-4 hover:bg-[#443850] transition shadow-md hover:scale-105"
 		>
 			<div className="flex gap-4">
 				<img
