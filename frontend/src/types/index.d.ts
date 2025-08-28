@@ -382,3 +382,23 @@ export interface CommentModalProps {
     setCommentForm: React.Dispatch<React.SetStateAction<CommentForm>>;
     commenting: boolean;
 }
+
+export interface HeatMapPoint extends Array<number> {
+    0: number;
+    1: number;
+    2: number;
+}
+
+export interface HotspotViewState {
+    maxLoss: number;
+    selectedView: 'heatmap' | 'markers';
+    setSelectedView: React.Dispatch<React.SetStateAction<'heatmap' | 'markers'>>;
+    setSelectedState: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export interface StateDataProps {
+	stateData: {
+        state: string;
+        loss_ha: number;
+    }[];
+}
