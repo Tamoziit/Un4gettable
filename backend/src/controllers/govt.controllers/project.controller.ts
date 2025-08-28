@@ -113,7 +113,7 @@ export const getProjects = async (req: Request, res: Response) => {
         });
 
         if (projects) {
-            res.status(200).json(projects);
+            res.status(200).json(projects.reverse());
         } else {
             res.status(400).json({ error: "Error in fetching Projects from Repository" });
         }
@@ -139,7 +139,7 @@ export const getMyProjects = async (req: Request, res: Response) => {
         });
 
         if (projects) {
-            res.status(200).json(projects);
+            res.status(200).json(projects.reverse());
         } else {
             res.status(400).json({ error: "Error in fetching Projects from Repository" });
         }
@@ -192,7 +192,7 @@ export const getSuggestions = async (req: Request, res: Response) => {
             SDG: { $in: projectSDGs.map((sdg: string) => sdg.split(".")[0]) }
         });
 
-        res.json(relatedProblems);
+        res.json(relatedProblems.reverse());
     } catch (error) {
         console.log("Error in Govt. getSuggestions controller", error);
         res.status(500).json({ error: "Internal Server Error" });

@@ -10,7 +10,7 @@ export const getProjects = async (req: Request, res: Response) => {
             });
 
         if (projects) {
-            res.status(200).json(projects);
+            res.status(200).json(projects.reverse());
         } else {
             res.status(400).json({ error: "Error in fetching Projects from Repository" });
         }
