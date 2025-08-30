@@ -4,6 +4,7 @@ import User from "../../models/user.model";
 import bcrypt from "bcryptjs";
 import client from "../../redis/client";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie";
+import Tier from "../../models/tier.model";
 
 export const signup = async (req: Request, res: Response) => {
 	try {
@@ -58,6 +59,12 @@ export const signup = async (req: Request, res: Response) => {
 
 		const salt = await bcrypt.genSalt(12);
 		const passwordHash = await bcrypt.hash(password, salt);
+		const tier = await Tier.findOne({ tierName: "Climate Vanguard" });
+
+		if (!tier) {
+			res.status(400).json({ error: "Error in assigning tier to the user" });
+			return;
+		}
 
 		const newUser = new User({
 			name,
@@ -69,11 +76,18 @@ export const signup = async (req: Request, res: Response) => {
 				city,
 				state,
 				pincode
-			}
+			},
+			tier: tier._id
 		});
 
 		if (newUser) {
-			await newUser.save();
+			const newMember = {
+				memberId: newUser._id,
+				memberModel: "User"
+			}
+			tier.members.push(newMember)
+
+			await Promise.all([newUser.save(), tier.save()]);
 
 			const token = generateTokenAndSetCookie(newUser._id, res);
 			const payload = {

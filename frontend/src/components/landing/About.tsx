@@ -20,39 +20,39 @@ const About = () => {
 
 					</p>
 
-		<div className="w-full flex justify-center mt-2 relative">
-  <button className="py-2 px-6 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-                onClick={() => setOpen((prev) => !prev)}
-            >
-                Get Started
-            </button>
-    {open && (
-        <div className="absolute top-full mt-2 bg-[#28384e] shadow-lg rounded z-30 min-w-[180px] flex flex-col">
-            <Link
-                to="/user/signup"
-                className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
-                onClick={() => setOpen(false)}
-            >
-                User Signup
-            </Link>
-            <Link
-                to="/ngo/signup"
-                className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
-                onClick={() => setOpen(false)}
-            >
-                NGO Signup
-            </Link>
-            <Link
-                to="/gov/signup"
-                className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
-                onClick={() => setOpen(false)}
-            >
-                Government Signup
-            </Link>
-        </div>
-    )}
-</div>
-        </div>
+					<div className="w-full flex justify-center mt-2 relative">
+						<button className="py-2 px-6 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition cursor-pointer"
+							onClick={() => setOpen((prev) => !prev)}
+						>
+							Get Started
+						</button>
+						{open && (
+							<div className="absolute top-full mt-2 bg-[#28384e] shadow-lg rounded z-30 min-w-[180px] flex flex-col">
+								<Link
+									to="/user/signup"
+									className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
+									onClick={() => setOpen(false)}
+								>
+									User Signup
+								</Link>
+								<Link
+									to="/ngo/signup"
+									className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
+									onClick={() => setOpen(false)}
+								>
+									NGO Signup
+								</Link>
+								<Link
+									to="/gov/signup"
+									className="px-4 py-2 hover:bg-gray-100 text-left text-[#ffffff] hover:text-black"
+									onClick={() => setOpen(false)}
+								>
+									Government Signup
+								</Link>
+							</div>
+						)}
+					</div>
+				</div>
 			</div>
 		</div>
 	)

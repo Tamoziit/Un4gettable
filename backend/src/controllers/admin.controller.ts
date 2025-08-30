@@ -229,20 +229,17 @@ export const createTier = async (req: Request, res: Response) => {
 	try {
 		const tiers: TierName[] = ["Earth Stewards", "Ocean Guardians", "Climate Vanguard"];
 
-		// Check if tiers already exist
-		const existing = await Tier.find({ tier: { $in: tiers } }).select("tier");
-		const existingNames = existing.map(t => t.tier);
+		const existing = await Tier.find({ tierName: { $in: tiers } }).select("tierName");
+		const existingNames = existing.map(t => t.tierName);
 
-		// Filter out already existing tiers
 		const toCreate = tiers.filter(t => !existingNames.includes(t));
 
 		if (toCreate.length === 0) {
 			return res.status(200).json({ message: "All tiers already exist" });
 		}
 
-		// Create missing tiers
 		const newTiers = await Tier.insertMany(
-			toCreate.map(tier => ({ tier, members: [] }))
+			toCreate.map(tierName => ({ tierName, members: [] }))
 		);
 
 		res.status(201).json({
@@ -302,9 +299,9 @@ export const populateCommunity = async (req: Request, res: Response) => {
 
 		// Build members array
 		const members = [
-			...users.map((u) => ({ memberId: u._id, reporterModel: "User" })),
-			...ngos.map((n) => ({ memberId: n._id, reporterModel: "NGO" })),
-			...govts.map((g) => ({ memberId: g._id, reporterModel: "Govt" })),
+			...users.map((u) => ({ memberId: u._id, memberModel: "User" })),
+			...ngos.map((n) => ({ memberId: n._id, memberModel: "NGO" })),
+			...govts.map((g) => ({ memberId: g._id, memberModel: "Govt" })),
 		];
 
 		// Either create a new Community or update existing
@@ -318,16 +315,26 @@ export const populateCommunity = async (req: Request, res: Response) => {
 			});
 		} else {
 			// Avoid duplicates
-			const existingIds = new Set(community.members.map((m) => m.memberId.toString()));
-			const newMembers = members.filter((m) => !existingIds.has(m.memberId.toString()));
+			const existingIds = new Set(
+				community.members.map((m) => m.memberId.toString())
+			);
+			const newMembers = members.filter(
+				(m) => !existingIds.has(m.memberId.toString())
+			);
 			community.members.push(...newMembers);
 		}
 
 		await community.save();
+
+		await Promise.all([
+			User.updateMany({ _id: { $in: users.map((u) => u._id) } }, { community: community._id }),
+			NGO.updateMany({ _id: { $in: ngos.map((n) => n._id) } }, { community: community._id }),
+			Govt.updateMany({ _id: { $in: govts.map((g) => g._id) } }, { community: community._id }),
+		]);
 
 		res.json({ success: true, message: "Community members populated", community });
 	} catch (error) {
 		console.error("Error in populateCommunity controller:", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
-}
+};

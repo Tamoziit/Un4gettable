@@ -65,6 +65,20 @@ const NGOSchema = new mongoose.Schema({
     objectives: {
         type: Array,
         default: []
+    },
+    tier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tier",
+        required: true
+    },
+    points: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    community: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Community"
     }
 }, { timestamps: true });
 

@@ -11,10 +11,10 @@ const CommunitySchema = new mongoose.Schema(
             {
                 memberId: {
                     type: mongoose.Schema.Types.ObjectId,
-                    refPath: "members.reporterModel",
+                    refPath: "members.memberModel",
                     required: true,
                 },
-                reporterModel: {
+                memberModel: {
                     type: String,
                     required: true,
                     enum: ["NGO", "Govt", "User"],

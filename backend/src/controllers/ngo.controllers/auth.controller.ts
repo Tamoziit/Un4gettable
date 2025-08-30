@@ -4,11 +4,12 @@ import bcrypt from "bcryptjs";
 import client from "../../redis/client";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie";
 import NGO from "../../models/ngo.model";
+import Tier from "../../models/tier.model";
 
 export const signup = async (req: Request, res: Response) => {
 	try {
 		const {
-            regId,
+			regId,
 			name,
 			email,
 			password,
@@ -16,9 +17,9 @@ export const signup = async (req: Request, res: Response) => {
 			city,
 			state,
 			pincode,
-            SDG,
-            aim,
-            objectives
+			SDG,
+			aim,
+			objectives
 		}: NGOSignupBody = req.body;
 
 		if (password.length < 6) {
@@ -45,15 +46,15 @@ export const signup = async (req: Request, res: Response) => {
 			res.status(400).json({ error: "Pincode is required" });
 			return;
 		}
-        if (!regId) {
+		if (!regId) {
 			res.status(400).json({ error: "Govt. Registration Id is required" });
 			return;
 		}
-        if (!aim) {
+		if (!aim) {
 			res.status(400).json({ error: "Organisation aim is required" });
 			return;
 		}
-        if (SDG.length < 1) {
+		if (SDG.length < 1) {
 			res.status(400).json({ error: "Atleast 1 SDG is required" });
 			return;
 		}
@@ -69,37 +70,50 @@ export const signup = async (req: Request, res: Response) => {
 
 		const salt = await bcrypt.genSalt(12);
 		const passwordHash = await bcrypt.hash(password, salt);
+		const tier = await Tier.findOne({ tierName: "Climate Vanguard" });
+
+		if (!tier) {
+			res.status(400).json({ error: "Error in assigning tier to the user" });
+			return;
+		}
 
 		const newUser = new NGO({
-            regId,
+			regId,
 			name,
 			email,
 			password: passwordHash,
 			mobileNo,
 			location: {
-                city,
+				city,
 				state,
 				pincode
 			},
-            SDG,
-            aim,
-            objectives
+			SDG,
+			aim,
+			objectives,
+			tier: tier._id
 		});
 
 		if (newUser) {
-			await newUser.save();
+			const newMember = {
+				memberId: newUser._id,
+				memberModel: "NGO"
+			}
+			tier.members.push(newMember)
+
+			await Promise.all([newUser.save(), tier.save()]);
 
 			const token = generateTokenAndSetCookie(newUser._id, res);
 			const payload = {
 				token,
 				_id: newUser._id,
 				role: newUser.role,
-                regId: newUser.regId,
+				regId: newUser.regId,
 				name: newUser.name,
 				email: newUser.email,
 				mobileNo: newUser.mobileNo,
 				location: newUser.location,
-                SDG: newUser.SDG
+				SDG: newUser.SDG
 			}
 
 			await client.set(`UN-ngo:${newUser._id}`, JSON.stringify(payload));
@@ -110,13 +124,13 @@ export const signup = async (req: Request, res: Response) => {
 				.json({
 					_id: newUser._id,
 					role: newUser.role,
-                    regId: newUser.regId,
+					regId: newUser.regId,
 					name: newUser.name,
 					email: newUser.email,
 					mobileNo: newUser.mobileNo,
 					profilePic: newUser.profilePic,
 					location: newUser.location,
-                    SDG: newUser.SDG,
+					SDG: newUser.SDG,
 					token
 				});
 		}
@@ -147,12 +161,12 @@ export const login = async (req: Request, res: Response) => {
 			token,
 			_id: user._id,
 			role: user.role,
-            regId: user.regId,
+			regId: user.regId,
 			name: user.name,
 			email: user.email,
 			mobileNo: user.mobileNo,
 			location: user.location,
-            SDG: user.SDG
+			SDG: user.SDG
 		}
 
 		await client.set(`UN-ngo:${user._id}`, JSON.stringify(payload));
@@ -163,13 +177,13 @@ export const login = async (req: Request, res: Response) => {
 			.json({
 				_id: user._id,
 				role: user.role,
-                regId: user.regId,
+				regId: user.regId,
 				name: user.name,
 				email: user.email,
 				mobileNo: user.mobileNo,
 				profilePic: user.profilePic,
 				location: user.location,
-                SDG: user.SDG,
+				SDG: user.SDG,
 				token
 			});
 	} catch (error) {

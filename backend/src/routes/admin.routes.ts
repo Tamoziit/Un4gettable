@@ -9,8 +9,8 @@ router.post("/send-sms", verifyAdmin, sendSMS);
 //router.post("/send-sms-2", verifyAdmin, sendSMS2);
 router.get("/rpx-virtual-accounts", verifyAdmin, checkVirtualAccounts);
 router.get("/rpx-check-accounts", verifyAdmin, checkRazorpayAccount);
-router.post("/create-tiers", createTier);
-router.post("/add-members", addMembers);
-router.post('/populate-community/:tierId', populateCommunity);
+router.post("/create-tiers", verifyAdmin, createTier);
+router.post("/add-members", verifyAdmin, addMembers);
+router.post('/populate-community/:tierId', verifyAdmin, populateCommunity);
 
 export default router;

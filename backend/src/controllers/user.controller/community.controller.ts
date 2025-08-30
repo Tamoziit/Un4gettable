@@ -41,7 +41,7 @@ export const sendMessage = async (req: Request, res: Response) => {
         for (const member of community.members) {
             if (member.memberId.toString() === senderId.toString()) continue;
 
-            const receiverSocketId = getReceiverSocketId(member.memberId.toString());
+            const receiverSocketId = getReceiverSocketId(member.memberModel.toString());
             if (receiverSocketId) {
                 io.to(receiverSocketId).emit("newMessage", {
                     sender,
@@ -75,7 +75,7 @@ export const getCommunityDetails = async (req: Request, res: Response) => {
             })
             .populate({
                 path: "tierId",
-                select: "tier"
+                select: "tierName"
             });
 
         if (!community) {
