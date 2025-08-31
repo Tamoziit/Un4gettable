@@ -66,6 +66,7 @@ export const getMyCommunities = async (req: Request, res: Response) => {
         const govt = await Govt.findById(govtId)
             .populate({
                 path: "community",
+                select: "-chats",
                 populate: {
                     path: "tierId",
                     select: "tierName",
