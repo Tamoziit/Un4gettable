@@ -1,5 +1,5 @@
-import type { Member } from "../types";
-import getAvatarUrl from "../utils/getAvatarUrl";
+import type { Member } from "../../types";
+import getAvatarUrl from "../../utils/getAvatarUrl";
 
 interface MemberProps {
 	members: Member[];
@@ -7,7 +7,7 @@ interface MemberProps {
 
 const MemberSideBar = ({ members }: MemberProps) => {
 	return (
-		<div className="w-1/4 border-r border-[#2298b9] p-4 overflow-y-auto bg-[#242038]">
+		<div className="hidden md:block md:w-1/4 border-r border-[#2298b9] p-4 overflow-y-auto bg-[#242038]">
 			<span className="text-lg font-semibold block mb-4 text-gray-100">Members</span>
 			<ul className="space-y-3">
 				{members.map((member: Member) => {

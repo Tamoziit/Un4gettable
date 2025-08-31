@@ -7,12 +7,13 @@ import useSendMessage from "../../hooks/useSendMessage";
 import Spinner from "../../components/Spinner";
 import useGetCommunity from "../../hooks/useGetCommunity";
 import AppNavbar from "../../components/navbars/AppNavbar";
-import type { Chat, Community } from "../../types";
-import MemberSideBar from "../../components/MemberSideBar";
+import type { Chat, Community, TierName } from "../../types";
+import MemberSideBar from "../../components/community/MemberSideBar";
 import getAvatarUrl from "../../utils/getAvatarUrl";
+import { communityCover } from "../../constants/community";
 
 const CommunityChat = () => {
-	const id = "68b35589b9660968ab93f5f9";
+	const { id } = useParams();
 	const { authUser } = useAuthContext();
 	const { socket } = useSocketContext();
 	const { loading: loadingCommunity, getCommunity } = useGetCommunity();
@@ -98,20 +99,16 @@ const CommunityChat = () => {
 			<AppNavbar />
 
 			<div className="mx-auto w-full lg:w-[80%] px-6 md:px-10 pt-22 pb-6">
-				<div className="mb-4 flex flex-col items-center justify-center w-full gap-2">
-					<h1 className="text-3xl font-bold text-gray-200 text-center">
-						Community Chat & Support
-					</h1>
-					<p className="text-gray-300 text-lg italic text-center">
-						Connect with fellow users, share your experiences, and get real-time support on sustainability challenges.
-					</p>
-				</div>
-
-				<div className="flex w-full h-[82vh]">
+				<div className="flex w-full h-[88vh]">
 					<div className="flex flex-col w-full m-3 rounded-lg overflow-hidden border border-[#2298b9] shadow-lg bg-[#1B2432]">
 						{/* Header */}
-						<div className="bg-[#2298b9] text-white p-4 font-bold text-lg">
-							{community.tierId.tier || "Community Chat"}
+						<div className="bg-[#2298b9] flex items-center p-3 gap-2">
+							<img
+								src={`${communityCover[community.tierId.tierName as TierName]}`}
+								alt={community.tierId.tierName}
+								className="size-10 rounded-full"
+							/>
+							<h1 className="text-gray-200 font-bold text-xl">{community.tierId.tierName || "Community Chat"}</h1>
 						</div>
 
 						<div className="flex flex-1 overflow-hidden">
@@ -121,8 +118,14 @@ const CommunityChat = () => {
 							/>
 
 							{/* Chat Area */}
-							<div className="w-3/4 flex flex-col  bg-[#0b1729]">
-								<div className="flex-1 p-4 overflow-y-auto space-y-4">
+							<div className="relative w-full md:w-3/4 flex flex-col bg-[#0b1729] overflow-hidden">
+								<div
+									className="absolute inset-0 bg-cover bg-center opacity-80"
+									style={{ backgroundImage: `url(${communityCover[community.tierId.tierName as TierName]})` }}
+								></div>
+								<div className="absolute inset-0 bg-[#0b1729] opacity-70"></div>
+
+								<div className="flex-1 z-10 p-4 overflow-y-auto space-y-4">
 									{community.chats.length === 0 ? (
 										<p className="text-gray-400 text-center">
 											No messages yet. Start the conversation!
@@ -162,7 +165,7 @@ const CommunityChat = () => {
 								</div>
 
 								{/* Input Box */}
-								<div className="p-3 flex items-center gap-2 border-t border-[#2298b9] bg-[#1B2432]">
+								<div className="p-3 z-10 flex items-center gap-2 border-t border-[#2298b9] bg-[#1B2432]">
 									<input
 										type="text"
 										className="flex-1 border border-[#2298b9]/40 bg-[#242038] text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2298b9]"

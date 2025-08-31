@@ -430,7 +430,7 @@ export interface Member {
 
 export interface Tier {
     tierId: string;
-    tier: string;
+    tierName: string;
 }
 
 export interface Community {
@@ -442,3 +442,21 @@ export interface Community {
     updatedAt: string
     __v: number;
 }
+
+export interface Communities {
+    _id: string;
+    tierId: {
+        _id: string;
+        tierName: string;
+    };
+    members: {
+        memberId: string;
+        memberModel: "User" | "NGO" | "Govt";
+        _id: string;
+    }[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export type TierName = "Climate Vanguard" | "Ocean Guardians" | "Earth Stewards";
