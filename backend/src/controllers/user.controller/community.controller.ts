@@ -41,7 +41,7 @@ export const sendMessage = async (req: Request, res: Response) => {
         for (const member of community.members) {
             if (member.memberId.toString() === senderId.toString()) continue;
 
-            const receiverSocketId = getReceiverSocketId(member.memberId.toString());
+            const receiverSocketId = getReceiverSocketId(member.memberModel.toString());
             if (receiverSocketId) {
                 io.to(receiverSocketId).emit("newMessage", {
                     sender,
@@ -60,6 +60,32 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 };
 
+export const getMyCommunities = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?._id;
+
+        const user = await User.findById(userId)
+            .populate({
+                path: "community",
+                populate: {
+                    path: "tierId",
+                    select: "tierName",
+                },
+            });
+
+        if (!user) {
+            res.status(400).json({ error: "User not found" });
+            return;
+        }
+
+        const communities = user.community;
+        res.status(200).json(communities);
+    } catch (error) {
+        console.error("Error in User getCommunities controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
 export const getCommunityDetails = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -75,11 +101,11 @@ export const getCommunityDetails = async (req: Request, res: Response) => {
             })
             .populate({
                 path: "tierId",
-                select: "tier"
+                select: "tierName"
             });
 
         if (!community) {
-            res.status(404).json({ error: "Community not found" });
+            res.status(400).json({ error: "Community not found" });
             return;
         }
 

@@ -425,7 +425,7 @@ export interface Member {
         email: string;
         profilePic?: string | null;
     }
-    reporterModel: "User" | "NGO" | "Govt";
+    memberModel: "User" | "NGO" | "Govt";
 }
 
 export interface Tier {

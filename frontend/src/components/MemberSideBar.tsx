@@ -16,7 +16,7 @@ const MemberSideBar = ({ members }: MemberProps) => {
 					let badgeText = "";
 					let badgeColor = "";
 
-					switch (member.reporterModel) {
+					switch (member.memberModel) {
 						case "User":
 							badgeText = "User";
 							badgeColor = "bg-blue-600";

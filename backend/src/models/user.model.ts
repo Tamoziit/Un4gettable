@@ -40,12 +40,6 @@ const UserSchema = new mongoose.Schema({
             ref: "Problem"
         }
     ],
-    projectRepoIds: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Project"
-        }
-    ],
     location: {
         city: {
             type: String,
@@ -59,7 +53,23 @@ const UserSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }
+    },
+    tier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tier",
+        required: true
+    },
+    points: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    community: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Community"
+        }
+    ]
 }, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);

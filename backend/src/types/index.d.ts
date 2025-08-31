@@ -67,12 +67,14 @@ export interface User {
     profilePic?: string | null;
     gender: "M" | "F" | "O";
     problemRepoIds: Types.ObjectId[];
-    projectRepoIds: Types.ObjectId[];
     location?: {
         city: string;
         state: string;
         pincode: string
     } | null;
+    tier: Types.ObjectId;
+    points: number;
+    community: Types.ObjectId[];
 }
 
 export interface NGO {
@@ -93,6 +95,9 @@ export interface NGO {
     SDG: string[];
     aim: string;
     objectives: string[];
+    tier: Types.ObjectId;
+    points: number;
+    community: Types.ObjectId[];
 }
 
 export interface Govt {
@@ -110,6 +115,9 @@ export interface Govt {
         state: string;
         pincode: string
     } | null;
+    tier: Types.ObjectId;
+    points: number;
+    community: Types.ObjectId[];
 }
 
 declare module "express" {

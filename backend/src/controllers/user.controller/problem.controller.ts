@@ -5,6 +5,7 @@ import User from "../../models/user.model";
 import getGeocodedAddress from "../../utils/getGeocodedAddress";
 import Project from "../../models/project.model";
 import twilioClient from "../../services/twilio";
+import NGO from "../../models/ngo.model";
 
 export const postProblem = async (req: Request, res: Response) => {
     try {
@@ -75,24 +76,19 @@ export const postProblem = async (req: Request, res: Response) => {
 
             await Promise.all([newProblem.save(), user.save()]);
 
-            const sdgRegexConditions = newProblem.SDG.map((sdg: string) => ({
-                SDG: { $regex: `^${sdg}\\.` }
-            }));
+            const ngos = await NGO.find({
+                SDG: { $in: newProblem.SDG }
+            });
 
-            const projects = await Project.find({
-                $or: sdgRegexConditions
-            }).populate("owner");
-
-            for (const project of projects) {
-                const owner: any = project.owner;
-                if (owner && owner.mobileNo) {
+            for (const ngo of ngos) {
+                if (ngo && ngo.mobileNo) {
                     const message = `🚨 SOS Alert: ${newProblem.problem} - ${address}`;
 
-                    await twilioClient.messages.create({
+                    const sms = await twilioClient.messages.create({
                         body: message,
                         from: process.env.TWILIO_PHONE_NUMBER,
-                        to: `+91${owner.mobileNo}`,
-                        messagingServiceSid: 'MGaf5170e85aba429fd3e1bf6a42f16a73'
+                        to: `+91${ngo.mobileNo}`,
+                        messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID
                     });
                 }
             }

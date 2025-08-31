@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
 
 const TierSchema = new mongoose.Schema({
-    tier: {
+    tierName: {
         type: String,
         required: true,
         enum: ["Climate Vanguard", "Ocean Guardians", "Earth Stewards"]
     },
     members: [
         {
-            id: {
+            memberId: {
                 type: mongoose.Schema.Types.ObjectId,
                 required: true,
                 ref: "memberModel"

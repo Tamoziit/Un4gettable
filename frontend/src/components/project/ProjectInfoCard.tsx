@@ -82,20 +82,20 @@ const ProjectInfoCard = ({ project }: ProjectInfoProps) => {
 								<p className="text-sm text-gray-400">Target Amount</p>
 								<p className="text-2xl font-bold text-green-400 flex items-center justify-center">
 									<FaRupeeSign className="text-lg mr-1" />
-									{project.target?.toLocaleString() || '0'}
+									{project.target?.toLocaleString("en-IN") || '0'}
 								</p>
 							</div>
 							<div className="text-center">
 								<p className="text-sm text-gray-400">Raised So Far</p>
 								<p className="text-2xl font-bold text-yellow-400 flex items-center justify-center">
 									<FaRupeeSign className="text-lg mr-1" />
-									{project.fundRaised?.toLocaleString() || '0'}
+									{project.fundRaised?.toLocaleString("en-IN") || '0'}
 								</p>
 							</div>
 							<div className="text-center">
 								<p className="text-sm text-gray-400">Progress</p>
 								<p className="text-2xl font-bold text-blue-400">
-									{fundingPercentage.toFixed(1)}%
+									{fundingPercentage.toFixed(2)}%
 								</p>
 							</div>
 						</div>
@@ -113,7 +113,7 @@ const ProjectInfoCard = ({ project }: ProjectInfoProps) => {
 						<div className="text-center">
 							<p className="text-sm text-gray-400">
 								Remaining: <span className="text-red-400 font-semibold">
-									₹{Math.max(0, (project.target || 0) - (project.fundRaised || 0)).toLocaleString()}
+									₹{Math.max(0, (project.target || 0) - (project.fundRaised || 0)).toLocaleString("en-IN")}
 								</span>
 							</p>
 						</div>

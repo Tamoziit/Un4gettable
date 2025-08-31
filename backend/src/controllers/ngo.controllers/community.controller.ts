@@ -59,6 +59,32 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 };
 
+export const getMyCommunities = async (req: Request, res: Response) => {
+    try {
+        const ngoId = req.ngo?._id;
+
+        const ngo = await NGO.findById(ngoId)
+            .populate({
+                path: "community",
+                populate: {
+                    path: "tierId",
+                    select: "tierName",
+                },
+            });
+
+        if (!ngo) {
+            res.status(400).json({ error: "NGO not found" });
+            return;
+        }
+
+        const communities = ngo.community;
+        res.status(200).json(communities);
+    } catch (error) {
+        console.error("Error in NGO getCommunities controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
 export const getCommunityDetails = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

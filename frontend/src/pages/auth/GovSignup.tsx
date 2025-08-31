@@ -17,17 +17,17 @@ const GovSignup = () => {
     password: ""
   });
 
-	const { signupGov, loading } = useSignup();
-	const [showPassword, setShowPassword] = useState(false);
+  const { signupGov, loading } = useSignup();
+  const [showPassword, setShowPassword] = useState(false);
 
-	const togglePasswordVisibility = () => {
-		setShowPassword((prevState) => !prevState);
-	};
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		await signupGov(inputs);
-	}
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await signupGov(inputs);
+  }
 
   return (
     <div className="flex flex-col gap-3 items-center justify-center min-h-screen w-full pb-6">
@@ -35,145 +35,145 @@ const GovSignup = () => {
       <div className="h-[3.3px] -mt-1 bg-blue-400 w-10 rounded-lg" />
 
       <div className="flex w-full items-center justify-center">
-				<div className="flex overflow-hidden">
-					<div className="hidden lg:flex items-center justify-center w-[450px] glassmorphic p-4 rounded-lg lg:!rounded-none lg:!rounded-l-lg">
-						<img src="/Logo.png" alt="signup" className="object-cover  h-[400px]" />
-					</div>
-
-      <form className="flex flex-col gap-4 items-start justify-center glassmorphic p-4 w-[320px] md:w-[380px] lg:w-[450px] rounded-lg lg:!rounded-none lg:!rounded-r-lg" onSubmit={handleSubmit} >
-        {/* Govt ID */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5">
-            <FaIdCard /> Government ID
-          </label>
-          <input
-            type="text"
-            placeholder="Enter your Govt ID"
-            required
-            className="input-primary"
-            value={inputs.govtId}
-            onChange={(e) => setInputs({ ...inputs, govtId: e.target.value })}
-          />
-
-        </div>
-
-        {/* Name */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaUser /> Name</label>
-          <input
-            type="text"
-            placeholder="Enter your Name"
-            required
-            className="input-primary"
-            value={inputs.name}
-            onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
-          />
-        </div>
-
-        {/* Email */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><MdEmail /> Email</label>
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            required
-            className="input-primary"
-            value={inputs.email}
-            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
-          />
-        </div>
-
-        {/* Mobile Number */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt /> Mobile Number</label>
-          <input
-            type="number"
-            placeholder="Enter your Mobile Number"
-            required
-            maxLength={10}
-            className="input-primary"
-            value={inputs.mobileNo}
-            onChange={(e) => setInputs({ ...inputs, mobileNo: e.target.value })}
-          />
+        <div className="flex overflow-hidden">
+          <div className="hidden lg:flex items-center justify-center w-[450px] glassmorphic p-4 rounded-lg lg:!rounded-none lg:!rounded-l-lg">
+            <img src="/Logo.png" alt="signup" className="object-cover  h-[400px]" />
           </div>
 
-        {/* City */}
-        <div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaCity />City</label>
-							<input
-								type="text"
-								placeholder="Enter your City"
-								required
-								className="input-primary"
-								value={inputs.city}
-								onChange={(e) => setInputs({ ...inputs, city: e.target.value })}
-							/>
-						</div>
+          <form className="flex flex-col gap-4 items-start justify-center glassmorphic p-4 w-[320px] md:w-[380px] lg:w-[450px] rounded-lg lg:!rounded-none lg:!rounded-r-lg" onSubmit={handleSubmit} >
+            {/* Govt ID */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5">
+                <FaIdCard /> Government ID
+              </label>
+              <input
+                type="text"
+                placeholder="Enter your Govt ID"
+                required
+                className="input-primary"
+                value={inputs.govtId}
+                onChange={(e) => setInputs({ ...inputs, govtId: e.target.value })}
+              />
 
-          {/* State */}
-						<div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaGlobe />State</label>
-							<input
-								type="text"
-								placeholder="Enter your State"
-								required
-								className="input-primary"
-								value={inputs.state}
-								onChange={(e) => setInputs({ ...inputs, state: e.target.value })}
-							/>
-						</div>
+            </div>
 
-        {/* Pincode */}
-						<div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaMapPin />PinCode Number</label>
-							<input
-								type="number"
-								placeholder="Enter your PinCode Number"
-								required
-								className="input-primary"
-								value={inputs.pincode}
-								onChange={(e) => setInputs({ ...inputs, pincode: e.target.value })}
-							/>
-						</div>
-            
-        {/* Password */}  
-        						<div className="flex flex-col gap-1 w-full">
-							<label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaLock />Password</label>
-							<div className="relative">
-								<input
-									type={showPassword ? "text" : "password"}
-									placeholder="Enter your Password"
-									required
-									className="input-primary w-full pr-10"
-									value={inputs.password}
-									onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
-								/>
-								<button
-									type="button"
-									className="absolute right-2 top-1/2 transform -translate-y-1/2 mr-1.5 text-gray-400 hover:text-gray-600 cursor-pointer"
-									onClick={togglePasswordVisibility}
-								>
-									{showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-								</button>
-							</div>
-						</div>
+            {/* Name */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaUser /> Name</label>
+              <input
+                type="text"
+                placeholder="Enter your Name"
+                required
+                className="input-primary"
+                value={inputs.name}
+                onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+              />
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><MdEmail /> Email</label>
+              <input
+                type="email"
+                placeholder="Enter your Email"
+                required
+                className="input-primary"
+                value={inputs.email}
+                onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+              />
+            </div>
+
+            {/* Mobile Number */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaPhoneAlt /> Mobile Number</label>
+              <input
+                type="text"
+                placeholder="Enter your Mobile Number"
+                required
+                maxLength={10}
+                className="input-primary"
+                value={inputs.mobileNo}
+                onChange={(e) => setInputs({ ...inputs, mobileNo: e.target.value })}
+              />
+            </div>
+
+            {/* City */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaCity />City</label>
+              <input
+                type="text"
+                placeholder="Enter your City"
+                required
+                className="input-primary"
+                value={inputs.city}
+                onChange={(e) => setInputs({ ...inputs, city: e.target.value })}
+              />
+            </div>
+
+            {/* State */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaGlobe />State</label>
+              <input
+                type="text"
+                placeholder="Enter your State"
+                required
+                className="input-primary"
+                value={inputs.state}
+                onChange={(e) => setInputs({ ...inputs, state: e.target.value })}
+              />
+            </div>
+
+            {/* Pincode */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaMapPin />PinCode Number</label>
+              <input
+                type="text"
+                placeholder="Enter your PinCode Number"
+                required
+                className="input-primary"
+                value={inputs.pincode}
+                onChange={(e) => setInputs({ ...inputs, pincode: e.target.value })}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-1 w-full">
+              <label className="text-lg font-medium text-gray-300 flex items-center gap-1.5"><FaLock />Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your Password"
+                  required
+                  className="input-primary w-full pr-10"
+                  value={inputs.password}
+                  onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 mr-1.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                </button>
+              </div>
+            </div>
 
 
-        {/* Submit */}
-        <div className="flex items-start justify-center p-2 w-full">
-          <button className="btn-submit w-full lg:w-[90%]" type="submit" disabled={loading}>
-            {loading ? <Spinner size="small" /> : "Signup"}
-          </button>
+            {/* Submit */}
+            <div className="flex items-start justify-center p-2 w-full">
+              <button className="btn-submit w-full lg:w-[90%]" type="submit" disabled={loading}>
+                {loading ? <Spinner size="small" /> : "Signup"}
+              </button>
+            </div>
+
+            <div className="flex -mt-5 -mb-0.5 w-full items-center justify-center">
+              <Link to="/login" className="text-gray-400 hover:text-blue-600">Already have an Account? Login</Link>
+            </div>
+
+          </form>
         </div>
-
-        <div className="flex -mt-5 -mb-0.5 w-full items-center justify-center">
-							<Link to="/login" className="text-gray-400 hover:text-blue-600">Already have an Account? Login</Link>
-					</div>
-
-      </form>
+      </div>
     </div>
-  </div>
-	</div>
   );
 };
 
