@@ -63,10 +63,12 @@ const GovtSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    community: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Community"
-    }
+    community: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Community"
+        }
+    ]
 }, { timestamps: true });
 
 const Govt = mongoose.model("Govt", GovtSchema);

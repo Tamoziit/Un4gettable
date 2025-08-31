@@ -74,7 +74,7 @@ export interface User {
     } | null;
     tier: Types.ObjectId;
     points: number;
-    community?: Types.ObjectId | null;
+    community: Types.ObjectId[];
 }
 
 export interface NGO {
@@ -97,7 +97,7 @@ export interface NGO {
     objectives: string[];
     tier: Types.ObjectId;
     points: number;
-    community?: Types.ObjectId | null;
+    community: Types.ObjectId[];
 }
 
 export interface Govt {
@@ -117,7 +117,7 @@ export interface Govt {
     } | null;
     tier: Types.ObjectId;
     points: number;
-    community?: Types.ObjectId | null;
+    community: Types.ObjectId[];
 }
 
 declare module "express" {

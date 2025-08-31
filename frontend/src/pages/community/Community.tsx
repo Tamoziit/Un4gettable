@@ -12,7 +12,7 @@ import MemberSideBar from "../../components/MemberSideBar";
 import getAvatarUrl from "../../utils/getAvatarUrl";
 
 const CommunityChat = () => {
-	const id = "68a92957d8aec1376211c5ce";
+	const id = "68b35589b9660968ab93f5f9";
 	const { authUser } = useAuthContext();
 	const { socket } = useSocketContext();
 	const { loading: loadingCommunity, getCommunity } = useGetCommunity();

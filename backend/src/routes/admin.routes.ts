@@ -1,5 +1,5 @@
 import express from 'express';
-import { addMembers, checkRazorpayAccount, checkVirtualAccounts, createTier, getToken, populateCommunity, sendSMS } from '../controllers/admin.controller';
+import { addMembers, checkRazorpayAccount, checkVirtualAccounts, createCommunity, createTier, getToken, populateCommunity, sendSMS } from '../controllers/admin.controller';
 import verifyAdmin from '../middlewares/admin.middleware';
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.get("/rpx-virtual-accounts", verifyAdmin, checkVirtualAccounts);
 router.get("/rpx-check-accounts", verifyAdmin, checkRazorpayAccount);
 router.post("/create-tiers", verifyAdmin, createTier);
 router.post("/add-members", verifyAdmin, addMembers);
+router.post("/create-communities", verifyAdmin, createCommunity);
 router.post('/populate-community/:tierId', verifyAdmin, populateCommunity);
 
 export default router;

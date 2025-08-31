@@ -64,10 +64,12 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    community: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Community"
-    }
+    community: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Community"
+        }
+    ]
 }, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);

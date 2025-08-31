@@ -288,6 +288,42 @@ export const addMembers = async (req: Request, res: Response) => {
 	}
 }
 
+export const createCommunity = async (req: Request, res: Response) => {
+	try {
+		const tiers = await Tier.find();
+
+		if (tiers.length === 0) {
+			res.status(400).json({ message: "No tiers found" });
+			return;
+		}
+
+		const createdCommunities = [];
+
+		for (const tier of tiers) {
+			// Checking if community already exists for this tier
+			let community = await Community.findOne({ tierId: tier._id });
+
+			if (!community) {
+				community = new Community({
+					tierId: tier._id,
+					members: [],
+					chats: [],
+				});
+				await community.save();
+				createdCommunities.push(community);
+			}
+		}
+
+		res.status(201).json({
+			message: "Communities created successfully (if not existing)",
+			created: createdCommunities,
+		});
+	} catch (error) {
+		console.error("Error in createCommunity controller:", error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
+
 export const populateCommunity = async (req: Request, res: Response) => {
 	try {
 		const { tierId } = req.params;

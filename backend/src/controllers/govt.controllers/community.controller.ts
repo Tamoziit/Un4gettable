@@ -28,7 +28,7 @@ export const sendMessage = async (req: Request, res: Response) => {
 
         const newMessage = {
             sender: senderId,
-            senderModel: "Govt", 
+            senderModel: "Govt",
             message,
         };
 
@@ -58,6 +58,32 @@ export const sendMessage = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+export const getMyCommunities = async (req: Request, res: Response) => {
+    try {
+        const govtId = req.govt?._id;
+
+        const govt = await Govt.findById(govtId)
+            .populate({
+                path: "community",
+                populate: {
+                    path: "tierId",
+                    select: "tierName",
+                },
+            });
+
+        if (!govt) {
+            res.status(400).json({ error: "Govt. Body not found" });
+            return;
+        }
+
+        const communities = govt.community;
+        res.status(200).json(communities);
+    } catch (error) {
+        console.error("Error in User getCommunities controller", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
 
 export const getCommunityDetails = async (req: Request, res: Response) => {
     try {

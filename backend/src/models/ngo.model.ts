@@ -76,10 +76,12 @@ const NGOSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    community: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Community"
-    }
+    community: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Community"
+        }
+    ]
 }, { timestamps: true });
 
 const NGO = mongoose.model("NGO", NGOSchema);

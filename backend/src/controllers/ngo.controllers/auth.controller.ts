@@ -5,6 +5,7 @@ import client from "../../redis/client";
 import generateTokenAndSetCookie from "../../utils/generateTokenAndSetCookie";
 import NGO from "../../models/ngo.model";
 import Tier from "../../models/tier.model";
+import Community from "../../models/community.model";
 
 export const signup = async (req: Request, res: Response) => {
 	try {
@@ -70,10 +71,16 @@ export const signup = async (req: Request, res: Response) => {
 
 		const salt = await bcrypt.genSalt(12);
 		const passwordHash = await bcrypt.hash(password, salt);
-		const tier = await Tier.findOne({ tierName: "Climate Vanguard" });
 
+		const tier = await Tier.findOne({ tierName: "Climate Vanguard" });
 		if (!tier) {
 			res.status(400).json({ error: "Error in assigning tier to the user" });
+			return;
+		}
+
+		const community = await Community.findOne({ tierId: tier._id });
+		if (!community) {
+			res.status(400).json({ error: "Error in assigning community to the user" });
 			return;
 		}
 
@@ -99,9 +106,11 @@ export const signup = async (req: Request, res: Response) => {
 				memberId: newUser._id,
 				memberModel: "NGO"
 			}
-			tier.members.push(newMember)
+			tier.members.push(newMember);
+			community.members.push(newMember);
+			newUser.community.push(community._id);
 
-			await Promise.all([newUser.save(), tier.save()]);
+			await Promise.all([newUser.save(), tier.save(), community.save()]);
 
 			const token = generateTokenAndSetCookie(newUser._id, res);
 			const payload = {
