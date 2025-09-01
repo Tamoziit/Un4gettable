@@ -24,6 +24,7 @@ import CommunityChat from "./pages/community/Community";
 import ReportDetails from "./pages/report/ReportDetails";
 import OnBoard from "./pages/onboarding/OnBoard";
 import CommunityList from "./pages/community/CommunityList";
+import OpenCommunityChat from "./pages/community/OpenCommunity";
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -71,6 +72,7 @@ function App() {
 					<Route path="/game" element={authUser ? <QuizPage /> : <Navigate to="/" />} />
 					<Route path="/community" element={authUser ? <CommunityList /> : <Navigate to="/" />} />
 					<Route path="/community/:id" element={authUser ? <CommunityChat /> : <Navigate to="/" />} />
+					<Route path="/open-community/:id" element={authUser ? <OpenCommunityChat /> : <Navigate to="/" />} />
 				</Routes>
 				<Toaster />
 			</div>

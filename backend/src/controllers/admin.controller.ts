@@ -8,6 +8,7 @@ import User from "../models/user.model";
 import NGO from "../models/ngo.model";
 import Govt from "../models/govt.model";
 import Community from "../models/community.model";
+import SDGCommunity from "../models/sdgCommunity.model";
 //import AWS from "aws-sdk";
 
 export type TierName = "Earth Stewards" | "Ocean Guardians" | "Climate Vanguard";
@@ -374,3 +375,34 @@ export const populateCommunity = async (req: Request, res: Response) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
+
+export const createSDGCommunities = async (req: Request, res: Response) => {
+	try {
+		const sdgs = ["SDG 13", "SDG 14", "SDG 15"];
+		const created: string[] = [];
+		const skipped: string[] = [];
+
+		for (const sdg of sdgs) {
+			const communityExists = await SDGCommunity.findOne({ SDG: sdg });
+			if (!communityExists) {
+				await SDGCommunity.create({
+					SDG: sdg,
+					members: [],
+					chats: []
+				});
+				created.push(sdg);
+			} else {
+				skipped.push(sdg);
+			}
+		}
+
+		res.status(201).json({
+			message: "SDG communities setup complete",
+			created,
+			skipped
+		});
+	} catch (error) {
+		console.error("Error in createSDGCommunities controller:", error);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}

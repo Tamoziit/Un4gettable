@@ -5,7 +5,7 @@ import { MdGroup } from "react-icons/md";
 import { communityColor, communityCover } from "../../constants/community";
 
 interface CommunityProps {
-	community: Communities
+	community: Communities;
 }
 
 const CommunityCard = ({ community }: CommunityProps) => {
@@ -21,7 +21,7 @@ const CommunityCard = ({ community }: CommunityProps) => {
 					className="absolute inset-0 w-full h-full object-cover"
 				/>
 				<div className="absolute bottom-4 left-4">
-					<span className={`bg-gray-200 bg-opacity-90 ${communityColor[community.tierId.tierName as TierName]} px-3 py-1 rounded-full text-base font-semibold`}>
+					<span className={`bg-gray-200 bg-opacity-90 ${communityColor[community.tierId.tierName as TierName]} px-3 py-1 rounded-full text-sm md:text-base font-semibold`}>
 						{community.tierId.tierName}
 					</span>
 				</div>
@@ -34,15 +34,15 @@ const CommunityCard = ({ community }: CommunityProps) => {
 
 			<div className="p-4">
 				<div className="mb-4">
-					<div className="flex items-center justify-between mb-3">
-						<h3 className="text-base font-semibold text-gray-300 flex items-center gap-2">
+					<div className="flex flex-col md:flex-row gap-1 items-start md:items-center justify-between mb-3">
+						<h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
 							<MdGroup className="text-gray-400 text-xl" />
 							Members: {community.members.length}
 						</h3>
 
-						<h3 className="text-base font-semibold text-gray-300 flex items-center gap-2">
-							Created: {new Date(community.createdAt).toLocaleString("en-IN").split(", ")[0]}
+						<h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
 							<FaCalendarAlt className="text-gray-400 text-lg" />
+							Created: {new Date(community.createdAt).toLocaleString("en-IN").split(", ")[0]}
 						</h3>
 					</div>
 				</div>

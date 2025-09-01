@@ -75,6 +75,7 @@ export interface User {
     tier: Types.ObjectId;
     points: number;
     community: Types.ObjectId[];
+    openCommunity: Types.ObjectId[];
 }
 
 export interface NGO {
@@ -98,6 +99,7 @@ export interface NGO {
     tier: Types.ObjectId;
     points: number;
     community: Types.ObjectId[];
+    openCommunity: Types.ObjectId[];
 }
 
 export interface Govt {
@@ -118,6 +120,7 @@ export interface Govt {
     tier: Types.ObjectId;
     points: number;
     community: Types.ObjectId[];
+    openCommunity: Types.ObjectId[];
 }
 
 declare module "express" {
