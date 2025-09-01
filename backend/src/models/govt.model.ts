@@ -68,6 +68,12 @@ const GovtSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Community"
         }
+    ],
+    openCommunity: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "SDGCommunity"
+        }
     ]
 }, { timestamps: true });
 

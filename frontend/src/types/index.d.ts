@@ -443,11 +443,21 @@ export interface Community {
     __v: number;
 }
 
+export interface OpenCommunity {
+    _id: string;
+    SDG: "SDG 13" | "SDG 14" | "SDG 15";
+    members: Member[];
+    chats: Chat[];
+    createdAt: string;
+    updatedAt: string
+    __v: number;
+}
+
 export interface Communities {
     _id: string;
     tierId: {
         _id: string;
-        tierName: string;
+        tierName: "Climate Vanguard" | "Ocean Guardians" | "Earth Stewards";
     };
     members: {
         memberId: string;
@@ -459,4 +469,23 @@ export interface Communities {
     __v: number;
 }
 
+export interface OpenCommunities {
+    _id: string;
+    SDG: "SDG 13" | "SDG 14" | "SDG 15";
+    members: {
+        memberId: string;
+        memberModel: "User" | "NGO" | "Govt";
+        _id: string;
+    }[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
 export type TierName = "Climate Vanguard" | "Ocean Guardians" | "Earth Stewards";
+
+export interface TierInfo {
+    tierName: "Climate Vanguard" | "Ocean Guardians" | "Earth Stewards";
+    points: string;
+    img: string;
+}
