@@ -1,11 +1,74 @@
-import { Text, View } from "react-native";
+import { ScrollView, Text, View, Image, Dimensions, ImageBackground } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import Carousel from "react-native-reanimated-carousel";
+import { SafeAreaView } from "react-native-safe-area-context";
+import GradientText from "@/components/GradientText";
+import About from "@/components/landing/About";
+
+const { width, height } = Dimensions.get("window");
+
+const bgImages = [
+  require("../assets/images/bg1.jpg"),
+  require("../assets/images/bg2.jpg"),
+  require("../assets/images/bg3.jpg"),
+  require("../assets/images/bg4.jpg"),
+  require("../assets/images/bg5.jpg"),
+];
 
 export default function Index() {
   return (
-    <View className="flex-1 items-center justify-center bg-gray-400">
-      <Text className="text-xl font-bold text-blue-500">
-        Welcome to Nativewind!
-      </Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-[#010b13]">
+      <LinearGradient
+        colors={["#1e3a2f", "#0f2c3f", "#0a1625"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        className="flex-1"
+      >
+        <ScrollView
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            minHeight: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Carousel
+            loop
+            autoPlay
+            autoPlayInterval={3500}
+            width={width}
+            height={height}
+            data={bgImages}
+            scrollAnimationDuration={1200}
+            renderItem={({ item }) => (
+              <ImageBackground
+                source={item}
+                className="w-full h-full"
+                resizeMode="cover"
+              >
+                {/* Overlay */}
+                <View className="absolute inset-0 bg-black/65" />
+              </ImageBackground>
+            )}
+          />
+
+          {/* Foreground content */}
+          <View className="absolute h-[100vh] inset-0 z-10 flex items-center justify-center px-5">
+            <Image
+              source={require("../assets/images/Logo.png")}
+              className="w-60 h-60"
+              resizeMode="contain"
+            />
+            <GradientText text="Aab-O-Hawa" fontSize={48} width={400} />
+            <Text className="text-gray-200 text-base text-center mt-3">
+              ✨Preserving Nature, Protecting Tomorrow✨
+            </Text>
+          </View>
+
+          <About />
+        </ScrollView>
+      </LinearGradient >
+    </SafeAreaView>
   );
 }
