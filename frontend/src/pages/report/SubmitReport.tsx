@@ -155,7 +155,7 @@ const SubmitReport = () => {
             <button
               type="button"
               onClick={addAction}
-              className="px-3 py-1 bg-blue-600/70 text-white rounded-lg hover:bg-blue-700"
+              className="px-3 py-1 bg-blue-600/70 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
             >
               ➕ Add Action
             </button>
@@ -199,7 +199,7 @@ const SubmitReport = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold shadow-md transition"
+              className="px-6 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold shadow-md transition cursor-pointer"
             >
               {loading ? "Submitting..." : "✅ Submit Report"}
             </button>
