@@ -190,22 +190,24 @@ const ProblemDetails = () => {
             <p className="text-gray-400">No comments yet.</p>
           )}
 
-          <div className="text-center mt-4">
-            <button
-              type="button"
-              onClick={() => {
-                setShowCommentModal(true);
-                setCommentForm({ message: "" });
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0]  hover:bg-[#758BFD] text-[#00241B] px-4 py-2 font-medium transition hover:scale-105 shadow-lg  cursor-pointer text-sm"
-            >
-              <span>➕</span>
-              Add Comment
-            </button>
-            <p className="mt-2 text-xs text-gray-400">
-              Share your thoughts or report additional details about this problem
-            </p>
-          </div>
+          {authUser?.role === "user" && (
+            <div className="text-center mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowCommentModal(true);
+                  setCommentForm({ message: "" });
+                }}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#9BA7C0]  hover:bg-[#758BFD] text-[#00241B] px-4 py-2 font-medium transition hover:scale-105 shadow-lg  cursor-pointer text-sm"
+              >
+                <span>➕</span>
+                Add Comment
+              </button>
+              <p className="mt-2 text-xs text-gray-400">
+                Share your thoughts or report additional details about this problem
+              </p>
+            </div>
+          )}
         </section>
 
         {authUser?.role !== "user" && (
@@ -220,7 +222,7 @@ const ProblemDetails = () => {
         )}
       </div>
 
-      {showCommentModal && (
+      {showCommentModal && authUser?.role === "user" && (
         <CommentModal
           setShowCommentModal={setShowCommentModal}
           submitComment={submitComment}
