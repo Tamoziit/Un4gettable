@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'expo-router';
 
 const About = () => {
@@ -9,7 +9,7 @@ const About = () => {
 	return (
 		<View id="about" className="mt-8 w-full items-center justify-center p-4">
 			<View className="w-full flex flex-col gap-1 items-center justify-center">
-				<Text className="text-[39px] text-blue-200">About</Text>
+				<Text className="text-[39px] font-medium text-blue-200">About</Text>
 				<Text className="text-gray-400 italic">What is Aab-o-Hawa? Know about Us!</Text>
 			</View>
 
@@ -32,7 +32,7 @@ const About = () => {
 							className="py-2 px-6 bg-blue-500 rounded-lg shadow-md active:bg-blue-600"
 							onPress={() => setOpen((prev) => !prev)}
 						>
-							<Text className="text-white font-medium">Get Started</Text>
+							<Text className="text-gray-200 font-medium">Get Started</Text>
 						</TouchableOpacity>
 
 						{open && (

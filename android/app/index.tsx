@@ -4,6 +4,8 @@ import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradientText from "@/components/GradientText";
 import About from "@/components/landing/About";
+import Contact from "@/components/landing/Contact";
+import Footer from "@/components/Footer";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,7 +40,7 @@ export default function Index() {
             autoPlay
             autoPlayInterval={3500}
             width={width}
-            height={height}
+            height={90 / 100 * height}
             data={bgImages}
             scrollAnimationDuration={1200}
             renderItem={({ item }) => (
@@ -54,7 +56,7 @@ export default function Index() {
           />
 
           {/* Foreground content */}
-          <View className="absolute h-[100vh] inset-0 z-10 flex items-center justify-center px-5">
+          <View className="absolute h-[85vh] inset-0 z-10 flex items-center justify-center px-5">
             <Image
               source={require("../assets/images/Logo.png")}
               className="w-60 h-60"
@@ -67,6 +69,9 @@ export default function Index() {
           </View>
 
           <About />
+          <Contact />
+          <View className="h-32" />
+          <Footer />
         </ScrollView>
       </LinearGradient >
     </SafeAreaView>
