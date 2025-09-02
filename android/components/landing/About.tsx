@@ -41,7 +41,7 @@ const About = () => {
 									className="px-4 py-2 hover:bg-gray-100"
 									onPress={() => {
 										setOpen(false);
-										router.push("/user/signup");
+										router.push("/(auth)/user/Signup");
 									}}
 								>
 									<Text className="text-white">User Signup</Text>
@@ -51,7 +51,7 @@ const About = () => {
 									className="px-4 py-2 hover:bg-gray-100"
 									onPress={() => {
 										setOpen(false);
-										router.push("/ngo/signup");
+										router.push("/(auth)/ngo/Signup");
 									}}
 								>
 									<Text className="text-white">NGO Signup</Text>
@@ -61,7 +61,7 @@ const About = () => {
 									className="px-4 py-2 hover:bg-gray-100"
 									onPress={() => {
 										setOpen(false);
-										router.push("/gov/signup");
+										router.push("/(auth)/gov/Signup");
 									}}
 								>
 									<Text className="text-white">Government Signup</Text>

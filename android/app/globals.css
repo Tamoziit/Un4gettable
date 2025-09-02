@@ -7,9 +7,13 @@
 }
 
 .btn-primary {
-    @apply bg-blue-500 rounded-lg shadow-md active:bg-blue-600;
+    @apply bg-blue-600 rounded-lg shadow-md active:bg-blue-700;
 }
 
 .btn-secondary {
     @apply border p-1.5 rounded-lg border-light-300;
+}
+
+.glassmorphic {
+    @apply bg-white/5 backdrop-blur-2xl shadow-md border border-white/15
 }
