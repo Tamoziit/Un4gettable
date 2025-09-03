@@ -1,59 +1,32 @@
 import { useState } from "react"
 import { useAuthContext } from "../context/AuthContext";
 import Toast from 'react-native-toast-message';
+import { LoginParams } from "@/interfaces/interfaces";
+import cleanUpToken from "@/utils/cleanUpToken";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EXPO_API_URL } from "@/configs/env";
-import { UserSignupParams } from "@/interfaces/interfaces";
-import cleanUpToken from "@/utils/cleanUpToken";
 
-const useUserSignup = () => {
+const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
     const apiUrl = EXPO_API_URL;
 
-    const signup = async ({
-        name,
-        email,
-        city,
-        state,
-        pincode,
-        mobileNo,
-        password,
-        gender
-    }: UserSignupParams) => {
-        const success = handleInputErrors({
-            name,
-            email,
-            city,
-            state,
-            pincode,
-            mobileNo,
-            password,
-            gender
-        });
+    const login = async ({ role, email, password }: LoginParams) => {
+        const success = handleInputErrors({ role, email, password });
 
         if (!success) return;
 
-        const token = await cleanUpToken() as string;
+        const token = await cleanUpToken();
         setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/user/auth/signup`, {
+            const res = await fetch(`${apiUrl}/${role}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    city,
-                    state,
-                    pincode,
-                    mobileNo,
-                    password,
-                    gender
-                })
+                body: JSON.stringify({ email, password })
             });
             const data = await res.json();
 
@@ -74,8 +47,8 @@ const useUserSignup = () => {
 
                 Toast.show({
                     type: 'success',
-                    text1: 'Signed up successfully!',
-                    text2: 'Welcome to Aab-o-Hawa',
+                    text1: 'Logged in successfully!',
+                    text2: 'Welcome back to Aab-o-Hawa',
                     position: 'top',
                 });
             }
@@ -95,26 +68,26 @@ const useUserSignup = () => {
         }
     }
 
-    return { loading, signup }
+    return { loading, login }
 }
 
-export default useUserSignup;
+export default useLogin;
 
 
-function handleInputErrors({
-    name,
-    email,
-    city,
-    state,
-    pincode,
-    mobileNo,
-    password,
-    gender
-}: UserSignupParams) {
-    if (!name || !email || !password || !mobileNo || !gender || !city || !state || !pincode) {
+function handleInputErrors({ role, email, password }: LoginParams) {
+    if (!email || !password || !role) {
         Toast.show({
             type: 'error',
             text1: "Please fill all the fields",
+            position: 'top',
+        });
+        return false;
+    }
+
+    if (role !== "user" && role !== "ngo" && role !== "govt") {
+        Toast.show({
+            type: 'error',
+            text1: "Select a valid role",
             position: 'top',
         });
         return false;
@@ -124,33 +97,6 @@ function handleInputErrors({
         Toast.show({
             type: 'error',
             text1: "Password should be atleast 6 characters long",
-            position: 'top',
-        });
-        return false;
-    }
-
-    if (name.length < 2) {
-        Toast.show({
-            type: 'error',
-            text1: "Username should be atleast 2 characters long",
-            position: 'top',
-        });
-        return false;
-    }
-
-    if (mobileNo.length !== 10) {
-        Toast.show({
-            type: 'error',
-            text1: "Enter a valid Mobile No.",
-            position: 'top',
-        });
-        return false;
-    }
-
-    if (gender !== "M" && gender !== "F" && gender !== "O") {
-        Toast.show({
-            type: 'error',
-            text1: "Enter a valid gender",
             position: 'top',
         });
         return false;

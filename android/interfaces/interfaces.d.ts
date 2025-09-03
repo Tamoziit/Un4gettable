@@ -61,3 +61,8 @@ export interface AuthContextType {
 export interface AuthContextProviderProps {
     children: ReactNode;
 }
+
+export interface TabIconProps {
+    focused: boolean;
+    icon: any;
+};

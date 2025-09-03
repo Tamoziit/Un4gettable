@@ -39,7 +39,7 @@ const useLogout = () => {
                 Toast.show({
                     type: 'success',
                     text1: 'Logged out successfully!',
-                    text2: 'Thank you for using Noir Media',
+                    text2: 'Thank you for using Aab-o-Hawa',
                     position: 'top',
                 });
             }
