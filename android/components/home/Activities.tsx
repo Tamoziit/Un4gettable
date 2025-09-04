@@ -1,11 +1,18 @@
-import { activities } from "@/constants/activities";
+import { activitiesButtons } from "@/constants/activities";
+import { ActivitiesButtonsProps } from "@/interfaces/interfaces";
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 
 const Activities = () => {
+	const [activities, setActivities] = useState<ActivitiesButtonsProps[]>([]);
 	const screenWidth = Dimensions.get('window').width;
 	const isTablet = screenWidth > 768;
 	const isLarge = screenWidth > 1024;
+
+	useEffect(() => {
+		setActivities(activitiesButtons);
+	}, []);
 
 	const getNumColumns = () => {
 		if (isLarge) return 4;
@@ -38,7 +45,7 @@ const Activities = () => {
 						<TouchableOpacity
 							key={i + index}
 							style={{ width: itemWidth }}
-							className={`flex items-center justify-center py-6 text-lg font-semibold rounded-2xl shadow-md ${activity.color}`}
+							className={`flex items-center justify-center py-6 text-lg font-semibold rounded-2xl shadow-md ${i % 2 === 0 ? "bg-[#1d4d86]" : "bg-[#49752b]"} active:${i % 2 === 0 ? "bg-[#2298b9]" : "bg-[#71af3e]"}`}
 							activeOpacity={0.8}
 							onPress={() => handleActivityPress(activity.path)}
 						>
