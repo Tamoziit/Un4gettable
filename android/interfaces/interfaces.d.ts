@@ -65,4 +65,9 @@ export interface AuthContextProviderProps {
 export interface TabIconProps {
     focused: boolean;
     icon: any;
-};
+}
+
+export interface ActivitiesButtonsProps {
+    label: string;
+    path: string;
+}

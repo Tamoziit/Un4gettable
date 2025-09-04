@@ -42,7 +42,7 @@ const Home = () => {
 							<Text className="text-[#87BFFF] text-4xl font-semibold text-center">
 								Welcome
 							</Text>
-							<Text className="text-[#6EEB83] text-5xl font-bold text-center h-20">
+							<Text className="text-[#6EEB83] text-5xl font-bold text-center h-36">
 								{authUser?.name}
 							</Text>
 						</View>
