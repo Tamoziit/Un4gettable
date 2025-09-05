@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/Logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.AaboHawa"
     },
     "web": {
       "bundler": "metro",
