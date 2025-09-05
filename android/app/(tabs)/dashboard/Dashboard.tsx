@@ -20,10 +20,10 @@ const Dashboard = () => {
       if (existing) {
         existing.loss_ha += row.loss_ha;
       } else {
-        acc.push({ state: row.state, loss_ha: row.loss_ha });
+        acc.push({ state: row.state, loss_ha: row.loss_ha, abbreviation: row.abbreviation });
       }
       return acc;
-    }, [] as { state: string; loss_ha: number }[])
+    }, [] as { state: string; loss_ha: number, abbreviation: string }[])
     .sort((a, b) => b.loss_ha - a.loss_ha)
     .slice(0, 10);
 
