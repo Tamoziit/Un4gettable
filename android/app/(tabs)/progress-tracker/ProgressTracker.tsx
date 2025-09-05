@@ -8,4 +8,4 @@ const ProgressTracker = () => {
   )
 }
 
-export default ProgressTracker;
+export default ProgressTracker

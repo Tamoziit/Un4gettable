@@ -145,3 +145,9 @@ __pycache__/
 .venv
 venv/
 .vscode/
+
+# Android build outputs
+android/android/.gradle/
+android/android/app/build/
+android/android/build/
+android/android/local.properties

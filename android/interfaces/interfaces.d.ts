@@ -71,3 +71,10 @@ export interface ActivitiesButtonsProps {
     label: string;
     path: string;
 }
+
+export interface HotspotViewState {
+    maxLoss: number;
+    selectedView: 'heatmap' | 'markers';
+    setSelectedView: React.Dispatch<React.SetStateAction<'heatmap' | 'markers'>>;
+    setSelectedState: React.Dispatch<React.SetStateAction<string | null>>;
+}
