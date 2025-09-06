@@ -53,10 +53,10 @@ const Dashboard = () => {
           }}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Header Section - Fixed */}
+          {/* Header Section */}
           <View className="flex flex-col items-center justify-center gap-2 mb-6">
             <Text className="text-2xl font-bold text-gray-100 text-center">
-              Global Forest Watch - India Deforestation Dashboard 2024
+              Global Forest Watch - India Deforestation Dashboard
             </Text>
             <Text className="text-gray-300 text-base italic text-center">
               Real-time monitoring of forest loss hotspots across Indian states
