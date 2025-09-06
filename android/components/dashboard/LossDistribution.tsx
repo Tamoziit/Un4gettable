@@ -14,8 +14,8 @@ const LossDistribution = ({ stateData }: StateDataProps) => {
   }));
 
   return (
-    <View className="bg-[#242038] rounded-2xl p-4">
-      <Text className="text-gray-200 text-lg font-bold mb-4">
+    <View className="bg-[#242038] rounded-2xl p-4 flex flex-col items-center justify-center">
+      <Text className="text-gray-200 text-lg font-semibold mb-4">
         📉 Loss Distribution
       </Text>
 
@@ -27,7 +27,7 @@ const LossDistribution = ({ stateData }: StateDataProps) => {
           backgroundColor: "#242038",
           backgroundGradientFrom: "#242038",
           backgroundGradientTo: "#242038",
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: () => `rgba(96, 165, 250, 255)`,
         }}
         accessor="population"
         backgroundColor="transparent"
