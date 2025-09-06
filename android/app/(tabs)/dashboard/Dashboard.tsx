@@ -40,7 +40,7 @@ const Dashboard = () => {
         className="flex-1"
       >
         <Header />
-        
+
         <ScrollView
           className="flex-1"
           showsVerticalScrollIndicator={false}
@@ -48,7 +48,8 @@ const Dashboard = () => {
             flexGrow: 1,
             paddingHorizontal: 20,
             alignItems: "center",
-            paddingVertical: 16
+            paddingVertical: 16,
+            paddingBottom: 60
           }}
           keyboardShouldPersistTaps="handled"
         >
@@ -76,7 +77,7 @@ const Dashboard = () => {
             />
 
             {/* Charts Section */}
-            <View className="flex-1 space-y-6">
+            <View className="mb-6">
               {selectedState && (
                 <View className="bg-[#242038] rounded-lg p-4 border-l-4 border-blue-500">
                   <Text className="text-gray-200 text-base font-bold mb-2">
@@ -94,9 +95,11 @@ const Dashboard = () => {
                 </View>
               )}
 
-              <StatesForestLoss stateData={stateData} />
-              <LossDistribution stateData={stateData} />
-              <CriticalAlert stateData={stateData} />
+              <View className="flex flex-col gap-4 mt-4 w-full p-2">
+                <StatesForestLoss stateData={stateData} />
+                <LossDistribution stateData={stateData} />
+                <CriticalAlert stateData={stateData} />
+              </View>
             </View>
           </View>
 
