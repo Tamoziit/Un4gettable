@@ -38,7 +38,7 @@ const Home = () => {
 							className="size-80"
 						/>
 
-						<View className="flex flex-col items-center gap-1">
+						<View className="flex flex-col items-center gap-1 px-3">
 							<Text className="text-[#87BFFF] text-4xl font-semibold text-center">
 								Welcome
 							</Text>

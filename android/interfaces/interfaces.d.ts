@@ -490,3 +490,8 @@ export interface TierInfo {
     points: string;
     img: string;
 }
+
+export interface ActivitiesButtonsProps {
+    label: string,
+    path: string;
+}

@@ -1,6 +1,7 @@
 import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
 import { useState } from 'react'
 import { useRouter } from 'expo-router';
+import { images } from '@/constants/images';
 
 const About = () => {
 	const [open, setOpen] = useState(false);
@@ -15,7 +16,7 @@ const About = () => {
 
 			<View className="flex flex-col gap-4 mt-10 items-center justify-center">
 				<Image
-					source={require("../../assets/images/about.jpg")}
+					source={images.about}
 					alt="about"
 					className="w-[200px] h-[200px] z-20 rounded-lg"
 				/>

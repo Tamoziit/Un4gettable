@@ -8,15 +8,16 @@ import Contact from "@/components/landing/Contact";
 import Footer from "@/components/Footer";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { images } from "@/constants/images";
 
 const { width, height } = Dimensions.get("window");
 
 const bgImages = [
-  require("../assets/images/bg1.jpg"),
-  require("../assets/images/bg2.jpg"),
-  require("../assets/images/bg3.jpg"),
-  require("../assets/images/bg4.jpg"),
-  require("../assets/images/bg5.jpg"),
+  images.bg1,
+  images.bg2,
+  images.bg3,
+  images.bg4,
+  images.bg5
 ];
 
 export default function Index() {
