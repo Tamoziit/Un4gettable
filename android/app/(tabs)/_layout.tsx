@@ -133,6 +133,22 @@ const _layout = () => {
 			/>
 
 			<Tabs.Screen
+				name="repository/project/[id]"
+				options={{
+					href: null,
+					headerShown: false,
+				}}
+			/>
+
+			<Tabs.Screen
+				name="repository/problem/[id]"
+				options={{
+					href: null,
+					headerShown: false,
+				}}
+			/>
+
+			<Tabs.Screen
 				name="dashboard/Dashboard"
 				options={{
 					href: null,

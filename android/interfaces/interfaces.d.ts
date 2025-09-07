@@ -41,7 +41,6 @@ export interface GovSignupParams {
     password: string;
 }
 
-
 export interface AuthUser {
     _id: string;
     role: "user" | "ngo" | "govt";
@@ -59,6 +58,11 @@ export interface AuthContextType {
 
 export interface AuthContextProviderProps {
     children: ReactNode;
+}
+
+export interface TabIconProps {
+    focused: boolean;
+    icon: any;
 }
 
 export interface OwnerPreview {
@@ -81,7 +85,7 @@ export interface ReportPreview {
     reporterModel: "NGO" | "Govt"
 }
 
-export interface Project {
+export interface ProjectProps {
     _id: string;
     owner: OwnerPreview;
     ownerModel: "NGO" | "Govt";
@@ -109,6 +113,15 @@ export interface Project {
     }[];
 }
 
+export interface SearchBarProps {
+    onSearch: (query: string) => void;
+    resetFilters: () => void;
+    sdgOptions: string[];
+    ownerOptions: { _id: string; name: string }[];
+    onFilterSDG: (sdg: string) => void;
+    onFilterOwner: (owner: string) => void;
+};
+
 export interface WorkingEntityPreview {
     _id: string;
     name: string;
@@ -116,7 +129,7 @@ export interface WorkingEntityPreview {
     profilePic?: string | null;
 }
 
-export interface Problem {
+export interface ProblemProps {
     _id: string;
     owner: OwnerPreview;
     url: string;
