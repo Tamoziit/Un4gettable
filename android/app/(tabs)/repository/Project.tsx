@@ -64,8 +64,6 @@ const Project = () => {
   const sdgOptions = Array.from(new Set(projects?.flatMap((p) => p.SDG) || []));
   const ownerOptions = Array.from(new Set(projects?.map((p) => p.owner) || []));
 
-  console.log(projects)
-
   return (
     <SafeAreaView className="flex-1 bg-[#010b13]">
       <LinearGradient

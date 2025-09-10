@@ -44,7 +44,7 @@ export const getProjectById = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Error in fetching Project from Repository" });
         }
     } catch (error) {
-        console.log("Error in NGO getProjectById controller", error);
+        console.log("Error in User getProjectById controller", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
