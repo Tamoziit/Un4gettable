@@ -1,7 +1,7 @@
-import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity, Linking, FlatList } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ProjectProps } from '@/interfaces/interfaces';
+import { ProjectProps, ReportPreview } from '@/interfaces/interfaces';
 import useGetProjectById from '@/hooks/useGetProjectById';
 import { useAuthContext } from '@/context/AuthContext';
 import Header from '@/components/Header';
@@ -12,6 +12,7 @@ import Toast from 'react-native-toast-message';
 import ProjectInfoCard from '@/components/project/ProjectInfoCard';
 import useInitiatePayment from '@/hooks/useInitiatePayment';
 import PlanOption from '@/components/PlanOption';
+import ReportPreviewCard from '@/components/project/ReportPreviewCard';
 
 const ProjectDetails = () => {
 	const { id } = useLocalSearchParams();
@@ -76,8 +77,6 @@ const ProjectDetails = () => {
 			});
 		}
 	};
-
-	console.log(selectedAmount, paying)
 
 	useEffect(() => {
 		fetchProject();
@@ -163,6 +162,56 @@ const ProjectDetails = () => {
 									<Text className="text-lg font-semibold text-[#00241B]">Donate now</Text>
 								)}
 							</TouchableOpacity>
+						</View>
+
+						<View className="mb-4 flex-col gap-6 w-full items-center justify-center bg-gray-800/60 p-6 rounded-xl">
+							<Text className="text-blue-400 text-2xl font-semibold">📋 Reports</Text>
+
+							{Array.isArray(project.reports) && project.reports.length > 0 ? (
+								<View className="rounded-lg border border-gray-700 overflow-hidden w-full">
+									<FlatList
+										data={(project.reports as ReportPreview[])}
+										keyExtractor={(_, index) => index.toString()}
+										renderItem={({ item }) => (
+											<ReportPreviewCard report={item} />
+										)}
+										ItemSeparatorComponent={() => <View className="w-[1px] bg-gray-700" />}
+										horizontal
+										showsHorizontalScrollIndicator={false}
+									/>
+								</View>
+							) : (
+								<Text className="text-gray-400">No reports yet.</Text>
+							)}
+						</View>
+
+						<View className="mb-4 flex-col gap-6 w-full items-center justify-center bg-gray-800/60 p-6 rounded-xl">
+							<View className="flex-col items-center justify-center">
+								<Text className="text-blue-400 text-2xl font-semibold">💬 Comments</Text>
+								<Text className="text-sm text-gray-400">
+									{Array.isArray(project.comments) ? project.comments.length : 0} comments
+								</Text>
+							</View>
+
+							{Array.isArray(project.comments) && project.comments.length > 0 ? (
+								<View className="rounded-lg border border-gray-700 overflow-hidden w-full">
+									<FlatList
+										data={(project.comments)}
+										keyExtractor={(_, index) => index.toString()}
+										renderItem={({ item }) => (
+											<View className="bg-[#242038] p-3 rounded-lg border border-gray-700 w-full">
+												<Text className="text-sm text-gray-300 font-semibold">{item.name}</Text>
+												<Text className="text-gray-200 mt-1">{item.message}</Text>
+											</View>
+										)}
+										ItemSeparatorComponent={() => <View className="w-[1px] bg-gray-700" />}
+										horizontal
+										showsHorizontalScrollIndicator={false}
+									/>
+								</View>
+							) : (
+								<Text className="text-gray-400">No comments yet.</Text>
+							)}
 						</View>
 					</View>
 				</ScrollView>

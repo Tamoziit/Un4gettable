@@ -37,9 +37,12 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 					<Text className="text-sm text-gray-300 flex items-center gap-1 mb-0.5">
 						<Text className="font-semibold">Owner: </Text> {project.owner.name}
 					</Text>
-					<Text className="text-sm text-gray-300 flex items-center gap-1">
-						<Text className="font-semibold">Stakeholder: </Text><Text className="ml-1 px-2 py-1 bg-slate-800 border border-gray-300 rounded-lg text-xs font-semibold text-gray-300 inline-block">{project.ownerModel}</Text>
-					</Text>
+					<View className=" flex-row items-center">
+						<Text className="font-semibold text-sm text-gray-300">Stakeholder: </Text>
+						<View className="px-2 py-0.5 bg-slate-800 border border-gray-300 rounded-lg">
+							<Text className='text-xs font-semibold text-gray-300 inline-block'>{project.ownerModel}</Text>
+						</View>
+					</View>
 					<Text className="text-sm text-[#B76D68]">
 						<Text className="font-semibold">Aim:</Text> {project.aim}
 					</Text>

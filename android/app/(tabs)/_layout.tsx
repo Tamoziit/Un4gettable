@@ -179,6 +179,30 @@ const _layout = () => {
 					headerShown: false,
 				}}
 			/>
+
+			<Tabs.Screen
+				name="report/[id]"
+				options={{
+					href: null,
+					headerShown: false,
+				}}
+			/>
+
+			<Tabs.Screen
+				name="report/submit/project/[id]"
+				options={{
+					href: null,
+					headerShown: false,
+				}}
+			/>
+
+			<Tabs.Screen
+				name="report/submit/problem/[id]"
+				options={{
+					href: null,
+					headerShown: false,
+				}}
+			/>
 		</Tabs>
 	)
 }
