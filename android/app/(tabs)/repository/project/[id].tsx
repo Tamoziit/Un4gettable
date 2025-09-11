@@ -11,8 +11,8 @@ import { images } from '@/constants/images';
 import Toast from 'react-native-toast-message';
 import ProjectInfoCard from '@/components/project/ProjectInfoCard';
 import useInitiatePayment from '@/hooks/useInitiatePayment';
-import PlanOption from '@/components/PlanOption';
-import ReportPreviewCard from '@/components/project/ReportPreviewCard';
+import PlanOption from '@/components/project/PlanOption';
+import ReportPreviewCard from '@/components/report/ReportPreviewCard';
 import useAddComment from '@/hooks/useAddComment';
 import CommentModal from '@/components/CommentModal';
 

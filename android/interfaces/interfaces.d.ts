@@ -114,14 +114,23 @@ export interface ProjectProps {
     }[];
 }
 
-export interface SearchBarProps {
+export interface ProjectSearchBarProps {
     onSearch: (query: string) => void;
     resetFilters: () => void;
     sdgOptions: string[];
     ownerOptions: { _id: string; name: string }[];
     onFilterSDG: (sdg: string) => void;
     onFilterOwner: (owner: string) => void;
-};
+}
+
+export interface ProblemSearchProps {
+    onSearch: (query: string) => void;
+    resetFilters: () => void;
+    sdgOptions: string[];
+    locationOptions: string[];
+    onFilterSDG: (sdg: string) => void;
+    onFilterLocation: (location: string) => void;
+}
 
 export interface WorkingEntityPreview {
     _id: string;
