@@ -85,7 +85,7 @@ const ProjectDetails = () => {
 
 	useEffect(() => {
 		fetchProject();
-	}, []);
+	}, [id]);
 
 	const submitComment = async () => {
 		const message = commentForm.message.trim();
