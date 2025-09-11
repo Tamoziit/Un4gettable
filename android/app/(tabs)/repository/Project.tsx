@@ -1,18 +1,19 @@
 import Header from '@/components/Header';
 import ProjectCard from '@/components/repository/ProjectCard';
-import SearchBar from '@/components/repository/SearchBar';
+import ProjectSearchBar from '@/components/repository/ProjectSearchBar';
 import useGetProjects from '@/hooks/useGetProjects';
 import { ProjectProps } from '@/interfaces/interfaces';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Project = () => {
   const [projects, setProjects] = useState<ProjectProps[] | null>(null);
   const [filteredProjects, setFilteredProjects] = useState<ProjectProps[] | null>(null);
   const { loading, getProjects } = useGetProjects();
+  const insets = useSafeAreaInsets();
 
   const fetchProjects = async () => {
     const fetchedProjects = await getProjects();
@@ -74,7 +75,7 @@ const Project = () => {
       >
         <Header />
 
-        <View className="px-4 pt-6 pb-20 flex flex-col items-center justify-center w-full">
+        <View className="px-4 pt-6">
           <Text className="text-2xl font-bold text-gray-100 text-center mb-2">
             PROJECT REPOSITORY
           </Text>
@@ -91,7 +92,7 @@ const Project = () => {
             <Icon name="cash-multiple" size={24} color="#2298b9" />
           </View>
 
-          <SearchBar
+          <ProjectSearchBar
             onSearch={handleSearch}
             resetFilters={resetFilters}
             sdgOptions={sdgOptions}
@@ -99,18 +100,22 @@ const Project = () => {
             onFilterSDG={handleFilterSDG}
             onFilterOwner={handleFilterOwner}
           />
+        </View>
 
+        <View className="flex-1 px-4">
           <FlatList
             data={filteredProjects}
             keyExtractor={(item) => item._id.toString()}
             contentContainerStyle={{
               marginTop: 20,
-              paddingBottom: 24
+              paddingBottom: Math.max(insets.bottom, 100)
             }}
+            ItemSeparatorComponent={() => <View className="h-4" />}
             ListEmptyComponent={
               <Text className="text-gray-400 text-center">No projects found.</Text>
             }
             renderItem={({ item }) => <ProjectCard project={item} />}
+            showsVerticalScrollIndicator={false}
           />
         </View>
       </LinearGradient>

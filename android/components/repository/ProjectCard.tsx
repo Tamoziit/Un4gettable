@@ -1,6 +1,6 @@
 import { ProjectProps } from '@/interfaces/interfaces';
 import { Link } from 'expo-router';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 interface ProjectCardProps {
 	project: ProjectProps;
@@ -16,7 +16,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 				params: { id: project._id },
 			}}
 		>
-			<View className="flex-row gap-4">
+			<TouchableOpacity className="flex-row gap-4">
 				<View className="flex gap-0.5">
 					<Text className="text-xl font-bold text-[#61C9A8] mb-2">
 						{project.name}
@@ -57,7 +57,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 						₹ {project.target}
 					</Text>
 				</View>
-			</View>
+			</TouchableOpacity>
 		</Link>
 	)
 }
