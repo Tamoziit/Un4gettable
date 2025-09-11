@@ -390,8 +390,9 @@ export interface CommentForm {
 }
 
 export interface CommentModalProps {
+    showCommentModal: boolean;
     setShowCommentModal: React.Dispatch<React.SetStateAction<boolean>>;
-    submitComment: (e: React.FormEvent) => Promise<void>;
+    submitComment: () => Promise<void>;
     commentForm: CommentForm;
     setCommentForm: React.Dispatch<React.SetStateAction<CommentForm>>;
     commenting: boolean;

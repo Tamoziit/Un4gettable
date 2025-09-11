@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity, Linking, FlatList } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ProjectProps, ReportPreview } from '@/interfaces/interfaces';
 import useGetProjectById from '@/hooks/useGetProjectById';
@@ -13,6 +13,8 @@ import ProjectInfoCard from '@/components/project/ProjectInfoCard';
 import useInitiatePayment from '@/hooks/useInitiatePayment';
 import PlanOption from '@/components/PlanOption';
 import ReportPreviewCard from '@/components/project/ReportPreviewCard';
+import useAddComment from '@/hooks/useAddComment';
+import CommentModal from '@/components/CommentModal';
 
 const ProjectDetails = () => {
 	const { id } = useLocalSearchParams();
@@ -21,6 +23,9 @@ const ProjectDetails = () => {
 	const { authUser } = useAuthContext();
 	const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
 	const { loading: paying, initiatePayment } = useInitiatePayment();
+	const [showCommentModal, setShowCommentModal] = useState(false);
+	const [commentForm, setCommentForm] = useState({ message: "" });
+	const { loading: commenting, addComment } = useAddComment();
 
 	const fetchProject = async () => {
 		if (id) {
@@ -81,6 +86,26 @@ const ProjectDetails = () => {
 	useEffect(() => {
 		fetchProject();
 	}, []);
+
+	const submitComment = async () => {
+		const message = commentForm.message.trim();
+		if (!message) return;
+
+		if (!id) {
+			Toast.show({
+				type: 'error',
+				text1: "Cannot find Project ID",
+				position: 'top',
+			});
+			return;
+		}
+
+		await addComment({
+			id: id as string,
+			type: "Project",
+			message
+		});
+	};
 
 	if (loading || !project) {
 		return (
@@ -199,7 +224,7 @@ const ProjectDetails = () => {
 										data={(project.comments)}
 										keyExtractor={(_, index) => index.toString()}
 										renderItem={({ item }) => (
-											<View className="bg-[#242038] p-3 rounded-lg border border-gray-700 w-full">
+											<View className="bg-[#242038] p-3 border-r border-gray-700">
 												<Text className="text-sm text-gray-300 font-semibold">{item.name}</Text>
 												<Text className="text-gray-200 mt-1">{item.message}</Text>
 											</View>
@@ -212,8 +237,53 @@ const ProjectDetails = () => {
 							) : (
 								<Text className="text-gray-400">No comments yet.</Text>
 							)}
+
+							{authUser?.role === "user" && (
+								<View className="items-center">
+									<TouchableOpacity
+										onPress={() => {
+											setShowCommentModal(true);
+											setCommentForm({ message: "" });
+										}}
+										className="flex-row items-center gap-2 rounded-xl bg-[#9BA7C0] active:bg-[#758BFD] px-4 py-2 shadow-lg"
+										activeOpacity={0.8}
+									>
+										<Text className="text-[#00241B] text-sm font-medium">➕</Text>
+										<Text className="text-[#00241B] text-sm font-medium">Add Comment</Text>
+									</TouchableOpacity>
+
+									<Text className="mt-2 text-xs text-gray-400 text-center">
+										Share your thoughts or support message for this project
+									</Text>
+								</View>
+							)}
 						</View>
+
+						{authUser?.role !== "user" && (
+							<View className="flex justify-center mt-3">
+								<Link
+									href={{
+										pathname: "/(tabs)/report/submit/project/[id]",
+										params: { id: project._id },
+									}}
+									className="py-3 px-12 text-lg font-semibold rounded-xl shadow-md bg-blue-500 text-white active:bg-blue-600"
+								>
+									Submit a report
+								</Link>
+							</View>
+						)}
 					</View>
+
+					{showCommentModal && authUser?.role === "user" && (
+						<CommentModal
+							showCommentModal={showCommentModal}
+							setShowCommentModal={setShowCommentModal}
+							submitComment={submitComment}
+							commentForm={commentForm}
+							setCommentForm={setCommentForm}
+							commenting={commenting}
+						/>
+					)}
 				</ScrollView>
 			</LinearGradient>
 		</SafeAreaView>
